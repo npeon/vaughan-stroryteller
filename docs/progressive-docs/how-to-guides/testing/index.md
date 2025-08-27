@@ -42,15 +42,19 @@
 
 ---
 
-### **🧩 Cypress Quasar Components** 🚧
-**Testing de componentes Quasar con Cypress**
+### **🎯 [Cypress Custom Commands](./cypress-custom-commands.md)** ✅
+**Comandos custom específicos para testing de componentes Quasar y dominio educativo**
 
-- Component testing setup específico
-- Quasar UI elements interaction
-- Custom commands para componentes comunes
-- Visual regression testing
+- 🏗️ **64+ comandos custom** organizados por dominio funcional
+- 📖 **Story system** - generación, lectura, progreso tracking
+- 🔐 **Authentication** - login, roles, perfil CEFR
+- 📚 **Vocabulary** - WordsAPI, spaced repetition, flashcards
+- 🔊 **Audio/TTS** - ElevenLabs integration, controles avanzados
+- 🛡️ **Admin panel** - banners, límites, API health monitoring
+- 📱 **PWA/Offline** - instalación, sync, service worker
+- ⚡ **Enhanced Quasar** - componentes optimizados con TypeScript
 
-**Estado**: Planeado | **⏱️ Tiempo**: 60 min
+**⏱️ Tiempo**: 30-45 min | **📋 Prerequisitos**: Environment setup, Cypress básico
 
 ## 🎯 Cuándo Usar Cada Guía
 
@@ -75,10 +79,11 @@
 - Mocking de dependencies
 
 #### **E2E testing con Quasar**
-→ **Cypress Quasar Components** (próximamente)  
-- Interactuar con Q-components
-- Visual testing
-- User flow completo
+→ **[Cypress Custom Commands](./cypress-custom-commands.md)**  
+- Comandos específicos para componentes Quasar
+- Testing de flows educativos completos
+- Integración con APIs externas (OpenRouter, ElevenLabs)
+- PWA y funcionalidad offline
 
 ## 🔗 Referencias Técnicas
 
@@ -110,6 +115,9 @@
 
 **🚀 ¿Por dónde empezar?**
 
-Si eres nuevo en testing del proyecto, comienza con **[MSW Advanced Mocking](./msw-advanced-mocking.md)** - es la base para testear todas las integraciones de APIs.
+**Para nuevos desarrolladores:**
+1. **[TDD Scripts Configuration](./tdd-scripts-setup.md)** - Configura tu flujo de desarrollo
+2. **[MSW Advanced Mocking](./msw-advanced-mocking.md)** - Aprende a mockear APIs externas  
+3. **[Cypress Custom Commands](./cypress-custom-commands.md)** - Domina los comandos E2E específicos
 
-**💡 Tip**: Todos los patterns de testing están implementados y funcionando en el proyecto. Usa las guías para entender cómo replicar estos patterns en tus propias features.
+**💡 Tip**: Todos los patterns y comandos están implementados y funcionando. Usa las guías para entender cómo aplicar estos patterns en tus propias features y maximizar la eficiencia de testing.

@@ -29,32 +29,18 @@
 import { registerCommands } from '@quasar/quasar-app-extension-testing-e2e-cypress';
 registerCommands();
 
-// MSW commands for API mocking in E2E tests
-declare global {
-  namespace Cypress {
-    interface Chainable {
-      /**
-       * Start MSW service worker for API mocking
-       */
-      startMSW(): Chainable<void>;
-      
-      /**
-       * Stop MSW service worker
-       */
-      stopMSW(): Chainable<void>;
-      
-      /**
-       * Reset MSW handlers to initial state
-       */
-      resetMSW(): Chainable<void>;
-      
-      /**
-       * Override MSW handlers for specific test scenarios
-       */
-      overrideMSW(handlers: unknown[]): Chainable<void>;
-    }
-  }
-}
+// Import custom command modules for The Vaughan Storyteller
+import './commands/story-commands';
+import './commands/auth-commands';
+import './commands/vocabulary-commands';
+import './commands/audio-commands';
+import './commands/admin-commands';
+import './commands/pwa-commands';
+import './commands/quasar-commands';
+
+// Import TypeScript definitions
+import './types/cypress-commands';
+
 
 Cypress.Commands.add('startMSW', () => {
   cy.window().then((win) => {
