@@ -11,8 +11,9 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## ⚙️ Fase 0: Setup Foundation
 
 ### 🛠️ Configuración Inicial del Entorno TDD con Quasar
-- [ ] **Task 0.1**: Instalar extensión de testing unitario de Quasar: `quasar ext add @quasar/testing-unit-vitest`
-- [ ] **Task 0.2**: Instalar extensión de testing E2E de Quasar: `quasar ext add @quasar/testing-e2e-cypress`
+
+- [x] **Task 0.1**: Instalar extensión de testing unitario de Quasar: `quasar ext add @quasar/testing-unit-vitest`
+- [x] **Task 0.2**: Instalar extensión de testing E2E de Quasar: `quasar ext add @quasar/testing-e2e-cypress`
 - [ ] **Task 0.3**: Configurar MSW para API mocking (OpenRouter, ElevenLabs, WordsAPI)
 - [ ] **Task 0.4**: Verificar configuración automática de scripts de testing en package.json
 - [ ] **Task 0.5**: Crear setup de tests con installQuasarPlugin()
@@ -21,6 +22,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 0.8**: Verificar funcionamiento de dataCy, selectDate y testRoute commands
 
 ### 🗄️ Setup Supabase Backend
+
 - [ ] **Task 0.7**: Configurar proyecto Supabase y obtener credentials
 - [ ] **Task 0.8**: Instalar Supabase CLI y configurar entorno local
 - [ ] **Task 0.9**: Crear esquema de base de datos con tablas principales
@@ -31,6 +33,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 0.14**: Configurar Supabase Storage para assets
 
 ### 🔗 Setup APIs Externas
+
 - [ ] **Task 0.15**: Configurar cuenta OpenRouter y obtener API key
 - [ ] **Task 0.16**: Configurar cuenta ElevenLabs y obtener API key
 - [ ] **Task 0.17**: Configurar cuenta WordsAPI y obtener API key
@@ -39,6 +42,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 0.20**: Crear servicios base para cada API externa
 
 ### 🚀 Setup Vercel Deployment
+
 - [ ] **Task 0.21**: Conectar repositorio GitHub con Vercel
 - [ ] **Task 0.22**: Configurar variables de entorno en Vercel
 - [ ] **Task 0.23**: Configurar preview deployments automáticos
@@ -49,6 +53,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 📖 Fase 1: Core Story System (Semanas 1-3)
 
 ### Sprint 1.1: Modelo de Datos y Tipos (Días 2-4)
+
 - [ ] **Task 1.1.1**: Definir interfaces TypeScript para Story, User Profile, Vocabulary
 - [ ] **Task 1.1.2**: Crear tipos CEFRLevel y StoryGenre
 - [ ] **Task 1.1.3**: Implementar utilidades de validación de historias
@@ -58,6 +63,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 1.1.7**: Implementar modelos de datos Supabase-compatible
 
 ### Sprint 1.2: Story Service con OpenRouter (Días 5-8)
+
 - [ ] **Task 1.2.1**: Implementar OpenRouterClient con múltiples modelos
 - [ ] **Task 1.2.2**: Crear StoryGenerator service con fallback strategy
 - [ ] **Task 1.2.3**: Implementar rate limiting con Redis para OpenRouter
@@ -70,6 +76,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 1.2.10**: Tests para tracking de progreso de lectura
 
 ### Sprint 1.3: Story Reader Component con Audio (Días 9-14)
+
 - [ ] **Task 1.3.1**: Crear componente StoryReader básico
 - [ ] **Task 1.3.2**: Implementar renderizado de título y contenido
 - [ ] **Task 1.3.3**: Implementar barra de progreso de lectura con persistencia
@@ -87,6 +94,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 📚 Fase 2: Vocabulary System con WordsAPI (Semanas 4-6)
 
 ### Sprint 2.1: Word Bank Management con WordsAPI (Días 15-21)
+
 - [ ] **Task 2.1.1**: Implementar WordsAPI client para definiciones
 - [ ] **Task 2.1.2**: Crear DictionaryService con pronunciación y etimología
 - [ ] **Task 2.1.3**: Definir interfaces para VocabularyWord con datos WordsAPI
@@ -101,6 +109,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 2.1.12**: Implementar rate limiting para WordsAPI
 
 ### Sprint 2.2: Spaced Repetition System (Días 22-28)
+
 - [ ] **Task 2.2.1**: Implementar algoritmo de repetición espaciada
 - [ ] **Task 2.2.2**: Tests para cálculo de próxima fecha de revisión
 - [ ] **Task 2.2.3**: Tests para ajuste de dificultad basado en rendimiento
@@ -117,6 +126,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 🛡️ Fase 3: Panel de Administrador (Semana 7)
 
 ### Sprint 3.1: Sistema de Administración (Días 29-35)
+
 - [ ] **Task 3.1.1**: Crear middleware de autorización para administradores
 - [ ] **Task 3.1.2**: Tests para verificación de rol de administrador
 - [ ] **Task 3.1.3**: Implementar AdminService para test de conectividad APIs
@@ -141,10 +151,10 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 ---
 
-
 ## 🔧 Fase 4: Edge Functions y Serverless (Semanas 8-10)
 
 ### Sprint 4.1: Supabase Edge Functions (Días 36-42)
+
 - [ ] **Task 4.1.1**: Crear Edge Function para generación de historias con límites
 - [ ] **Task 4.1.2**: Implementar Edge Function para audio generation
 - [ ] **Task 4.1.3**: Crear Edge Function para word lookup con WordsAPI
@@ -158,6 +168,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 4.1.11**: Tests para manejo de errores y fallbacks
 
 ### Sprint 4.2: PWA y Offline Functionality (Días 43-49)
+
 - [ ] **Task 4.2.1**: Configurar Service Worker para PWA con Quasar
 - [ ] **Task 4.2.2**: Implementar estrategia de caché para recursos estáticos
 - [ ] **Task 4.2.3**: Configurar IndexedDB para datos offline
@@ -176,6 +187,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 🎨 Fase 5: UI/UX Polish (Semanas 11-13)
 
 ### Sprint 5.1: Responsive Design (Días 50-56)
+
 - [ ] **Task 5.1.1**: Implementar componentes mobile-first con Quasar
 - [ ] **Task 5.1.2**: Tests para adaptación de layout móvil
 - [ ] **Task 5.1.3**: Tests para navegación desktop
@@ -188,6 +200,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 5.1.10**: Implementar responsive design para panel de admin
 
 ### Sprint 5.2: Accessibility (Días 57-63)
+
 - [ ] **Task 5.2.1**: Implementar soporte para screen readers
 - [ ] **Task 5.2.2**: Tests E2E con Cypress para etiquetas ARIA apropiadas
 - [ ] **Task 5.2.3**: Tests E2E con Cypress para navegación por teclado
@@ -202,6 +215,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 📊 Fase 6: Analytics & Performance (Semanas 14-16)
 
 ### Sprint 6.1: Performance Optimization (Días 64-70)
+
 - [ ] **Task 6.1.1**: Análisis de tamaño de bundle con Vercel
 - [ ] **Task 6.1.2**: Tests para tamaño aceptable de bundle (<500KB)
 - [ ] **Task 6.1.3**: Implementar lazy loading de componentes no críticos
@@ -214,6 +228,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 6.1.10**: Configurar Lighthouse CI para monitoring continuo
 
 ### Sprint 6.2: Monitoring y Analytics (Días 71-77)
+
 - [ ] **Task 6.2.1**: Configurar Sentry para error monitoring
 - [ ] **Task 6.2.2**: Implementar tracking de eventos con Vercel Analytics
 - [ ] **Task 6.2.3**: Configurar alertas para errores críticos
@@ -229,6 +244,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 🚀 Sprint Final: Production Ready (Días 78-84)
 
 ### Testing E2E Completo con Cypress
+
 - [ ] **Task 7.1.1**: Implementar suite de tests E2E críticos con Cypress
 - [ ] **Task 7.1.2**: Test E2E con Cypress para flujo completo de generación de historia con OpenRouter
 - [ ] **Task 7.1.3**: Test E2E con Cypress para guardado y revisión de vocabulario con WordsAPI
@@ -246,6 +262,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 7.1.12**: Usar comandos custom de Quasar: within[Portal|Menu|Dialog] para scoping
 
 ### Performance Benchmarks
+
 - [ ] **Task 7.2.1**: Implementar tests de rendimiento con Lighthouse CI
 - [ ] **Task 7.2.2**: Tests para thresholds de rendimiento (>90)
 - [ ] **Task 7.2.3**: Tests para thresholds de accesibilidad (>90)
@@ -256,6 +273,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Task 7.2.8**: Tests para escalabilidad y carga
 
 ### Deployment y Go-Live
+
 - [ ] **Task 7.3.1**: Configurar pipeline CI/CD completo con GitHub Actions
 - [ ] **Task 7.3.2**: Configurar deployment automático a Vercel production
 - [ ] **Task 7.3.3**: Configurar backup automático de base de datos Supabase
@@ -269,6 +287,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## ✅ Checklists de Finalización
 
 ### 🔧 Code Quality Checklist
+
 - [ ] **Test Coverage**: > 80% líneas cubiertas
 - [ ] **TypeScript**: 0 errores de tipos
 - [ ] **ESLint**: 0 warnings en modo strict
@@ -278,6 +297,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **PWA**: Instalable + offline functionality
 
 ### 🧪 Functional Testing Checklist
+
 - [ ] **Story Reading**: Flow completo con OpenRouter funcional
 - [ ] **Vocabulary**: Sistema WordsAPI + Supabase completamente operativo
 - [ ] **Audio**: ElevenLabs TTS integrado y funcionando
@@ -289,6 +309,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Installation**: PWA se puede instalar en todos los dispositivos
 
 ### 🔗 External Services Checklist
+
 - [ ] **Supabase**: Database, Auth, Storage, Edge Functions, Realtime
 - [ ] **OpenRouter**: Story generation con múltiples modelos AI
 - [ ] **ElevenLabs**: Text-to-speech con múltiples voces
@@ -299,6 +320,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Error Handling**: Circuit breakers y fallbacks para todas las integraciones
 
 ### 📚 Documentation Checklist
+
 - [ ] **README**: Instrucciones completas de instalación y setup
 - [ ] **API Docs**: Documentación de Edge Functions y endpoints
 - [ ] **Database Schema**: Documentación completa de Supabase schema
@@ -309,6 +331,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Troubleshooting**: Guía de solución de problemas comunes
 
 ### 🚀 MVP Ready Checklist
+
 - [ ] **Content Generation**: Sistema de historias AI completamente funcional
 - [ ] **Vocabulary System**: WordsAPI + spaced repetition operativo
 - [ ] **Audio Narration**: ElevenLabs TTS integrado
@@ -332,6 +355,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 📈 Métricas de Seguimiento
 
 ### 🎯 Métricas de Calidad de Código
+
 - [ ] **Test Coverage**: > 80%
 - [ ] **Test Execution Time**: < 45 segundos (suite completa)
 - [ ] **Code Duplication**: < 5%
@@ -339,6 +363,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Type Coverage**: 100% TypeScript
 
 ### ⚡ Métricas de Performance
+
 - [ ] **Bundle Size**: < 500KB
 - [ ] **First Contentful Paint**: < 2s
 - [ ] **Time to Interactive**: < 3s
@@ -346,6 +371,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **API Response Time**: < 1s para Edge Functions
 
 ### 🎮 Métricas de Funcionalidad
+
 - [ ] **Feature Completeness**: 100% casos de uso implementados
 - [ ] **Bug Rate**: < 1 bug por 1000 líneas de código
 - [ ] **User Flow Success**: 100% flujos críticos funcionando
@@ -353,6 +379,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [ ] **Cross-Device Sync**: < 1s latencia para Realtime updates
 
 ### 💰 Métricas de Costos APIs
+
 - [ ] **OpenRouter**: Tracking de costos por usuario y modelo
 - [ ] **ElevenLabs**: Monitoring de usage de caracteres TTS
 - [ ] **WordsAPI**: Tracking de requests y quotas
@@ -365,6 +392,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 ## 🔧 Comandos de Desarrollo
 
 ### Testing Workflow Diario con Quasar
+
 ```bash
 # Ejecutar todos los tests unitarios (Vitest)
 npm run test:unit
@@ -402,6 +430,7 @@ vercel --prod
 ```
 
 ### Database Migrations
+
 ```bash
 # Create new migration
 npx supabase migration new migration_name
@@ -414,6 +443,7 @@ npx supabase gen types typescript --local > src/types/supabase.ts
 ```
 
 ### API Testing Local con Quasar
+
 ```bash
 # Test OpenRouter integration con Vitest
 npm run test:api:openrouter
