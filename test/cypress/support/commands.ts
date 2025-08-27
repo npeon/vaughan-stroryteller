@@ -28,3 +28,71 @@
 // Imports Quasar Cypress AE predefined commands
 import { registerCommands } from '@quasar/quasar-app-extension-testing-e2e-cypress';
 registerCommands();
+
+// MSW commands for API mocking in E2E tests
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      /**
+       * Start MSW service worker for API mocking
+       */
+      startMSW(): Chainable<void>;
+      
+      /**
+       * Stop MSW service worker
+       */
+      stopMSW(): Chainable<void>;
+      
+      /**
+       * Reset MSW handlers to initial state
+       */
+      resetMSW(): Chainable<void>;
+      
+      /**
+       * Override MSW handlers for specific test scenarios
+       */
+      overrideMSW(handlers: unknown[]): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('startMSW', () => {
+  cy.window().then((win) => {
+    // Import MSW worker dynamically
+    return win.eval(`
+      import('/src/mocks/browser.js').then((module) => {
+        return module.workerUtils.start();
+      });
+    `);
+  });
+});
+
+Cypress.Commands.add('stopMSW', () => {
+  cy.window().then((win) => {
+    return win.eval(`
+      import('/src/mocks/browser.js').then((module) => {
+        return module.workerUtils.stop();
+      });
+    `);
+  });
+});
+
+Cypress.Commands.add('resetMSW', () => {
+  cy.window().then((win) => {
+    return win.eval(`
+      import('/src/mocks/browser.js').then((module) => {
+        return module.workerUtils.reset();
+      });
+    `);
+  });
+});
+
+Cypress.Commands.add('overrideMSW', (handlers: unknown[]) => {
+  cy.window().then((win) => {
+    return win.eval(`
+      import('/src/mocks/browser.js').then((module) => {
+        return module.workerUtils.override(...${JSON.stringify(handlers)});
+      });
+    `);
+  });
+});

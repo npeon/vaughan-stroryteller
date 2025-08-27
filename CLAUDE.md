@@ -14,6 +14,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Admin panel for API health monitoring, user limits, and banner management
 - PWA with offline functionality
 - Cross-device synchronization via Supabase Realtime
+- Always review: `docs/prd/prd.md` (comprehensive PRD) and `docs/prd/plan-implementacion.md` (implementation plan) when starting a new session to get context
+- VERY IMPORTANT: Use your agents proactively
 
 ## Architecture
 

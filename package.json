@@ -1,1 +1,67 @@
-{"name":"quasar-story-telling","version":"0.0.1","description":"Pequeñas historias en ingés para fortalecer tu inglés y ampliar vocabulario","productName":"The Vaughan Storyteller","author":"NachoPeon <156694666+NachoPeon@users.noreply.github.com>","type":"module","private":true,"scripts":{"lint":"eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"","format":"prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore","test":"echo \"See package.json => scripts for available tests.\" && exit 0","typecheck":"vue-tsc --noEmit --skipLibCheck","dev":"quasar dev","build":"quasar build","postinstall":"quasar prepare","test:unit:ui":"vitest --ui","test:unit":"vitest","test:unit:ci":"vitest run","test:e2e":"cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress open --e2e\"","test:e2e:ci":"cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress run --e2e\"","test:component":"cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress open --component","test:component:ci":"cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress run --component"},"dependencies":{"@quasar/cli":"^2.5.0","@quasar/extras":"^1.16.4","quasar":"^2.16.0","vue":"^3.4.18","vue-router":"^4.0.12"},"devDependencies":{"@eslint/js":"^9.14.0","@quasar/app-vite":"^2.1.0","@quasar/quasar-app-extension-testing-e2e-cypress":"^6.2.1","@quasar/quasar-app-extension-testing-unit-vitest":"^1.2.3","@types/node":"^20.5.9","@vitest/ui":"^3.1.2","@vue/eslint-config-prettier":"^10.1.0","@vue/eslint-config-typescript":"^14.4.0","@vue/test-utils":"^2.4.6","autoprefixer":"^10.4.2","eslint":"^9.14.0","eslint-plugin-vue":"^9.30.0","globals":"^15.12.0","prettier":"^3.3.3","typescript":"~5.5.3","vite-plugin-checker":"^0.9.0","vitest":"^3.1.2","vue-tsc":"^2.0.29","cypress":"^14.2.1","eslint-plugin-cypress":"^4.2.1"},"engines":{"node":"^28 || ^26 || ^24 || ^22 || ^20 || ^18","npm":">= 6.13.4","yarn":">= 1.21.1"}}
+{
+  "name": "quasar-story-telling",
+  "version": "0.0.1",
+  "description": "Pequeñas historias en ingés para fortalecer tu inglés y ampliar vocabulario",
+  "productName": "The Vaughan Storyteller",
+  "author": "NachoPeon <156694666+NachoPeon@users.noreply.github.com>",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "lint": "eslint -c ./eslint.config.js \"./src*/**/*.{ts,js,cjs,mjs,vue}\"",
+    "format": "prettier --write \"**/*.{js,ts,vue,scss,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"See package.json => scripts for available tests.\" && exit 0",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck",
+    "dev": "quasar dev",
+    "build": "quasar build",
+    "postinstall": "quasar prepare",
+    "test:unit:ui": "vitest --ui",
+    "test:unit": "vitest",
+    "test:unit:ci": "vitest run",
+    "test:e2e": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress open --e2e\"",
+    "test:e2e:ci": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress run --e2e\"",
+    "test:component": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress open --component",
+    "test:component:ci": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress run --component"
+  },
+  "dependencies": {
+    "@quasar/cli": "^2.5.0",
+    "@quasar/extras": "^1.16.4",
+    "quasar": "^2.16.0",
+    "vue": "^3.4.18",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@mswjs/data": "^0.16.2",
+    "@quasar/app-vite": "^2.1.0",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^6.2.1",
+    "@quasar/quasar-app-extension-testing-unit-vitest": "^1.2.3",
+    "@types/node": "^20.5.9",
+    "@vitest/ui": "^3.1.2",
+    "@vue/eslint-config-prettier": "^10.1.0",
+    "@vue/eslint-config-typescript": "^14.4.0",
+    "@vue/test-utils": "^2.4.6",
+    "autoprefixer": "^10.4.2",
+    "cypress": "^14.2.1",
+    "eslint": "^9.14.0",
+    "eslint-plugin-cypress": "^4.2.1",
+    "eslint-plugin-vue": "^9.30.0",
+    "globals": "^15.12.0",
+    "msw": "^2.10.5",
+    "prettier": "^3.3.3",
+    "typescript": "~5.5.3",
+    "undici": "^7.15.0",
+    "vite-plugin-checker": "^0.9.0",
+    "vitest": "^3.1.2",
+    "vue-tsc": "^2.0.29"
+  },
+  "engines": {
+    "node": "^28 || ^26 || ^24 || ^22 || ^20 || ^18",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  }
+}
