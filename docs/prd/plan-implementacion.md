@@ -16,8 +16,8 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [x] **Task 0.2**: Instalar extensión de testing E2E de Quasar: `quasar ext add @quasar/testing-e2e-cypress`
 - [x] **Task 0.3**: Configurar MSW para API mocking (OpenRouter, ElevenLabs)
 - [x] **Task 0.4**: Verificar configuración automática de scripts de testing en package.json
-- [ ] **Task 0.5**: Crear setup de tests con installQuasarPlugin()
-- [ ] **Task 0.6**: Verificar integración Quasar + Vitest funcionando
+- [x] **Task 0.5**: Crear setup de tests con installQuasarPlugin()
+- [x] **Task 0.6**: Verificar integración Quasar + Vitest funcionando
 - [ ] **Task 0.7**: Configurar comandos custom de Cypress para componentes Quasar
 - [ ] **Task 0.8**: Verificar funcionamiento de dataCy, selectDate y testRoute commands
 
