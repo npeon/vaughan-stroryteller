@@ -255,7 +255,7 @@ async function handleChatCompletion(request: Request): Promise<Response> {
 
     // Extract story parameters from the messages
     const lastMessage = body.messages[body.messages.length - 1];
-    const storyParams = extractStoryParameters(lastMessage.content);
+    const storyParams = extractStoryParameters(lastMessage?.content ?? '');
     
     // Generate appropriate story content
     const storyContent = generateStoryContent(storyParams);
@@ -290,7 +290,7 @@ async function handleChatCompletion(request: Request): Promise<Response> {
     };
 
     return HttpResponse.json(response);
-  } catch (error) {
+  } catch {
     return HttpResponse.json<OpenRouterError>(
       {
         error: {
@@ -312,7 +312,7 @@ function extractStoryParameters(content: string): { level: CEFRLevel; genre: Sto
 
   // Extract CEFR level
   const levelMatch = content.match(/\b([ABC][12])\b/i);
-  if (levelMatch) {
+  if (levelMatch?.[1]) {
     level = levelMatch[1].toUpperCase() as CEFRLevel;
   }
 
@@ -340,8 +340,8 @@ function extractStoryParameters(content: string): { level: CEFRLevel; genre: Sto
 
   // Extract word count
   const wordCountMatch = content.match(/(\d+)\s*words?/i);
-  if (wordCountMatch) {
-    wordCount = parseInt(wordCountMatch[1]);
+  if (wordCountMatch?.[1]) {
+    wordCount = parseInt(wordCountMatch[1], 10);
   }
 
   return { level, genre, wordCount };
@@ -351,8 +351,8 @@ function generateStoryContent({ level, genre, wordCount }: { level: CEFRLevel; g
   // Get sample stories for the specified level and genre
   const stories = SAMPLE_STORIES[level]?.[genre] || SAMPLE_STORIES['B1']['adventure'];
   
-  // Select a random story
-  const selectedStory = stories[Math.floor(Math.random() * stories.length)];
+  // Select a random story (ensure we have stories available)
+  const selectedStory = stories?.[Math.floor(Math.random() * stories.length)] || 'Once upon a time, there was an interesting story to tell.';
   
   // Adjust length based on requested word count
   const words = selectedStory.split(' ');
@@ -370,7 +370,8 @@ function generateStoryContent({ level, genre, wordCount }: { level: CEFRLevel; g
       ' From that moment on, their life was different.',
       ' They realized that sometimes the best things happen when you least expect them.',
     ];
-    adjustedStory += extensions[Math.floor(Math.random() * extensions.length)];
+    const randomExtension = extensions[Math.floor(Math.random() * extensions.length)] ?? ' The story continued.';
+    adjustedStory = adjustedStory + randomExtension;
   }
   
   return adjustedStory;

@@ -3,9 +3,9 @@
 
 import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/node';
-import type { OpenRouterRequest, OpenRouterError } from '../types/openrouter';
-import type { ElevenLabsTTSRequest, ElevenLabsError } from '../types/elevenlabs';
 import type { WordsApiError } from '../types/wordsapi';
+import type { OpenRouterError } from "../types/openrouter";
+import type { ElevenLabsError } from "../types/elevenlabs";
 
 // Re-export server utilities for easy access
 export { server } from '../mocks/node';
@@ -23,7 +23,7 @@ export const getWorker = async () => {
 interface RequestLog {
   method: string;
   url: string;
-  body?: any;
+  body?: unknown;
   timestamp: number;
 }
 
@@ -103,8 +103,9 @@ export const mswTestUtils = {
       wordsapi: /wordsapiv1\.p\.rapidapi\.com/
     };
     
-    return requestLogs.some(log => patterns[service].test(log.url));
-  },
+    const pattern = patterns[service];
+    return requestLogs.some(log => pattern!.test(log.url));
+   },
 
   /**
    * Get request count for a specific service
@@ -116,7 +117,8 @@ export const mswTestUtils = {
       wordsapi: /wordsapiv1\.p\.rapidapi\.com/
     };
     
-    return requestLogs.filter(log => patterns[service].test(log.url)).length;
+    const pattern = patterns[service];
+    return requestLogs.filter(log => pattern!.test(log.url)).length;
   },
 
   /**
@@ -248,12 +250,13 @@ export const mockOverrides = {
       wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
     };
 
+    const url = urls[service]!;
     server.use(
-      http.get(urls[service], async () => {
+      http.get(url, async () => {
         await new Promise(resolve => setTimeout(resolve, delay));
         return HttpResponse.json({ message: 'Delayed response' });
       }),
-      http.post(urls[service], async () => {
+      http.post(url, async () => {
         await new Promise(resolve => setTimeout(resolve, delay));
         return HttpResponse.json({ message: 'Delayed response' });
       })
@@ -270,11 +273,12 @@ export const mockOverrides = {
       wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
     };
 
+    const url = urls[service]!;
     server.use(
-      http.get(urls[service], () => {
+      http.get(url, () => {
         return HttpResponse.error();
       }),
-      http.post(urls[service], () => {
+      http.post(url, () => {
         return HttpResponse.error();
       })
     );
@@ -283,18 +287,19 @@ export const mockOverrides = {
   /**
    * Mock successful responses with custom data
    */
-  mockSuccessResponse(service: 'openrouter' | 'elevenlabs' | 'wordsapi', responseData: any) {
+  mockSuccessResponse(service: 'openrouter' | 'elevenlabs' | 'wordsapi', responseData: Record<string, unknown>) {
     const urls: Record<string, string> = {
       openrouter: 'https://openrouter.ai/api/v1/chat/completions',
       elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId',
       wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
     };
 
+    const url = urls[service]!;
     server.use(
-      http.get(urls[service], () => {
+      http.get(url, () => {
         return HttpResponse.json(responseData);
       }),
-      http.post(urls[service], () => {
+      http.post(url, () => {
         return HttpResponse.json(responseData);
       })
     );

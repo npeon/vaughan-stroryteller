@@ -56,9 +56,9 @@ describe('MSW Configuration Verification', () => {
       expect(data).toHaveProperty('choices');
       expect(data.choices).toHaveLength(1);
       expect(data.choices[0]).toHaveProperty('message');
-      expect(data.choices[0].message).toHaveProperty('content');
-      expect(data.choices[0].message.content).toBeTypeOf('string');
-      expect(data.choices[0].message.content.length).toBeGreaterThan(0);
+      expect(data.choices[0]?.message).toHaveProperty('content');
+      expect(data.choices[0]?.message?.content).toBeTypeOf('string');
+      expect(data.choices[0]?.message?.content?.length).toBeGreaterThan(0);
       expect(data).toHaveProperty('usage');
       expect(data.usage).toHaveProperty('total_tokens');
 
@@ -110,7 +110,7 @@ describe('MSW Configuration Verification', () => {
       const data = await response.json() as OpenRouterResponse;
       
       expect(response.ok).toBe(true);
-      expect(data.choices[0].message.content).toBeTypeOf('string');
+      expect(data.choices[0]?.message?.content).toBeTypeOf('string');
       expect(data.model).toBe('openai/gpt-4-turbo');
     });
   });
@@ -228,8 +228,8 @@ describe('MSW Configuration Verification', () => {
       const firstResult = data.results![0];
       expect(firstResult).toHaveProperty('definition');
       expect(firstResult).toHaveProperty('partOfSpeech');
-      expect(firstResult.definition).toBeTypeOf('string');
-      expect(firstResult.partOfSpeech).toBeTypeOf('string');
+      expect(firstResult?.definition).toBeTypeOf('string');
+      expect(firstResult?.partOfSpeech).toBeTypeOf('string');
 
       // Verify the request was intercepted
       mswAssertions.expectApiWasCalled('wordsapi');

@@ -5,8 +5,6 @@ import type {
   ElevenLabsTTSRequest,
   ElevenLabsTTSResponse,
   ElevenLabsError,
-  ElevenLabsVoiceId,
-  ELEVENLABS_VOICES
 } from '../../types/elevenlabs';
 
 // Mock voice data
@@ -203,7 +201,7 @@ export const elevenLabsHandlers = [
         {
           detail: {
             status: 'voice_not_found',
-            message: `Voice with ID ${voiceId} not found.`,
+            message: `Voice with ID ${String(voiceId)} not found.`,
           },
         },
         { status: 404 }
@@ -227,7 +225,7 @@ export const elevenLabsHandlers = [
           {
             detail: {
               status: 'voice_not_found',
-              message: `Voice with ID ${voiceId} not found.`,
+              message: `Voice with ID ${String(voiceId)} not found.`,
             },
           },
           { status: 404 }
@@ -281,7 +279,7 @@ export const elevenLabsHandlers = [
       const audioDurationSeconds = Math.round((estimatedWords / 150) * 60);
       
       // Select a random mock audio URL
-      const audioUrl = MOCK_AUDIO_URLS[Math.floor(Math.random() * MOCK_AUDIO_URLS.length)];
+      const audioUrl = MOCK_AUDIO_URLS[Math.floor(Math.random() * MOCK_AUDIO_URLS.length)] || MOCK_AUDIO_URLS[0] || 'https://mock-elevenlabs-default.mp3';
       
       // Simulate processing time based on text length
       const processingTime = Math.min(charactersUsed * 10, 5000); // Max 5 seconds
@@ -300,7 +298,7 @@ export const elevenLabsHandlers = [
         }, processingTime);
       });
 
-    } catch (error) {
+    } catch {
       return HttpResponse.json<ElevenLabsError>(
         {
           detail: {
@@ -318,7 +316,7 @@ export const elevenLabsHandlers = [
     const { voiceId } = params;
     
     try {
-      const body = await request.json() as ElevenLabsTTSRequest;
+      await request.json() as ElevenLabsTTSRequest;
       
       // For streaming, we'll return a simple audio response
       // In a real implementation, this would return a streaming audio response
@@ -328,7 +326,7 @@ export const elevenLabsHandlers = [
           {
             detail: {
               status: 'voice_not_found',
-              message: `Voice with ID ${voiceId} not found.`,
+              message: `Voice with ID ${String(voiceId)} not found.`,
             },
           },
           { status: 404 }
@@ -350,7 +348,7 @@ export const elevenLabsHandlers = [
         }
       );
 
-    } catch (error) {
+    } catch {
       return HttpResponse.json<ElevenLabsError>(
         {
           detail: {

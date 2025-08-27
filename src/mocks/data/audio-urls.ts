@@ -110,7 +110,7 @@ export const audioUrlUtils = {
    * Get a random audio URL from the general pool
    */
   getRandomAudioUrl(): string {
-    return MOCK_AUDIO_URLS[Math.floor(Math.random() * MOCK_AUDIO_URLS.length)];
+    return MOCK_AUDIO_URLS[Math.floor(Math.random() * MOCK_AUDIO_URLS.length)] || MOCK_AUDIO_URLS[0] || 'https://mock-audio-default.mp3';
   },
 
   /**
@@ -121,7 +121,7 @@ export const audioUrlUtils = {
     const voiceUrls = AUDIO_URLS_BY_VOICE[voiceName.toLowerCase()];
     
     if (voiceUrls && voiceUrls.length > 0) {
-      return voiceUrls[Math.floor(Math.random() * voiceUrls.length)];
+      return voiceUrls[Math.floor(Math.random() * voiceUrls.length)] || voiceUrls[0] || 'https://mock-audio-voice.mp3';
     }
     
     return audioUrlUtils.getRandomAudioUrl();
@@ -134,7 +134,7 @@ export const audioUrlUtils = {
     const contentUrls = AUDIO_URLS_BY_CONTENT[contentType];
     
     if (contentUrls && contentUrls.length > 0) {
-      return contentUrls[Math.floor(Math.random() * contentUrls.length)];
+      return contentUrls[Math.floor(Math.random() * contentUrls.length)] || contentUrls[0] || 'https://mock-audio-content.mp3';
     }
     
     return audioUrlUtils.getRandomAudioUrl();

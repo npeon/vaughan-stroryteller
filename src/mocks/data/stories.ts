@@ -271,7 +271,7 @@ export const storyUtils = {
     if (!stories || stories.length === 0) {
       return null;
     }
-    return stories[Math.floor(Math.random() * stories.length)];
+    return stories[Math.floor(Math.random() * stories.length)] ?? null;
   },
 
   /**
@@ -323,6 +323,6 @@ export const storyUtils = {
     };
     
     const templates = titleTemplates[genre] || titleTemplates.adventure;
-    return templates[Math.floor(Math.random() * templates.length)];
+    return templates[Math.floor(Math.random() * templates.length)] || 'Adventure Story';
   }
 };

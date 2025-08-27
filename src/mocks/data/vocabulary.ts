@@ -417,7 +417,7 @@ export const vocabularyUtils = {
    * Get random words by CEFR level
    */
   getRandomWordsByLevel(level: string, count: number = 5): string[] {
-    const words = VOCABULARY_BY_LEVEL[level.toUpperCase()] || VOCABULARY_BY_LEVEL.A1;
+    const words = VOCABULARY_BY_LEVEL[level.toUpperCase()] || VOCABULARY_BY_LEVEL.A1 || [];
     const shuffled = [...words].sort(() => 0.5 - Math.random());
     return shuffled.slice(0, count);
   },

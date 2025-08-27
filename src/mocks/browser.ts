@@ -24,9 +24,9 @@ export const workerUtils = {
   /**
    * Stop the service worker
    */
-  async stop() {
+  stop() {
     if (typeof window !== 'undefined') {
-      await worker.stop();
+      return worker.stop();
     }
   },
 
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   // Only start in development if explicitly enabled
   const enableMSW = localStorage.getItem('enableMSW') === 'true';
   if (enableMSW) {
-    workerUtils.start().then(() => {
+    void workerUtils.start().then(() => {
       console.log('🔶 MSW enabled for development');
     });
   }

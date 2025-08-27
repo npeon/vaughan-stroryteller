@@ -1,7 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import type { 
   WordsApiWord,
-  WordsApiResult,
   WordsApiError,
   WordsApiDefinitionsResponse,
   WordsApiPronunciationResponse,
@@ -9,7 +8,6 @@ import type {
   WordsApiAntonymsResponse,
   WordsApiExamplesResponse,
   WordsApiFrequencyResponse,
-  PartOfSpeech
 } from '../../types/wordsapi';
 
 // Mock dictionary data for common English words
@@ -477,7 +475,7 @@ export const wordsApiHandlers = [
     if (random === 'true') {
       // Return a random word from our dictionary
       const words = Object.keys(MOCK_DICTIONARY);
-      const randomWord = words[Math.floor(Math.random() * words.length)];
+      const randomWord = words[Math.floor(Math.random() * words.length)] || words[0] || 'hello';
       const wordData = MOCK_DICTIONARY[randomWord];
       
       return new Promise(resolve => {
