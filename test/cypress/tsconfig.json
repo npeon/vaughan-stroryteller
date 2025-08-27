@@ -10,5 +10,9 @@
     // See: https://github.com/quasarframework/quasar/discussions/16877#discussioncomment-11434734
     // Cypress 15 will fix this by replacing ts-node with tsx: https://github.com/cypress-io/cypress/issues/31185
     "moduleResolution": "bundler"
-  }
+  },
+  "include": [
+    "**/*",
+    "./support/types/*.d.ts"
+  ]
 }
