@@ -14,6 +14,30 @@ export default defineConfig({
       'src/**/*.vitest.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
       'test/vitest/__tests__/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}',
     ],
+    globals: true, // Enable global test functions (describe, it, expect)
+    clearMocks: true, // Clear all mocks between tests
+    restoreMocks: true, // Restore original implementations after tests
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html', 'lcov'],
+      exclude: [
+        'node_modules/',
+        'test/',
+        '**/*.d.ts',
+        '**/*.config.{ts,js}',
+        '**/types/**',
+        '**/mocks/**',
+        'coverage/**',
+      ],
+      thresholds: {
+        global: {
+          branches: 80,
+          functions: 80,
+          lines: 80,
+          statements: 80,
+        },
+      },
+    },
   },
   plugins: [
     vue({

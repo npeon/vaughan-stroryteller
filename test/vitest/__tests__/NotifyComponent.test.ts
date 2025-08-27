@@ -1,19 +1,22 @@
-import { installQuasarPlugin } from '@quasar/quasar-app-extension-testing-unit-vitest';
 import { mount } from '@vue/test-utils';
 import { Notify } from 'quasar';
 import { describe, expect, it, vi } from 'vitest';
 import NotifyComponent from './demo/NotifyComponent.vue';
 
-installQuasarPlugin({ plugins: { Notify } });
-
 describe('notify example', () => {
   it('should call notify on click', async () => {
     expect(NotifyComponent).toBeTruthy();
 
+    // Mock Notify.create function
+    const mockCreate = vi.fn();
+    vi.mocked(Notify).create = mockCreate;
+    
     const wrapper = mount(NotifyComponent);
-    const spy = vi.spyOn(Notify, 'create');
-    expect(spy).not.toHaveBeenCalled();
-    await wrapper.trigger('click');
-    expect(spy).toHaveBeenCalled();
+    expect(mockCreate).not.toHaveBeenCalled();
+    
+    // Click the button to trigger notify
+    await wrapper.find('button').trigger('click');
+    
+    expect(mockCreate).toHaveBeenCalledWith('Hello there!');
   });
 });
