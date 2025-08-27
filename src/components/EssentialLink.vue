@@ -20,6 +20,7 @@ export interface EssentialLinkProps {
 }
 
 withDefaults(defineProps<EssentialLinkProps>(), {
+  title: '',
   caption: '',
   link: '#',
   icon: '',

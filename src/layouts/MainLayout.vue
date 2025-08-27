@@ -1,20 +1,28 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+  <q-layout view="hHh lpR fFf">
+    <q-header bordered class="bg-primary text-white">
       <q-toolbar>
-        <q-btn flat dense round icon="menu" aria-label="Menu" @click="toggleLeftDrawer" />
+        <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
 
-        <q-toolbar-title> Quasar App </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
+        <q-toolbar-title>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
+          </q-avatar>
+          Vaughan Storyteller
+        </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Essential Links </q-item-label>
-
-        <EssentialLink v-for="link in linksList" :key="link.title" v-bind="link" />
+    <q-drawer v-model="leftDrawerOpen" side="left" behavior="mobile" bordered>
+      <q-list v-if="linksList" bordered separator>
+        <essential-link
+          v-for="(link, id) in linksList"
+          :key="id"
+          :caption="String(link.caption)"
+          :link="String(link.link)"
+          :icon="String(link.icon)"
+          :title="link.title"
+        />
       </q-list>
     </q-drawer>
 
@@ -73,9 +81,9 @@ const linksList: EssentialLinkProps[] = [
   },
 ];
 
-const leftDrawerOpen = ref(false);
+const leftDrawerOpen = ref<boolean>(false);
 
-function toggleLeftDrawer() {
+const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value;
-}
+};
 </script>
