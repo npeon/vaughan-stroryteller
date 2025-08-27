@@ -17,6 +17,19 @@
 
 ---
 
+### **⚙️ [TDD Scripts Configuration](./tdd-scripts-setup.md)** ✅
+**Configuración completa de scripts para metodología TDD optimizada**
+
+- 🔄 **Watch mode** para ciclo red-green-refactor continuo
+- 📊 **Coverage scripts** con thresholds configurables  
+- 🚀 **Development TDD** con hot reloading + tests
+- 🏗️ **CI/CD optimized** scripts para pipelines
+- 🐛 **Debug mode** para breakpoint testing
+
+**⏱️ Tiempo**: 15-20 min | **📋 Prerequisitos**: Environment setup
+
+---
+
 ### **📏 Unit Testing Patterns** 🚧
 **Patterns específicos de testing unitario implementados en el proyecto**
 
@@ -42,6 +55,12 @@
 ## 🎯 Cuándo Usar Cada Guía
 
 ### **Si necesitas...**
+
+#### **Configurar flujo TDD optimizado**
+→ **[TDD Scripts Configuration](./tdd-scripts-setup.md)**
+- Setup inicial de scripts para metodología TDD
+- Optimizar tiempo de feedback en desarrollo
+- Configurar watch modes y cobertura automática
 
 #### **Mockear APIs externas**
 → **[MSW Advanced Mocking](./msw-advanced-mocking.md)**
