@@ -32,6 +32,44 @@ yarn format
 npm run format
 ```
 
+### Type checking
+
+```bash
+npm run typecheck
+```
+
+### Testing
+
+#### Unit Tests (Vitest)
+```bash
+# Run unit tests
+npm run test:unit
+
+# Run unit tests in watch mode
+npm run test:unit:ui
+
+# Run unit tests for CI (single run)
+npm run test:unit:ci
+```
+
+#### End-to-End Tests (Cypress)
+```bash
+# Open Cypress E2E tests in interactive mode
+npm run test:e2e
+
+# Run E2E tests for CI (headless)
+npm run test:e2e:ci
+```
+
+#### Component Tests (Cypress)
+```bash
+# Open Cypress component tests in interactive mode
+npm run test:component
+
+# Run component tests for CI (headless)
+npm run test:component:ci
+```
+
 ### Build the app for production
 
 ```bash
