@@ -106,3 +106,6 @@ Icon?
 # Windows specific
 ehthumbs.db
 Desktop.ini
+
+# base datos contexto claude
+/.serena/
