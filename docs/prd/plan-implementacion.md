@@ -25,10 +25,10 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 - [x] **Task 0.7**: Configurar proyecto Supabase y obtener credentials
 - [x] **Task 0.8**: Instalar Supabase CLI y configurar entorno local
-- [ ] **Task 0.9**: Crear esquema de base de datos con tablas principales
-- [ ] **Task 0.10**: Crear tablas de administración (ad_banners, user_limits, api_health_checks)
-- [ ] **Task 0.11**: Configurar Row Level Security (RLS) policies
-- [ ] **Task 0.12**: Configurar políticas RLS para tablas de administración
+- [x] **Task 0.9**: Crear esquema de base de datos con tablas principales
+- [x] **Task 0.10**: Crear tablas de administración (ad_banners, user_limits, api_health_checks)
+- [x] **Task 0.11**: Configurar Row Level Security (RLS) policies
+- [x] **Task 0.12**: Configurar políticas RLS para tablas de administración
 - [ ] **Task 0.13**: Configurar Supabase Auth con OAuth providers y roles
 - [ ] **Task 0.14**: Configurar Supabase Storage para assets
 

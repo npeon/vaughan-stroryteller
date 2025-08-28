@@ -73,43 +73,58 @@ npm run lint
 npm run format
 ```
 
-### Testing Commands (When Extensions Are Added)
+### Testing Commands (Fully Configured)
 
-The project is designed for TDD methodology but testing extensions need to be added:
+The project has comprehensive TDD testing setup with Vitest + Cypress:
 
 ```bash
-# Add Quasar testing extensions (to be implemented)
-quasar ext add @quasar/testing-unit-vitest
-quasar ext add @quasar/testing-e2e-cypress
+# Unit Tests (Vitest)
+npm run test:unit           # Run unit tests
+npm run test:unit:ui        # Run with Vitest UI
+npm run test:unit:ci        # Single run for CI
+npm run test:watch          # Watch mode
+npm run test:coverage       # Coverage report
+npm run test:coverage:ci    # Coverage for CI
 
-# Then these commands will be available:
-npm run test:unit           # Vitest unit tests
-npm run test:unit:watch     # Vitest in watch mode
-npm run test:unit:coverage  # Coverage report
-npm run test:e2e           # Cypress E2E tests
-npm run test:component     # Cypress component tests
+# End-to-End Tests (Cypress)
+npm run test:e2e           # Interactive E2E tests
+npm run test:e2e:ci        # Headless E2E for CI
+npm run test:component     # Interactive component tests
+npm run test:component:ci  # Headless component tests
+
+# TDD Workflows
+npm run test:tdd           # Combined watch mode (tests + typecheck)
+npm run dev:tdd            # Combined dev server + test watch
+npm run test:all           # Full test suite (typecheck + lint + coverage + e2e)
+npm run test:quick         # Quick validation (typecheck + unit tests)
+npm run test:debug         # Debug mode with inspector
 ```
 
-### Supabase Development (When Configured)
+### Supabase Development (Fully Configured)
+
+The database schema is implemented with 4 migrations and comprehensive TypeScript types:
 
 ```bash
 # Start local Supabase development
 npx supabase start
 
-# Reset database
+# Reset database and apply all migrations
 npx supabase db reset
 
 # Create new migration
 npx supabase migration new migration_name
 
-# Apply migrations
+# Apply migrations to remote
 npx supabase db push
 
-# Generate TypeScript types
+# Generate TypeScript types (already implemented in src/types/supabase.ts)
 npx supabase gen types typescript --local > src/types/supabase.ts
 
 # Serve Edge Functions locally
 npx supabase functions serve
+
+# Check migration status
+npx supabase status
 ```
 
 ## Development Patterns and Conventions
@@ -198,14 +213,44 @@ Follow this order in Vue components:
 - Background sync when connection is restored
 - Installable on mobile and desktop devices
 
+## Database Architecture (Implemented)
+
+### Supabase Schema Overview
+
+The database consists of 4 sequential migrations with 9 tables implementing a comprehensive learning platform:
+
+**Core Tables:**
+- `profiles`: User profiles with CEFR levels, statistics, and role-based access
+- `stories`: AI-generated stories with metadata (genre, difficulty, audio, progress)
+- `vocabulary_words`: Spaced repetition system with SM-2 algorithm integration
+- `story_progress`: Detailed reading tracking with bookmarks and time spent
+
+**Admin Tables:**
+- `ad_banners`: Banner management system with targeting and analytics
+- `user_limits`: Configurable user quotas for stories and audio generation
+- `api_health_checks`: Real-time monitoring of external API services
+- `usage_analytics`: Comprehensive event tracking for user behavior
+
+**System Tables:**
+- `system_config`: Global configuration key-value store
+
+**Key Features Implemented:**
+- Row Level Security (RLS) policies for data isolation
+- 25+ performance indexes for optimal queries
+- 15+ triggers for automated data consistency
+- 4 optimized views for complex data aggregation
+- Comprehensive TypeScript types in `src/types/supabase.ts`
+
 ## Important Configuration Details
 
 ### Quasar Configuration
 
 - TypeScript strict mode enabled in `quasar.config.ts`
 - Vue Router in hash mode for better compatibility
-- ESLint integration with flat config
+- ESLint integration with flat config (flat config format)
 - Material Design icons and Roboto font included
+- Vite plugin checker for real-time TypeScript and ESLint validation
+- Supabase boot file configured for authentication
 
 ### Environment Variables Required
 
@@ -252,22 +297,40 @@ The project includes specialized agents in `.claude/agents/` for:
 - **Vercel Docs**: https://vercel.com/docs
 - **Vue 3 Composition API**: https://vuejs.org/guide/
 
+### MSW (Mock Service Worker) Configuration
+
+The project includes comprehensive API mocking for development and testing:
+
+- **Mock Data**: Pre-configured mock responses in `src/mocks/data/`
+- **API Handlers**: Mock implementations for OpenRouter, ElevenLabs, WordsAPI in `src/mocks/handlers/`  
+- **Browser Setup**: MSW browser worker configured in `public/` directory
+- **Node Setup**: Server-side mocking for Node.js testing environment
+
 ## Development Workflow
 
 1. **Always start by reviewing**: `docs/prd/plan-implementacion.md` for task status and `docs/prd/prd.md` for context
-2. **Follow TDD methodology**: Write tests first, then implement
-3. **Use specialized agents**: Leverage the agents proactively for better results
-4. **Check implementation status**: Mark completed tasks in the plan
-5. **Maintain code quality**: Run lint/type-check before commits
-6. **Test thoroughly**: Ensure >80% test coverage for critical paths
+2. **Follow TDD methodology**: Write tests first, then implement (comprehensive testing setup available)
+3. **Use specialized agents**: Leverage the agents proactively for better results  
+4. **Database-first development**: Schema and types are implemented - build upon the existing database structure
+5. **Check implementation status**: Mark completed tasks in the plan (Tasks 0.9-0.12 completed)
+6. **Maintain code quality**: Run `npm run pre-commit` which includes lint/type-check/unit tests
+7. **Test thoroughly**: Use `npm run test:all` for full validation before major commits
 
 ## Important Notes
 
-- The project follows **Test-Driven Development (TDD)** methodology
-- All features should be implemented with comprehensive test coverage
-- External API integrations require proper error handling and fallbacks
-- Admin panel features are restricted to users with admin role
-- PWA functionality should work offline with proper synchronization
-- Performance targets: <2s First Contentful Paint, <3s Time to Interactive, <500KB bundle size
+- **Database Schema Implemented**: 4 complete migrations with 9 tables, RLS policies, and comprehensive TypeScript types
+- **Testing Infrastructure Ready**: Vitest + Cypress fully configured with MSW mocking
+- **TDD Methodology**: Write tests first using the existing testing infrastructure  
+- **Type Safety**: Strict TypeScript mode with comprehensive database types in `src/types/supabase.ts`
+- **Current Implementation Status**: Database foundation complete (Tasks 0.9-0.12), ready for service layer development
+- **External API Integration**: Comprehensive mock implementations available for development/testing
+- **Performance Targets**: <2s First Contentful Paint, <3s Time to Interactive, <500KB bundle size
+- **Quality Gates**: Use `npm run pre-commit` to validate code quality before commits
+
+### Next Development Phase
+The database foundation is complete. Next logical steps from the implementation plan:
+- Task 0.13: Supabase Auth configuration 
+- Task 0.14: Supabase Storage setup
+- Task 0.15+: External API service implementations
 
 For complex implementations, break down tasks into granular steps and use the TodoWrite tool to track progress systematically.
