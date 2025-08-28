@@ -1,13 +1,13 @@
 <template>
-  <q-card data-cy="dark-card" :dark="$q.dark.isActive">
-    {{ $q.dark.isActive ? 'Dark ' : 'Light' }} content
+  <q-card data-cy="dark-card" :dark="isDark">
+    {{ isDark ? 'Dark ' : 'Light' }} content
   </q-card>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useQuasar } from 'quasar';
 
-export default defineComponent({
-  name: 'QuasarDark',
-});
+const $q = useQuasar();
+const isDark = computed(() => $q.dark.isActive);
 </script>
