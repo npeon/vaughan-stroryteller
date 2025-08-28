@@ -56,7 +56,7 @@ src/
 # Start development server (hot reload enabled)
 npm run dev
 # or
-quasar dev
+quasar dev (best use this)
 
 # Build for production
 npm run build
@@ -220,21 +220,25 @@ Follow this order in Vue components:
 The database consists of 4 sequential migrations with 9 tables implementing a comprehensive learning platform:
 
 **Core Tables:**
+
 - `profiles`: User profiles with CEFR levels, statistics, and role-based access
 - `stories`: AI-generated stories with metadata (genre, difficulty, audio, progress)
 - `vocabulary_words`: Spaced repetition system with SM-2 algorithm integration
 - `story_progress`: Detailed reading tracking with bookmarks and time spent
 
 **Admin Tables:**
+
 - `ad_banners`: Banner management system with targeting and analytics
 - `user_limits`: Configurable user quotas for stories and audio generation
 - `api_health_checks`: Real-time monitoring of external API services
 - `usage_analytics`: Comprehensive event tracking for user behavior
 
 **System Tables:**
+
 - `system_config`: Global configuration key-value store
 
 **Key Features Implemented:**
+
 - Row Level Security (RLS) policies for data isolation
 - 25+ performance indexes for optimal queries
 - 15+ triggers for automated data consistency
@@ -302,7 +306,7 @@ The project includes specialized agents in `.claude/agents/` for:
 The project includes comprehensive API mocking for development and testing:
 
 - **Mock Data**: Pre-configured mock responses in `src/mocks/data/`
-- **API Handlers**: Mock implementations for OpenRouter, ElevenLabs, WordsAPI in `src/mocks/handlers/`  
+- **API Handlers**: Mock implementations for OpenRouter, ElevenLabs, WordsAPI in `src/mocks/handlers/`
 - **Browser Setup**: MSW browser worker configured in `public/` directory
 - **Node Setup**: Server-side mocking for Node.js testing environment
 
@@ -310,7 +314,7 @@ The project includes comprehensive API mocking for development and testing:
 
 1. **Always start by reviewing**: `docs/prd/plan-implementacion.md` for task status and `docs/prd/prd.md` for context
 2. **Follow TDD methodology**: Write tests first, then implement (comprehensive testing setup available)
-3. **Use specialized agents**: Leverage the agents proactively for better results  
+3. **Use specialized agents**: Leverage the agents proactively for better results
 4. **Database-first development**: Schema and types are implemented - build upon the existing database structure
 5. **Check implementation status**: Mark completed tasks in the plan (Tasks 0.9-0.12 completed)
 6. **Maintain code quality**: Run `npm run pre-commit` which includes lint/type-check/unit tests
@@ -320,7 +324,7 @@ The project includes comprehensive API mocking for development and testing:
 
 - **Database Schema Implemented**: 4 complete migrations with 9 tables, RLS policies, and comprehensive TypeScript types
 - **Testing Infrastructure Ready**: Vitest + Cypress fully configured with MSW mocking
-- **TDD Methodology**: Write tests first using the existing testing infrastructure  
+- **TDD Methodology**: Write tests first using the existing testing infrastructure
 - **Type Safety**: Strict TypeScript mode with comprehensive database types in `src/types/supabase.ts`
 - **Current Implementation Status**: Database foundation complete (Tasks 0.9-0.12), ready for service layer development
 - **External API Integration**: Comprehensive mock implementations available for development/testing
@@ -328,8 +332,10 @@ The project includes comprehensive API mocking for development and testing:
 - **Quality Gates**: Use `npm run pre-commit` to validate code quality before commits
 
 ### Next Development Phase
+
 The database foundation is complete. Next logical steps from the implementation plan:
-- Task 0.13: Supabase Auth configuration 
+
+- Task 0.13: Supabase Auth configuration
 - Task 0.14: Supabase Storage setup
 - Task 0.15+: External API service implementations
 
