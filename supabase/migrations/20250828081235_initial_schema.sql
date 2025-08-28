@@ -1,7 +1,7 @@
 -- =============================================
--- Migración: Esquema Base de The Vaughan Storyteller
--- Descripción: Tablas principales optimizadas para performance y escalabilidad
--- Fecha: 2025-08-28
+-- Migration: Esquema Base de The Vaughan Storyteller
+-- Description: Tablas principales optimizadas para performance y escalabilidad
+-- Date: 2025-08-28
 -- =============================================
 
 -- Habilitar extensiones necesarias
@@ -86,7 +86,7 @@ CREATE TABLE vocabulary_words (
 );
 
 -- =============================================
--- 4. TABLA USAGE_ANALYTICS (Análisis de Uso)
+-- 4. TABLA USAGE_ANALYTICS (Anï¿½lisis de Uso)
 -- =============================================
 CREATE TABLE usage_analytics (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -124,7 +124,7 @@ CREATE TABLE ad_banners (
 );
 
 -- =============================================
--- 6. TABLA USER_LIMITS (Panel Admin - Límites de Usuario)
+-- 6. TABLA USER_LIMITS (Panel Admin - Lï¿½mites de Usuario)
 -- =============================================
 CREATE TABLE user_limits (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -183,32 +183,32 @@ CREATE TABLE story_progress (
 );
 
 -- =============================================
--- COMENTARIOS EN TABLAS PARA DOCUMENTACIÓN
+-- COMENTARIOS EN TABLAS PARA DOCUMENTACIï¿½N
 -- =============================================
 
-COMMENT ON TABLE profiles IS 'Perfiles de usuario con configuraciones y estadísticas';
+COMMENT ON TABLE profiles IS 'Perfiles de usuario con configuraciones y estadï¿½sticas';
 COMMENT ON COLUMN profiles.cefr_level IS 'Nivel CEFR actual del usuario (A1-C2)';
 COMMENT ON COLUMN profiles.preferences IS 'Configuraciones JSON: tema, idioma, notificaciones, etc.';
-COMMENT ON COLUMN profiles.streak_days IS 'Días consecutivos de actividad del usuario';
+COMMENT ON COLUMN profiles.streak_days IS 'Dï¿½as consecutivos de actividad del usuario';
 
 COMMENT ON TABLE stories IS 'Historias generadas por IA con metadatos completos';
 COMMENT ON COLUMN stories.model_used IS 'Modelo de IA utilizado para generar la historia';
 COMMENT ON COLUMN stories.generation_cost IS 'Costo en USD de generar la historia';
-COMMENT ON COLUMN stories.vocabulary_words IS 'Array de palabras clave extraídas';
+COMMENT ON COLUMN stories.vocabulary_words IS 'Array de palabras clave extraï¿½das';
 
-COMMENT ON TABLE vocabulary_words IS 'Sistema de vocabulario con repetición espaciada';
+COMMENT ON TABLE vocabulary_words IS 'Sistema de vocabulario con repeticiï¿½n espaciada';
 COMMENT ON COLUMN vocabulary_words.ease_factor IS 'Factor de facilidad para algoritmo SM-2';
-COMMENT ON COLUMN vocabulary_words.interval_days IS 'Intervalo actual en días para revisión';
+COMMENT ON COLUMN vocabulary_words.interval_days IS 'Intervalo actual en dï¿½as para revisiï¿½n';
 
 COMMENT ON TABLE ad_banners IS 'Sistema de banners publicitarios con targeting';
 COMMENT ON COLUMN ad_banners.target_audience IS 'Criterios de targeting en JSON';
-COMMENT ON COLUMN ad_banners.display_priority IS 'Prioridad de visualización (1=highest)';
+COMMENT ON COLUMN ad_banners.display_priority IS 'Prioridad de visualizaciï¿½n (1=highest)';
 
-COMMENT ON TABLE user_limits IS 'Límites configurables por usuario para uso de APIs';
-COMMENT ON COLUMN user_limits.reset_frequency IS 'Frecuencia de reset de límites';
+COMMENT ON TABLE user_limits IS 'Lï¿½mites configurables por usuario para uso de APIs';
+COMMENT ON COLUMN user_limits.reset_frequency IS 'Frecuencia de reset de lï¿½mites';
 
 COMMENT ON TABLE api_health_checks IS 'Monitoreo de salud de APIs externas';
-COMMENT ON COLUMN api_health_checks.metadata IS 'Datos específicos del servicio en JSON';
+COMMENT ON COLUMN api_health_checks.metadata IS 'Datos especï¿½ficos del servicio en JSON';
 
 COMMENT ON TABLE story_progress IS 'Progreso detallado de lectura por historia';
-COMMENT ON COLUMN story_progress.bookmarks IS 'Marcadores JSON con posiciones específicas';
+COMMENT ON COLUMN story_progress.bookmarks IS 'Marcadores JSON con posiciones especï¿½ficas';

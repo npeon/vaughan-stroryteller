@@ -1,7 +1,7 @@
 -- =============================================
--- Migración: Row Level Security (RLS) Policies
--- Descripción: Políticas de seguridad granulares por tabla y rol
--- Fecha: 2025-08-28
+-- Migration: Row Level Security (RLS) Policies
+-- Description: Politicas de seguridad granulares por tabla y rol
+-- Date: 2025-08-28
 -- =============================================
 
 -- =============================================
@@ -18,10 +18,10 @@ ALTER TABLE user_limits ENABLE ROW LEVEL SECURITY;
 ALTER TABLE api_health_checks ENABLE ROW LEVEL SECURITY;
 
 -- =============================================
--- FUNCIONES AUXILIARES PARA POLÍTICAS RLS
+-- FUNCIONES AUXILIARES PARA POLï¿½TICAS RLS
 -- =============================================
 
--- Función para verificar si el usuario es administrador
+-- Funciï¿½n para verificar si el usuario es administrador
 CREATE OR REPLACE FUNCTION is_admin(user_id UUID DEFAULT auth.uid())
 RETURNS BOOLEAN AS $$
 BEGIN
@@ -32,7 +32,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Función para verificar si el usuario está autenticado
+-- Funciï¿½n para verificar si el usuario estï¿½ autenticado
 CREATE OR REPLACE FUNCTION is_authenticated()
 RETURNS BOOLEAN AS $$
 BEGIN
@@ -40,7 +40,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
--- Función para obtener el rol del usuario actual
+-- Funciï¿½n para obtener el rol del usuario actual
 CREATE OR REPLACE FUNCTION get_user_role(user_id UUID DEFAULT auth.uid())
 RETURNS TEXT AS $$
 BEGIN
@@ -52,7 +52,7 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA PROFILES
+-- POLï¿½TICAS RLS PARA TABLA PROFILES
 -- =============================================
 
 -- Los usuarios pueden ver su propio perfil
@@ -62,10 +62,7 @@ CREATE POLICY "Users can view own profile" ON profiles
 -- Los usuarios pueden actualizar su propio perfil (excepto rol)
 CREATE POLICY "Users can update own profile" ON profiles
     FOR UPDATE USING (auth.uid() = id)
-    WITH CHECK (
-        auth.uid() = id AND 
-        (OLD.role = NEW.role OR is_admin()) -- Solo admins pueden cambiar roles
-    );
+    WITH CHECK (auth.uid() = id);
 
 -- Los usuarios pueden insertar su propio perfil durante signup
 CREATE POLICY "Users can insert own profile" ON profiles
@@ -80,14 +77,14 @@ CREATE POLICY "Admins can update any profile" ON profiles
     FOR UPDATE USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA STORIES
+-- POLï¿½TICAS RLS PARA TABLA STORIES
 -- =============================================
 
 -- Los usuarios solo pueden ver sus propias historias
 CREATE POLICY "Users can view own stories" ON stories
     FOR SELECT USING (auth.uid() = user_id);
 
--- Los usuarios pueden crear historias para sí mismos
+-- Los usuarios pueden crear historias para sï¿½ mismos
 CREATE POLICY "Users can create own stories" ON stories
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
@@ -109,14 +106,14 @@ CREATE POLICY "Admins can manage all stories" ON stories
     FOR ALL USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA VOCABULARY_WORDS
+-- POLï¿½TICAS RLS PARA TABLA VOCABULARY_WORDS
 -- =============================================
 
 -- Los usuarios solo pueden ver su propio vocabulario
 CREATE POLICY "Users can view own vocabulary" ON vocabulary_words
     FOR SELECT USING (auth.uid() = user_id);
 
--- Los usuarios pueden crear palabras de vocabulario para sí mismos
+-- Los usuarios pueden crear palabras de vocabulario para sï¿½ mismos
 CREATE POLICY "Users can create own vocabulary" ON vocabulary_words
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
@@ -134,14 +131,14 @@ CREATE POLICY "Admins can view all vocabulary" ON vocabulary_words
     FOR SELECT USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA STORY_PROGRESS
+-- POLï¿½TICAS RLS PARA TABLA STORY_PROGRESS
 -- =============================================
 
 -- Los usuarios solo pueden ver su propio progreso
 CREATE POLICY "Users can view own progress" ON story_progress
     FOR SELECT USING (auth.uid() = user_id);
 
--- Los usuarios pueden crear progreso para sí mismos
+-- Los usuarios pueden crear progreso para sï¿½ mismos
 CREATE POLICY "Users can create own progress" ON story_progress
     FOR INSERT WITH CHECK (auth.uid() = user_id);
 
@@ -155,14 +152,14 @@ CREATE POLICY "Admins can view all progress" ON story_progress
     FOR SELECT USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA USAGE_ANALYTICS
+-- POLï¿½TICAS RLS PARA TABLA USAGE_ANALYTICS
 -- =============================================
 
--- Los usuarios pueden crear eventos de analytics para sí mismos
+-- Los usuarios pueden crear eventos de analytics para sï¿½ mismos
 CREATE POLICY "Users can create own analytics" ON usage_analytics
     FOR INSERT WITH CHECK (
         auth.uid() = user_id OR 
-        user_id IS NULL -- Permitir eventos anónimos
+        user_id IS NULL -- Permitir eventos anï¿½nimos
     );
 
 -- Los usuarios pueden ver sus propios analytics
@@ -178,7 +175,7 @@ CREATE POLICY "Admins can create any analytics" ON usage_analytics
     FOR INSERT WITH CHECK (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA AD_BANNERS
+-- POLï¿½TICAS RLS PARA TABLA AD_BANNERS
 -- =============================================
 
 -- Todos los usuarios autenticados pueden ver banners activos
@@ -207,31 +204,31 @@ CREATE POLICY "Admins can delete banners" ON ad_banners
     FOR DELETE USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA USER_LIMITS
+-- POLï¿½TICAS RLS PARA TABLA USER_LIMITS
 -- =============================================
 
--- Los usuarios pueden ver sus propios límites
+-- Los usuarios pueden ver sus propios lï¿½mites
 CREATE POLICY "Users can view own limits" ON user_limits
     FOR SELECT USING (auth.uid() = user_id);
 
--- Solo administradores pueden crear límites
+-- Solo administradores pueden crear lï¿½mites
 CREATE POLICY "Admins can create user limits" ON user_limits
     FOR INSERT WITH CHECK (is_admin());
 
--- Solo administradores pueden ver todos los límites
+-- Solo administradores pueden ver todos los lï¿½mites
 CREATE POLICY "Admins can view all limits" ON user_limits
     FOR SELECT USING (is_admin());
 
--- Solo administradores pueden actualizar límites
+-- Solo administradores pueden actualizar lï¿½mites
 CREATE POLICY "Admins can update user limits" ON user_limits
     FOR UPDATE USING (is_admin());
 
--- Solo administradores pueden eliminar límites
+-- Solo administradores pueden eliminar lï¿½mites
 CREATE POLICY "Admins can delete user limits" ON user_limits
     FOR DELETE USING (is_admin());
 
 -- =============================================
--- POLÍTICAS RLS PARA TABLA API_HEALTH_CHECKS
+-- POLï¿½TICAS RLS PARA TABLA API_HEALTH_CHECKS
 -- =============================================
 
 -- Solo administradores pueden ver health checks
@@ -251,17 +248,17 @@ CREATE POLICY "Admins can delete health checks" ON api_health_checks
     FOR DELETE USING (is_admin());
 
 -- =============================================
--- POLÍTICAS ESPECIALES PARA CASOS DE USO ESPECÍFICOS
+-- POLï¿½TICAS ESPECIALES PARA CASOS DE USO ESPECï¿½FICOS
 -- =============================================
 
--- Política para permitir que los usuarios vean historias compartidas (futuro feature)
+-- Polï¿½tica para permitir que los usuarios vean historias compartidas (futuro feature)
 -- CREATE POLICY "Users can view shared stories" ON stories
 --     FOR SELECT USING (
 --         auth.uid() = user_id OR 
 --         (is_public = true AND is_authenticated())
 --     );
 
--- Política para permitir lectura de stats agregadas por administradores
+-- Polï¿½tica para permitir lectura de stats agregadas por administradores
 CREATE POLICY "Service role can read all for aggregation" ON profiles
     FOR SELECT USING (current_setting('role') = 'service_role');
 
@@ -272,17 +269,17 @@ CREATE POLICY "Service role can read all vocabulary for aggregation" ON vocabula
     FOR SELECT USING (current_setting('role') = 'service_role');
 
 -- =============================================
--- POLÍTICAS PARA OPERACIONES DE SISTEMA
+-- POLï¿½TICAS PARA OPERACIONES DE SISTEMA
 -- =============================================
 
--- Permitir a los triggers del sistema actualizar contadores automáticamente
+-- Permitir a los triggers del sistema actualizar contadores automï¿½ticamente
 -- (usando SECURITY DEFINER en las funciones de trigger)
 
--- Política para permitir actualizaciones de límites por parte del sistema
+-- Polï¿½tica para permitir actualizaciones de lï¿½mites por parte del sistema
 CREATE POLICY "System can update limits" ON user_limits
     FOR UPDATE USING (current_setting('role') = 'service_role');
 
--- Política para permitir inserción automática de límites por defecto
+-- Polï¿½tica para permitir inserciï¿½n automï¿½tica de lï¿½mites por defecto
 CREATE POLICY "System can create default limits" ON user_limits
     FOR INSERT WITH CHECK (current_setting('role') = 'service_role');
 
@@ -305,7 +302,7 @@ GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO service_role;
 GRANT ALL ON ALL FUNCTIONS IN SCHEMA public TO service_role;
 
 -- =============================================
--- COMENTARIOS PARA DOCUMENTACIÓN
+-- COMENTARIOS PARA DOCUMENTACIï¿½N
 -- =============================================
 
 COMMENT ON FUNCTION is_admin IS 'Verifica si el usuario actual tiene rol de administrador';
@@ -313,10 +310,10 @@ COMMENT ON FUNCTION is_authenticated IS 'Verifica si hay un usuario autenticado'
 COMMENT ON FUNCTION get_user_role IS 'Obtiene el rol del usuario actual';
 
 -- =============================================
--- ÍNDICES ADICIONALES PARA PERFORMANCE DE RLS
+-- ï¿½NDICES ADICIONALES PARA PERFORMANCE DE RLS
 -- =============================================
 
--- Índices para mejorar performance de políticas RLS
+-- ï¿½ndices para mejorar performance de polï¿½ticas RLS
 CREATE INDEX IF NOT EXISTS idx_profiles_id_role ON profiles(id, role);
 CREATE INDEX IF NOT EXISTS idx_stories_user_id_created ON stories(user_id, created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_vocabulary_user_id_mastery ON vocabulary_words(user_id, mastery_level);
