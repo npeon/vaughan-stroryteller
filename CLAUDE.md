@@ -144,6 +144,43 @@ npx supabase status
 - 2-space indentation
 - Use arrow functions for methods
 
+### Design Guidelines
+
+**Design System Reference**: Follow the design patterns and aesthetics from **Quasar Prime Admin**
+
+- **Documentation**: https://quasar-prime-admin-documentation.netlify.app/
+- **Live Demo**: https://quasar-prime-admin-template.netlify.app/
+- **Login Example**: https://quasar-prime-admin-template.netlify.app/login_cover
+
+#### **Design Principles**
+- **Clean and Modern**: Prioritize minimalist aesthetics with purposeful white space
+- **Professional UI**: Business-grade interface suitable for educational applications
+- **Consistent Spacing**: Follow Quasar's spacing system with consistent margins/padding
+- **Typography Hierarchy**: Clear visual hierarchy with appropriate font weights and sizes
+- **Color Harmony**: Use Quasar Prime's color palette for consistency
+
+#### **Component Design Standards**
+- **Forms**: Clean input fields with proper labels, validation states, and helpful feedback
+- **Cards**: Use elevation and border radius consistently for content containers
+- **Buttons**: Follow Primary/Secondary/Outline button patterns from Quasar Prime
+- **Navigation**: Clean sidebar and header navigation following Prime Admin patterns
+- **Tables**: Well-structured data tables with proper spacing and hover states
+- **Modals/Dialogs**: Consistent modal designs with proper backdrop and positioning
+
+#### **Layout Patterns**
+- **Authentication Pages**: Follow the `login_cover` pattern for clean, centered forms with branding
+- **Dashboard**: Use card-based layouts with proper grid systems and spacing
+- **Content Pages**: Consistent page headers, breadcrumbs, and content organization
+- **Responsive Design**: Mobile-first approach ensuring all components work on various screen sizes
+
+#### **Visual Elements**
+- **Icons**: Use Material Design icons consistently throughout the application
+- **Loading States**: Implement skeleton loaders and progress indicators appropriately
+- **Empty States**: Design meaningful empty states with actionable guidance
+- **Error States**: Clear error messaging with helpful recovery options
+
+**Important**: Always reference the Quasar Prime Admin examples when implementing new UI components to maintain design consistency and professional appearance.
+
 ### Component Structure
 
 Follow this order in Vue components:
@@ -178,6 +215,69 @@ Follow this order in Vue components:
 - **E2E Tests (10%)**: Cypress for critical user flows
 
 ## Project-Specific Implementation Guidelines
+
+### UI/UX Design Implementation
+
+**Current Authentication System**: Follow Quasar Prime Admin login patterns for consistency
+
+The implemented email/password authentication system should be enhanced to match the **login_cover** pattern:
+
+#### **Authentication Pages Design**
+```vue
+<!-- Reference: https://quasar-prime-admin-template.netlify.app/login_cover -->
+<template>
+  <!-- Clean centered layout with brand positioning -->
+  <div class="auth-container">
+    <!-- Left/Right split design with gradient backgrounds -->
+    <div class="auth-content">
+      <!-- Branding section with logo and tagline -->
+      <div class="brand-section">
+        <div class="logo">The Vaughan Storyteller</div>
+        <div class="tagline">AI-Powered English Learning</div>
+      </div>
+      
+      <!-- Forms section with clean card design -->
+      <div class="form-section">
+        <q-card class="auth-card">
+          <!-- Tab navigation following Prime patterns -->
+          <q-tabs class="prime-tabs">
+            <!-- Clean, minimal tab design -->
+          </q-tabs>
+          
+          <!-- Form fields with Prime styling -->
+          <q-input 
+            class="prime-input"
+            outlined
+            :rules="validationRules"
+            :error="hasError"
+          />
+          
+          <!-- Primary action buttons -->
+          <q-btn 
+            class="prime-btn primary full-width"
+            unelevated
+            size="lg"
+          />
+        </q-card>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+#### **Design Enhancement Priorities**
+1. **Layout Structure**: Implement split-screen design from login_cover example
+2. **Typography**: Use Quasar Prime typography scale for consistent text hierarchy  
+3. **Form Styling**: Enhance input fields, buttons, and validation states
+4. **Color Scheme**: Apply Prime color palette for professional appearance
+5. **Spacing**: Follow Prime spacing system for consistent margins/padding
+6. **Responsive Behavior**: Ensure mobile-first responsive design
+
+#### **Component Libraries to Reference**
+- **Forms**: Prime form validation patterns with error states
+- **Cards**: Prime card elevation and shadow patterns
+- **Buttons**: Prime button variants (primary, secondary, outline)
+- **Typography**: Prime text classes and font weights
 
 ### Story Generation System
 
@@ -300,6 +400,13 @@ The project includes specialized agents in `.claude/agents/` for:
 - **Supabase Docs**: https://supabase.com/docs
 - **Vercel Docs**: https://vercel.com/docs
 - **Vue 3 Composition API**: https://vuejs.org/guide/
+
+### Design System References
+
+- **Quasar Prime Admin Documentation**: https://quasar-prime-admin-documentation.netlify.app/
+- **Quasar Prime Live Demo**: https://quasar-prime-admin-template.netlify.app/
+- **Login Design Reference**: https://quasar-prime-admin-template.netlify.app/login_cover
+- **Component Examples**: Browse the live demo for consistent UI patterns and styling
 
 ### MSW (Mock Service Worker) Configuration
 

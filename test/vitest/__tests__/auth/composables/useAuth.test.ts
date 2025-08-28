@@ -12,6 +12,9 @@ const mockSupabaseClient = {
     onAuthStateChange: vi.fn(),
     signInWithOAuth: vi.fn(),
     signOut: vi.fn(),
+    signInWithPassword: vi.fn(),
+    signUp: vi.fn(),
+    resetPasswordForEmail: vi.fn(),
   },
   from: vi.fn(() => {
     const mockQuery = {
@@ -89,6 +92,30 @@ describe('useAuth Composable', () => {
 
     mockSupabaseClient.auth.onAuthStateChange.mockReturnValue({
       data: { subscription: mockSubscription }
+    })
+    
+    // Setup mocks for email/password auth methods
+    mockSupabaseClient.auth.signInWithPassword = vi.fn()
+    mockSupabaseClient.auth.signUp = vi.fn()
+    mockSupabaseClient.auth.resetPasswordForEmail = vi.fn()
+    
+    // Setup default profile creation mock
+    const mockInsertQuery = {
+      insert: vi.fn(() => mockInsertQuery),
+      select: vi.fn(() => mockInsertQuery),
+      single: vi.fn()
+    }
+    
+    // Reset mock implementation to ensure clean state
+    mockSupabaseClient.from.mockImplementation(() => {
+      const mockQuery = {
+        select: vi.fn(() => mockQuery),
+        eq: vi.fn(() => mockQuery),
+        single: vi.fn(() => ({ data: null, error: null })),
+        update: vi.fn(() => mockQuery),
+        insert: vi.fn(() => mockInsertQuery),
+      }
+      return mockQuery
     })
 
     // Reset module cache to get fresh state
@@ -572,6 +599,483 @@ describe('useAuth Composable', () => {
 
       // Assert
       expect(limits).toEqual(mockLimits)
+    })
+  })
+
+  describe('Email/Password Authentication', () => {
+    // Helper functions for email/password testing
+    const expectSupabaseCall = (method: any, expectedParams: any) => {
+      expect(method).toHaveBeenCalledWith(expectedParams)
+      expect(method).toHaveBeenCalledTimes(1)
+    }
+
+    const expectAuthState = (auth: any, expectedState: {
+      loading?: boolean,
+      error?: string | null,
+      user?: User | null,
+      isAuthenticated?: boolean
+    }) => {
+      Object.entries(expectedState).forEach(([key, value]) => {
+        expect(auth[key].value).toBe(value)
+      })
+    }
+
+    const waitForAsyncOperation = (ms: number = 100) => 
+      new Promise(resolve => setTimeout(resolve, ms))
+
+    beforeEach(() => {
+      mockSupabaseClient.auth.getSession.mockResolvedValue({
+        data: { session: null },
+        error: null
+      })
+    })
+
+    describe('signInWithEmail', () => {
+      describe('Successful Login', () => {
+        it('should sign in user with valid credentials', async () => {
+          // Arrange
+          const email = 'test@example.com'
+          const password = 'SecurePass123!'
+          
+          mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+            data: { user: mockUser, session: mockSession },
+            error: null
+          })
+
+          const mockQuery = mockSupabaseClient.from()
+          mockQuery.single.mockResolvedValue({
+            data: mockUserProfile,
+            error: null
+          })
+
+          const { signInWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          await signInWithEmail(email, password)
+
+          // Assert
+          expectSupabaseCall(mockSupabaseClient.auth.signInWithPassword, {
+            email,
+            password
+          })
+        })
+
+        it('should update authentication state after successful login', async () => {
+          // Arrange
+          const email = 'test@example.com'
+          const password = 'SecurePass123!'
+          
+          let authChangeCallback: any
+
+          mockSupabaseClient.auth.onAuthStateChange.mockImplementation((callback) => {
+            authChangeCallback = callback
+            return { data: { subscription: mockSubscription } }
+          })
+          
+          mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+            data: { user: mockUser, session: mockSession },
+            error: null
+          })
+
+          const mockQuery = mockSupabaseClient.from()
+          mockQuery.single.mockResolvedValue({
+            data: mockUserProfile,
+            error: null
+          })
+
+          const auth = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          await auth.signInWithEmail(email, password)
+          
+          // Simulate the auth state change callback
+          authChangeCallback('SIGNED_IN', mockSession)
+          await waitForAsyncOperation(100)
+
+          // Assert
+          expect(auth.user.value).toEqual(mockUser)
+          expect(auth.session.value).toEqual(mockSession)
+          expect(auth.isAuthenticated.value).toBe(true)
+        })
+      })
+
+      describe('Input Validation', () => {
+        it('should reject invalid email format', async () => {
+          // Arrange
+          const invalidEmails = [
+            'invalid-email',
+            '@example.com',
+            'test@',
+            'test..test@example.com',
+            'test@example',
+            ''
+          ]
+
+          const { signInWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act & Assert
+          for (const email of invalidEmails) {
+            await expect(signInWithEmail(email, 'ValidPass123!')).rejects.toThrow('Invalid email format')
+            expect(mockSupabaseClient.auth.signInWithPassword).not.toHaveBeenCalled()
+          }
+        })
+
+        it('should reject invalid password', async () => {
+          // Arrange
+          const email = 'test@example.com'
+          const invalidPasswords = ['', '123', 'short', 'NoNumbers!', 'nonumbers123', 'NOLOWERCASE123!']
+
+          const { signInWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act & Assert
+          for (const password of invalidPasswords) {
+            await expect(signInWithEmail(email, password)).rejects.toThrow()
+            expect(mockSupabaseClient.auth.signInWithPassword).not.toHaveBeenCalled()
+          }
+        })
+      })
+
+      describe('Error Handling', () => {
+        it('should handle authentication errors', async () => {
+          // Arrange
+          const authError = {
+            name: 'AuthError',
+            message: 'Invalid credentials',
+            status: 400,
+            code: 'invalid_credentials',
+            __isAuthError: true
+          } as unknown as AuthError
+
+          mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+            data: { user: null, session: null },
+            error: authError
+          })
+
+          const { signInWithEmail, error } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          try {
+            await signInWithEmail('test@example.com', 'WrongPass123!')
+          } catch (e) {
+            // Expected error
+          }
+
+          // Assert
+          expect(error.value).toBe('Credenciales incorrectas')
+        })
+
+        it('should handle network errors gracefully', async () => {
+          // Arrange
+          const networkError = new Error('Network error')
+          mockSupabaseClient.auth.signInWithPassword.mockRejectedValue(networkError)
+
+          const { signInWithEmail, error } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          try {
+            await signInWithEmail('test@example.com', 'ValidPass123!')
+          } catch (e) {
+            // Expected error
+          }
+
+          // Assert
+          expect(error.value).toBe('Error de autenticación. Inténtalo de nuevo.')
+        })
+      })
+
+      describe('State Management', () => {
+        it('should set loading state during authentication', async () => {
+          // Arrange
+          let resolveAuth: any
+          mockSupabaseClient.auth.signInWithPassword.mockImplementation(() => {
+            return new Promise((resolve) => {
+              resolveAuth = resolve
+            })
+          })
+
+          const { signInWithEmail, loading } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          const authPromise = signInWithEmail('test@example.com', 'ValidPass123!')
+
+          // Assert - should be loading
+          expect(loading.value).toBe(true)
+
+          // Complete auth
+          resolveAuth({ data: { user: mockUser, session: mockSession }, error: null })
+          await authPromise
+
+          // Should not be loading
+          expect(loading.value).toBe(false)
+        })
+      })
+    })
+
+    describe('signUpWithEmail', () => {
+      describe('Successful Registration', () => {
+        it('should register user with valid data', async () => {
+          // Arrange
+          const email = 'newuser@example.com'
+          const password = 'SecurePass123!'
+          const fullName = 'New User'
+
+          mockSupabaseClient.auth.signUp.mockResolvedValue({
+            data: { user: mockUser, session: mockSession },
+            error: null
+          })
+
+          const { signUpWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          await signUpWithEmail(email, password, fullName)
+
+          // Assert
+          expectSupabaseCall(mockSupabaseClient.auth.signUp, {
+            email,
+            password,
+            options: {
+              data: {
+                full_name: fullName
+              }
+            }
+          })
+        })
+
+        it('should update profile after successful signup', async () => {
+          // Arrange
+          const email = 'newuser@example.com'
+          const password = 'SecurePass123!'
+          const fullName = 'New User'
+
+          let authChangeCallback: any
+
+          mockSupabaseClient.auth.onAuthStateChange.mockImplementation((callback) => {
+            authChangeCallback = callback
+            return { data: { subscription: mockSubscription } }
+          })
+
+          mockSupabaseClient.auth.signUp.mockResolvedValue({
+            data: { user: mockUser, session: mockSession },
+            error: null
+          })
+
+          const mockQuery = mockSupabaseClient.from()
+          mockQuery.single.mockResolvedValue({
+            data: mockUserProfile,
+            error: null
+          })
+
+          const { signUpWithEmail, profile } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          await signUpWithEmail(email, password, fullName)
+          
+          // Simulate the auth state change callback if session exists
+          if (mockSession) {
+            authChangeCallback('SIGNED_IN', mockSession)
+          }
+          await waitForAsyncOperation(100)
+
+          // Assert
+          expect(profile.value).toEqual(mockUserProfile)
+        })
+      })
+
+      describe('Input Validation', () => {
+        it('should validate email format for signup', async () => {
+          // Arrange
+          const invalidEmail = 'invalid-email'
+          const password = 'SecurePass123!'
+          const fullName = 'Test User'
+
+          const { signUpWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act & Assert
+          await expect(signUpWithEmail(invalidEmail, password, fullName)).rejects.toThrow('Invalid email format')
+          expect(mockSupabaseClient.auth.signUp).not.toHaveBeenCalled()
+        })
+
+        it('should validate full name is provided', async () => {
+          // Arrange
+          const email = 'test@example.com'
+          const password = 'SecurePass123!'
+          const invalidNames = ['', '   ', 'A', 'Ab']
+
+          const { signUpWithEmail } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act & Assert
+          for (const name of invalidNames) {
+            await expect(signUpWithEmail(email, password, name)).rejects.toThrow('Full name must be at least 3 characters')
+            expect(mockSupabaseClient.auth.signUp).not.toHaveBeenCalled()
+          }
+        })
+      })
+
+      describe('Error Handling', () => {
+        it('should handle user already exists error', async () => {
+          // Arrange
+          const authError = {
+            name: 'AuthError',
+            message: 'User already registered',
+            status: 422,
+            code: 'user_already_exists',
+            __isAuthError: true
+          } as unknown as AuthError
+
+          mockSupabaseClient.auth.signUp.mockResolvedValue({
+            data: { user: null, session: null },
+            error: authError
+          })
+
+          const { signUpWithEmail, error } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          try {
+            await signUpWithEmail('existing@example.com', 'ValidPass123!', 'Test User')
+          } catch (e) {
+            // Expected error
+          }
+
+          // Assert
+          expect(error.value).toBe('Esta dirección de email ya está registrada')
+        })
+      })
+    })
+
+    describe('resetPassword', () => {
+      describe('Successful Reset', () => {
+        it('should send password reset email', async () => {
+          // Arrange
+          const email = 'test@example.com'
+
+          mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+            data: {},
+            error: null
+          })
+
+          const { resetPassword } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          await resetPassword(email)
+
+          // Assert
+          expect(mockSupabaseClient.auth.resetPasswordForEmail).toHaveBeenCalledWith(
+            email,
+            {
+              redirectTo: expect.stringContaining('/auth/reset-password')
+            }
+          )
+        })
+      })
+
+      describe('Input Validation', () => {
+        it('should validate email format for password reset', async () => {
+          // Arrange
+          const invalidEmail = 'invalid-email'
+
+          const { resetPassword } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act & Assert
+          await expect(resetPassword(invalidEmail)).rejects.toThrow('Invalid email format')
+          expect(mockSupabaseClient.auth.resetPasswordForEmail).not.toHaveBeenCalled()
+        })
+      })
+
+      describe('Rate Limiting', () => {
+        it('should handle rate limiting errors', async () => {
+          // Arrange
+          const rateLimitError = {
+            name: 'AuthError',
+            message: 'Email rate limit exceeded',
+            status: 429,
+            code: 'email_rate_limit_exceeded',
+            __isAuthError: true
+          } as unknown as AuthError
+
+          mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+            data: {},
+            error: rateLimitError
+          })
+
+          const { resetPassword, error } = useAuth()
+          await waitForAsyncOperation(50)
+
+          // Act
+          try {
+            await resetPassword('test@example.com')
+          } catch (e) {
+            // Expected error
+          }
+
+          // Assert
+          expect(error.value).toBe('Demasiados intentos. Inténtalo más tarde.')
+        })
+      })
+    })
+
+    describe('Integration Scenarios', () => {
+      it('should handle complete signup to signin flow', async () => {
+        // Arrange
+        let authChangeCallback: any
+
+        mockSupabaseClient.auth.onAuthStateChange.mockImplementation((callback) => {
+          authChangeCallback = callback
+          return { data: { subscription: mockSubscription } }
+        })
+
+        // First signup - no session initially (email confirmation needed)
+        mockSupabaseClient.auth.signUp.mockResolvedValue({
+          data: { user: mockUser, session: null },
+          error: null
+        })
+
+        const auth = useAuth()
+        await waitForAsyncOperation(50)
+
+        // Act - Signup
+        await auth.signUpWithEmail('test@example.com', 'SecurePass123!', 'Test User')
+
+        // Assert - User created but not authenticated (no session)
+        expect(auth.user.value).toEqual(mockUser)
+        expect(auth.isAuthenticated.value).toBe(false) // No session
+
+        // Arrange - Then signin after email confirmation
+        mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+          data: { user: mockUser, session: mockSession },
+          error: null
+        })
+
+        const mockQuery = mockSupabaseClient.from()
+        mockQuery.single.mockResolvedValue({
+          data: mockUserProfile,
+          error: null
+        })
+
+        // Act - Signin
+        await auth.signInWithEmail('test@example.com', 'SecurePass123!')
+        
+        // Simulate the auth state change callback
+        authChangeCallback('SIGNED_IN', mockSession)
+        await waitForAsyncOperation(100)
+
+        // Assert - Now authenticated
+        expect(auth.isAuthenticated.value).toBe(true)
+        expect(auth.profile.value).toEqual(mockUserProfile)
+      })
     })
   })
 })

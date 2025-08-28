@@ -37,7 +37,7 @@ export default defineRouter(function (/* { store, ssrContext } */) {
   Router.beforeEach(async (to, from, next) => {
     // Importación dinámica para evitar dependencias circulares
     const { useAuth } = await import('../composables/useAuth');
-    const { isAuthenticated, loading, profile } = useAuth();
+    const { isAuthenticated, loading, profile, user, session } = useAuth();
 
     console.log(`🧭 Navigating to: ${to.path}`)
 
@@ -58,7 +58,8 @@ export default defineRouter(function (/* { store, ssrContext } */) {
     const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin)
     const requiredRole = to.meta.role as string | undefined
 
-    console.log(`🔐 Auth check - Authenticated: ${isAuthenticated.value}, RequiresAuth: ${requiresAuth}, RequiresGuest: ${requiresGuest}`)
+    console.log(`🔐 Auth check - User: ${!!user.value}, Session: ${!!session.value}, Profile: ${!!profile.value}`)
+    console.log(`🔐 Auth state - Authenticated: ${isAuthenticated.value}, RequiresAuth: ${requiresAuth}, RequiresGuest: ${requiresGuest}`)
 
     // Rutas que requieren NO estar autenticado (guests)
     if (requiresGuest && isAuthenticated.value) {
