@@ -1,9 +1,3 @@
-// =============================================
-// TIPOS TYPESCRIPT GENERADOS PARA SUPABASE
-// Base: The Vaughan Storyteller Database Schema
-// Fecha: 2025-08-28
-// =============================================
-
 export type Json =
   | string
   | number
@@ -12,554 +6,748 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
-export interface Database {
+export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       ad_banners: {
         Row: {
-          id: string
-          title: string
-          description: string
-          cta_link: string
-          image_url: string | null
-          target_audience: Json
-          display_priority: number
-          max_impressions: number
-          current_impressions: number
-          click_count: number
-          is_active: boolean
-          start_date: string
-          end_date: string | null
+          click_count: number | null
+          created_at: string | null
           created_by: string
-          created_at: string
-          updated_at: string
+          cta_link: string
+          current_impressions: number | null
+          description: string
+          display_priority: number | null
+          end_date: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          max_impressions: number | null
+          start_date: string | null
+          target_audience: Json | null
+          title: string
+          updated_at: string | null
         }
         Insert: {
-          id?: string
-          title: string
-          description: string
-          cta_link: string
-          image_url?: string | null
-          target_audience?: Json
-          display_priority?: number
-          max_impressions?: number
-          current_impressions?: number
-          click_count?: number
-          is_active?: boolean
-          start_date?: string
-          end_date?: string | null
+          click_count?: number | null
+          created_at?: string | null
           created_by: string
-          created_at?: string
-          updated_at?: string
+          cta_link: string
+          current_impressions?: number | null
+          description: string
+          display_priority?: number | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          max_impressions?: number | null
+          start_date?: string | null
+          target_audience?: Json | null
+          title: string
+          updated_at?: string | null
         }
         Update: {
-          id?: string
-          title?: string
-          description?: string
-          cta_link?: string
-          image_url?: string | null
-          target_audience?: Json
-          display_priority?: number
-          max_impressions?: number
-          current_impressions?: number
-          click_count?: number
-          is_active?: boolean
-          start_date?: string
-          end_date?: string | null
+          click_count?: number | null
+          created_at?: string | null
           created_by?: string
-          created_at?: string
-          updated_at?: string
+          cta_link?: string
+          current_impressions?: number | null
+          description?: string
+          display_priority?: number | null
+          end_date?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          max_impressions?: number | null
+          start_date?: string | null
+          target_audience?: Json | null
+          title?: string
+          updated_at?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "ad_banners_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ad_banners_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       api_health_checks: {
         Row: {
-          id: string
-          service_name: 'openrouter' | 'elevenlabs' | 'wordsapi' | 'supabase' | 'vercel'
-          status: 'connected' | 'error' | 'timeout' | 'rate_limited'
-          response_time: number | null
-          error_message: string | null
-          error_code: string | null
-          metadata: Json
+          checked_at: string | null
           checked_by: string | null
-          checked_at: string
+          error_code: string | null
+          error_message: string | null
+          id: string
+          metadata: Json | null
+          response_time: number | null
+          service_name: string
+          status: string
         }
         Insert: {
-          id?: string
-          service_name: 'openrouter' | 'elevenlabs' | 'wordsapi' | 'supabase' | 'vercel'
-          status: 'connected' | 'error' | 'timeout' | 'rate_limited'
-          response_time?: number | null
-          error_message?: string | null
-          error_code?: string | null
-          metadata?: Json
+          checked_at?: string | null
           checked_by?: string | null
-          checked_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          response_time?: number | null
+          service_name: string
+          status: string
         }
         Update: {
-          id?: string
-          service_name?: 'openrouter' | 'elevenlabs' | 'wordsapi' | 'supabase' | 'vercel'
-          status?: 'connected' | 'error' | 'timeout' | 'rate_limited'
-          response_time?: number | null
-          error_message?: string | null
-          error_code?: string | null
-          metadata?: Json
+          checked_at?: string | null
           checked_by?: string | null
-          checked_at?: string
+          error_code?: string | null
+          error_message?: string | null
+          id?: string
+          metadata?: Json | null
+          response_time?: number | null
+          service_name?: string
+          status?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "api_health_checks_checked_by_fkey"
+            columns: ["checked_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "api_health_checks_checked_by_fkey"
+            columns: ["checked_by"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
-          id: string
+          avatar_url: string | null
+          cefr_level: string
+          created_at: string | null
           email: string
           full_name: string | null
-          avatar_url: string | null
-          cefr_level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          preferences: Json
-          role: 'user' | 'admin'
-          stories_completed: number
-          vocabulary_mastered: number
-          streak_days: number
-          last_active: string
-          is_active: boolean
-          created_at: string
-          updated_at: string
+          id: string
+          is_active: boolean | null
+          last_active: string | null
+          preferences: Json | null
+          role: string
+          stories_completed: number | null
+          streak_days: number | null
+          updated_at: string | null
+          vocabulary_mastered: number | null
         }
         Insert: {
-          id: string
+          avatar_url?: string | null
+          cefr_level?: string
+          created_at?: string | null
           email: string
           full_name?: string | null
-          avatar_url?: string | null
-          cefr_level?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          preferences?: Json
-          role?: 'user' | 'admin'
-          stories_completed?: number
-          vocabulary_mastered?: number
-          streak_days?: number
-          last_active?: string
-          is_active?: boolean
-          created_at?: string
-          updated_at?: string
+          id: string
+          is_active?: boolean | null
+          last_active?: string | null
+          preferences?: Json | null
+          role?: string
+          stories_completed?: number | null
+          streak_days?: number | null
+          updated_at?: string | null
+          vocabulary_mastered?: number | null
         }
         Update: {
-          id?: string
+          avatar_url?: string | null
+          cefr_level?: string
+          created_at?: string | null
           email?: string
           full_name?: string | null
-          avatar_url?: string | null
-          cefr_level?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          preferences?: Json
-          role?: 'user' | 'admin'
-          stories_completed?: number
-          vocabulary_mastered?: number
-          streak_days?: number
-          last_active?: string
-          is_active?: boolean
-          created_at?: string
-          updated_at?: string
+          id?: string
+          is_active?: boolean | null
+          last_active?: string | null
+          preferences?: Json | null
+          role?: string
+          stories_completed?: number | null
+          streak_days?: number | null
+          updated_at?: string | null
+          vocabulary_mastered?: number | null
         }
+        Relationships: []
       }
       stories: {
         Row: {
-          id: string
-          user_id: string
-          title: string
-          content: string
-          genre: string
-          cefr_level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          estimated_read_time: number | null
-          word_count: number | null
-          vocabulary_words: string[]
+          audio_generated: boolean | null
           audio_url: string | null
-          reading_progress: number
+          cefr_level: string
           completed_at: string | null
-          model_used: string
-          generation_cost: number
-          audio_generated: boolean
-          is_favorite: boolean
-          created_at: string
-          updated_at: string
+          content: string
+          created_at: string | null
+          estimated_read_time: number | null
+          generation_cost: number | null
+          genre: string
+          id: string
+          is_favorite: boolean | null
+          model_used: string | null
+          reading_progress: number | null
+          title: string
+          updated_at: string | null
+          user_id: string
+          vocabulary_words: string[] | null
+          word_count: number | null
         }
         Insert: {
-          id?: string
-          user_id: string
-          title: string
-          content: string
-          genre: string
-          cefr_level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          estimated_read_time?: number | null
-          word_count?: number | null
-          vocabulary_words?: string[]
+          audio_generated?: boolean | null
           audio_url?: string | null
-          reading_progress?: number
+          cefr_level: string
           completed_at?: string | null
-          model_used?: string
-          generation_cost?: number
-          audio_generated?: boolean
-          is_favorite?: boolean
-          created_at?: string
-          updated_at?: string
+          content: string
+          created_at?: string | null
+          estimated_read_time?: number | null
+          generation_cost?: number | null
+          genre: string
+          id?: string
+          is_favorite?: boolean | null
+          model_used?: string | null
+          reading_progress?: number | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+          vocabulary_words?: string[] | null
+          word_count?: number | null
         }
         Update: {
-          id?: string
-          user_id?: string
-          title?: string
-          content?: string
-          genre?: string
-          cefr_level?: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          estimated_read_time?: number | null
-          word_count?: number | null
-          vocabulary_words?: string[]
+          audio_generated?: boolean | null
           audio_url?: string | null
-          reading_progress?: number
+          cefr_level?: string
           completed_at?: string | null
-          model_used?: string
-          generation_cost?: number
-          audio_generated?: boolean
-          is_favorite?: boolean
-          created_at?: string
-          updated_at?: string
+          content?: string
+          created_at?: string | null
+          estimated_read_time?: number | null
+          generation_cost?: number | null
+          genre?: string
+          id?: string
+          is_favorite?: boolean | null
+          model_used?: string | null
+          reading_progress?: number | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+          vocabulary_words?: string[] | null
+          word_count?: number | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "stories_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stories_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       story_progress: {
         Row: {
-          id: string
-          user_id: string
-          story_id: string
-          progress_percentage: number
-          reading_time_seconds: number
-          words_clicked: string[]
-          bookmarks: Json
-          notes: string | null
-          last_position: number
+          bookmarks: Json | null
           completed_at: string | null
-          created_at: string
-          updated_at: string
+          created_at: string | null
+          id: string
+          last_position: number | null
+          notes: string | null
+          progress_percentage: number | null
+          reading_time_seconds: number | null
+          story_id: string
+          updated_at: string | null
+          user_id: string
+          words_clicked: string[] | null
         }
         Insert: {
-          id?: string
-          user_id: string
-          story_id: string
-          progress_percentage?: number
-          reading_time_seconds?: number
-          words_clicked?: string[]
-          bookmarks?: Json
-          notes?: string | null
-          last_position?: number
+          bookmarks?: Json | null
           completed_at?: string | null
-          created_at?: string
-          updated_at?: string
+          created_at?: string | null
+          id?: string
+          last_position?: number | null
+          notes?: string | null
+          progress_percentage?: number | null
+          reading_time_seconds?: number | null
+          story_id: string
+          updated_at?: string | null
+          user_id: string
+          words_clicked?: string[] | null
         }
         Update: {
-          id?: string
-          user_id?: string
-          story_id?: string
-          progress_percentage?: number
-          reading_time_seconds?: number
-          words_clicked?: string[]
-          bookmarks?: Json
-          notes?: string | null
-          last_position?: number
+          bookmarks?: Json | null
           completed_at?: string | null
-          created_at?: string
-          updated_at?: string
+          created_at?: string | null
+          id?: string
+          last_position?: number | null
+          notes?: string | null
+          progress_percentage?: number | null
+          reading_time_seconds?: number | null
+          story_id?: string
+          updated_at?: string | null
+          user_id?: string
+          words_clicked?: string[] | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "story_progress_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "story_progress_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_config: {
         Row: {
-          key: string
-          value: Json
           description: string | null
-          updated_at: string
+          key: string
+          updated_at: string | null
+          value: Json
         }
         Insert: {
-          key: string
-          value: Json
           description?: string | null
-          updated_at?: string
+          key: string
+          updated_at?: string | null
+          value: Json
         }
         Update: {
-          key?: string
-          value?: Json
           description?: string | null
-          updated_at?: string
+          key?: string
+          updated_at?: string | null
+          value?: Json
         }
+        Relationships: []
       }
       usage_analytics: {
         Row: {
-          id: string
-          user_id: string | null
+          created_at: string | null
+          event_data: Json | null
           event_type: string
-          event_data: Json
-          session_id: string | null
-          ip_address: string | null
-          user_agent: string | null
+          id: string
+          ip_address: unknown | null
           page_url: string | null
-          created_at: string
+          session_id: string | null
+          user_agent: string | null
+          user_id: string | null
         }
         Insert: {
-          id?: string
-          user_id?: string | null
+          created_at?: string | null
+          event_data?: Json | null
           event_type: string
-          event_data?: Json
-          session_id?: string | null
-          ip_address?: string | null
-          user_agent?: string | null
+          id?: string
+          ip_address?: unknown | null
           page_url?: string | null
-          created_at?: string
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
         }
         Update: {
-          id?: string
-          user_id?: string | null
+          created_at?: string | null
+          event_data?: Json | null
           event_type?: string
-          event_data?: Json
-          session_id?: string | null
-          ip_address?: string | null
-          user_agent?: string | null
+          id?: string
+          ip_address?: unknown | null
           page_url?: string | null
-          created_at?: string
+          session_id?: string | null
+          user_agent?: string | null
+          user_id?: string | null
         }
+        Relationships: [
+          {
+            foreignKeyName: "usage_analytics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "usage_analytics_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_limits: {
         Row: {
+          created_at: string | null
+          current_audio_generations: number | null
+          current_stories: number | null
           id: string
-          user_id: string
-          max_stories: number
-          current_stories: number
-          max_audio_generations: number
-          current_audio_generations: number
-          reset_date: string
-          reset_frequency: 'daily' | 'weekly' | 'monthly'
-          is_premium: boolean
+          is_premium: boolean | null
+          max_audio_generations: number | null
+          max_stories: number | null
           notes: string | null
-          created_at: string
-          updated_at: string
+          reset_date: string | null
+          reset_frequency: string | null
+          updated_at: string | null
+          user_id: string
         }
         Insert: {
+          created_at?: string | null
+          current_audio_generations?: number | null
+          current_stories?: number | null
           id?: string
-          user_id: string
-          max_stories?: number
-          current_stories?: number
-          max_audio_generations?: number
-          current_audio_generations?: number
-          reset_date?: string
-          reset_frequency?: 'daily' | 'weekly' | 'monthly'
-          is_premium?: boolean
+          is_premium?: boolean | null
+          max_audio_generations?: number | null
+          max_stories?: number | null
           notes?: string | null
-          created_at?: string
-          updated_at?: string
+          reset_date?: string | null
+          reset_frequency?: string | null
+          updated_at?: string | null
+          user_id: string
         }
         Update: {
+          created_at?: string | null
+          current_audio_generations?: number | null
+          current_stories?: number | null
           id?: string
-          user_id?: string
-          max_stories?: number
-          current_stories?: number
-          max_audio_generations?: number
-          current_audio_generations?: number
-          reset_date?: string
-          reset_frequency?: 'daily' | 'weekly' | 'monthly'
-          is_premium?: boolean
+          is_premium?: boolean | null
+          max_audio_generations?: number | null
+          max_stories?: number | null
           notes?: string | null
-          created_at?: string
-          updated_at?: string
+          reset_date?: string | null
+          reset_frequency?: string | null
+          updated_at?: string | null
+          user_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "user_limits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_limits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       vocabulary_words: {
         Row: {
+          context: string | null
+          created_at: string | null
+          definition: string
+          difficulty: number | null
+          ease_factor: number | null
+          etymology: string | null
           id: string
+          interval_days: number | null
+          last_reviewed: string | null
+          mastery_level: string | null
+          next_review: string | null
+          pronunciation: string | null
+          review_count: number | null
+          story_id: string | null
+          success_count: number | null
+          success_rate: number | null
+          synonyms: string[] | null
+          updated_at: string | null
           user_id: string
           word: string
-          definition: string
-          context: string | null
-          story_id: string | null
-          difficulty: number
-          review_count: number
-          success_count: number
-          success_rate: number
-          last_reviewed: string | null
-          next_review: string
-          mastery_level: 'new' | 'learning' | 'review' | 'mastered'
-          ease_factor: number
-          interval_days: number
-          pronunciation: string | null
-          etymology: string | null
-          synonyms: string[] | null
-          created_at: string
-          updated_at: string
         }
         Insert: {
+          context?: string | null
+          created_at?: string | null
+          definition: string
+          difficulty?: number | null
+          ease_factor?: number | null
+          etymology?: string | null
           id?: string
+          interval_days?: number | null
+          last_reviewed?: string | null
+          mastery_level?: string | null
+          next_review?: string | null
+          pronunciation?: string | null
+          review_count?: number | null
+          story_id?: string | null
+          success_count?: number | null
+          success_rate?: number | null
+          synonyms?: string[] | null
+          updated_at?: string | null
           user_id: string
           word: string
-          definition: string
-          context?: string | null
-          story_id?: string | null
-          difficulty?: number
-          review_count?: number
-          success_count?: number
-          success_rate?: number
-          last_reviewed?: string | null
-          next_review?: string
-          mastery_level?: 'new' | 'learning' | 'review' | 'mastered'
-          ease_factor?: number
-          interval_days?: number
-          pronunciation?: string | null
-          etymology?: string | null
-          synonyms?: string[] | null
-          created_at?: string
-          updated_at?: string
         }
         Update: {
+          context?: string | null
+          created_at?: string | null
+          definition?: string
+          difficulty?: number | null
+          ease_factor?: number | null
+          etymology?: string | null
           id?: string
+          interval_days?: number | null
+          last_reviewed?: string | null
+          mastery_level?: string | null
+          next_review?: string | null
+          pronunciation?: string | null
+          review_count?: number | null
+          story_id?: string | null
+          success_count?: number | null
+          success_rate?: number | null
+          synonyms?: string[] | null
+          updated_at?: string | null
           user_id?: string
           word?: string
-          definition?: string
-          context?: string | null
-          story_id?: string | null
-          difficulty?: number
-          review_count?: number
-          success_count?: number
-          success_rate?: number
-          last_reviewed?: string | null
-          next_review?: string
-          mastery_level?: 'new' | 'learning' | 'review' | 'mastered'
-          ease_factor?: number
-          interval_days?: number
-          pronunciation?: string | null
-          etymology?: string | null
-          synonyms?: string[] | null
-          created_at?: string
-          updated_at?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_words_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocabulary_words_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocabulary_words_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
       active_banners: {
         Row: {
-          id: string
-          title: string
-          description: string
-          cta_link: string
-          image_url: string | null
-          target_audience: Json
-          display_priority: number
-          max_impressions: number
-          current_impressions: number
-          click_count: number
-          is_active: boolean
-          start_date: string
-          end_date: string | null
-          created_by: string
-          created_at: string
-          updated_at: string
+          click_count: number | null
+          created_at: string | null
+          created_by: string | null
           created_by_name: string | null
+          cta_link: string | null
+          current_impressions: number | null
+          description: string | null
+          display_priority: number | null
+          end_date: string | null
+          id: string | null
+          image_url: string | null
+          is_active: boolean | null
+          max_impressions: number | null
+          start_date: string | null
+          target_audience: Json | null
+          title: string | null
+          updated_at: string | null
         }
-        Insert: never
-        Update: never
+        Relationships: [
+          {
+            foreignKeyName: "ad_banners_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ad_banners_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       api_health_summary: {
         Row: {
-          service_name: 'openrouter' | 'elevenlabs' | 'wordsapi' | 'supabase' | 'vercel'
-          status: 'connected' | 'error' | 'timeout' | 'rate_limited'
-          response_time: number | null
+          checked_at: string | null
           error_message: string | null
-          checked_at: string
+          response_time: number | null
+          service_name: string | null
+          status: string | null
         }
-        Insert: never
-        Update: never
+        Relationships: []
       }
       user_stats: {
         Row: {
-          id: string
-          email: string
-          full_name: string | null
-          cefr_level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
-          role: 'user' | 'admin'
-          stories_completed: number
-          vocabulary_mastered: number
-          streak_days: number
-          last_active: string
-          current_stories: number
-          max_stories: number
-          is_premium: boolean
-          total_stories: number
-          total_vocabulary: number
-          completed_stories: number
           avg_reading_progress: number | null
+          cefr_level: string | null
+          completed_stories: number | null
+          current_stories: number | null
+          email: string | null
+          full_name: string | null
+          id: string | null
+          is_premium: boolean | null
+          last_active: string | null
+          max_stories: number | null
+          role: string | null
+          stories_completed: number | null
+          streak_days: number | null
+          total_stories: number | null
+          total_vocabulary: number | null
+          vocabulary_mastered: number | null
         }
-        Insert: never
-        Update: never
+        Relationships: []
       }
       vocabulary_due_for_review: {
         Row: {
-          id: string
-          user_id: string
-          word: string
-          definition: string
           context: string | null
-          story_id: string | null
-          difficulty: number
-          review_count: number
-          success_count: number
-          success_rate: number
-          last_reviewed: string | null
-          next_review: string
-          mastery_level: 'new' | 'learning' | 'review' | 'mastered'
-          ease_factor: number
-          interval_days: number
-          pronunciation: string | null
+          created_at: string | null
+          definition: string | null
+          difficulty: number | null
+          ease_factor: number | null
           etymology: string | null
+          id: string | null
+          interval_days: number | null
+          last_reviewed: string | null
+          mastery_level: string | null
+          next_review: string | null
+          pronunciation: string | null
+          review_count: number | null
+          story_id: string | null
+          success_count: number | null
+          success_rate: number | null
           synonyms: string[] | null
-          created_at: string
-          updated_at: string
+          updated_at: string | null
+          user_cefr_level: string | null
+          user_id: string | null
           user_name: string | null
-          user_cefr_level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+          word: string | null
         }
-        Insert: never
-        Update: never
+        Relationships: [
+          {
+            foreignKeyName: "vocabulary_words_story_id_fkey"
+            columns: ["story_id"]
+            isOneToOne: false
+            referencedRelation: "stories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocabulary_words_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "vocabulary_words_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Functions: {
-      calculate_vocabulary_success_rate: {
-        Args: {}
-        Returns: undefined
-      }
-      check_user_limits: {
-        Args: {}
-        Returns: undefined
-      }
-      create_demo_admin: {
-        Args: {}
-        Returns: undefined
-      }
-      create_sample_data: {
-        Args: {}
+      create_default_user_limits: {
+        Args: { user_id: string }
         Returns: undefined
       }
       get_user_role: {
-        Args: {
-          user_id?: string
-        }
+        Args: { user_id?: string }
         Returns: string
       }
+      gtrgm_compress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_decompress: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_in: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      gtrgm_options: {
+        Args: { "": unknown }
+        Returns: undefined
+      }
+      gtrgm_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
       is_admin: {
-        Args: {
-          user_id?: string
-        }
+        Args: { user_id?: string }
         Returns: boolean
       }
       is_authenticated: {
-        Args: {}
+        Args: Record<PropertyKey, never>
         Returns: boolean
       }
-      update_banner_stats: {
-        Args: {}
-        Returns: undefined
+      promote_user_to_admin: {
+        Args: { user_email: string }
+        Returns: boolean
       }
-      update_updated_at_column: {
-        Args: {}
-        Returns: undefined
+      set_limit: {
+        Args: { "": number }
+        Returns: number
       }
-      update_user_stats: {
-        Args: {}
-        Returns: undefined
+      show_limit: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
+      show_trgm: {
+        Args: { "": string }
+        Returns: string[]
       }
     }
     Enums: {
@@ -571,142 +759,129 @@ export interface Database {
   }
 }
 
-// =============================================
-// TIPOS DE UTILIDAD PARA EL FRONTEND
-// =============================================
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-// Tipos para niveles CEFR
-export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
-// Tipos para roles de usuario
-export type UserRole = 'user' | 'admin'
-
-// Tipos para niveles de dominio de vocabulario
-export type MasteryLevel = 'new' | 'learning' | 'review' | 'mastered'
-
-// Tipos para servicios de API
-export type APIService = 'openrouter' | 'elevenlabs' | 'wordsapi' | 'supabase' | 'vercel'
-
-// Tipos para estado de salud de API
-export type APIStatus = 'connected' | 'error' | 'timeout' | 'rate_limited'
-
-// Tipos para frecuencia de reset de límites
-export type ResetFrequency = 'daily' | 'weekly' | 'monthly'
-
-// Tipos específicos para el dominio de la aplicación
-export type UserProfile = Database['public']['Tables']['profiles']['Row']
-export type Story = Database['public']['Tables']['stories']['Row']
-export type VocabularyWord = Database['public']['Tables']['vocabulary_words']['Row']
-export type StoryProgress = Database['public']['Tables']['story_progress']['Row']
-export type AdBanner = Database['public']['Tables']['ad_banners']['Row']
-export type UserLimits = Database['public']['Tables']['user_limits']['Row']
-export type APIHealthCheck = Database['public']['Tables']['api_health_checks']['Row']
-export type UsageAnalytics = Database['public']['Tables']['usage_analytics']['Row']
-export type SystemConfig = Database['public']['Tables']['system_config']['Row']
-
-// Tipos para inserciones (útiles para formularios)
-export type UserProfileInsert = Database['public']['Tables']['profiles']['Insert']
-export type StoryInsert = Database['public']['Tables']['stories']['Insert']
-export type VocabularyWordInsert = Database['public']['Tables']['vocabulary_words']['Insert']
-export type StoryProgressInsert = Database['public']['Tables']['story_progress']['Insert']
-export type AdBannerInsert = Database['public']['Tables']['ad_banners']['Insert']
-
-// Tipos para actualizaciones (útiles para formularios de edición)
-export type UserProfileUpdate = Database['public']['Tables']['profiles']['Update']
-export type StoryUpdate = Database['public']['Tables']['stories']['Update']
-export type VocabularyWordUpdate = Database['public']['Tables']['vocabulary_words']['Update']
-
-// Tipos para vistas optimizadas
-export type UserStats = Database['public']['Views']['user_stats']['Row']
-export type ActiveBanner = Database['public']['Views']['active_banners']['Row']
-export type APIHealthSummary = Database['public']['Views']['api_health_summary']['Row']
-export type VocabularyDueForReview = Database['public']['Views']['vocabulary_due_for_review']['Row']
-
-// Tipos para respuestas de APIs externas
-export interface OpenRouterResponse {
-  choices: Array<{
-    message: {
-      content: string
-      role: string
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
     }
-  }>
-  usage?: {
-    prompt_tokens: number
-    completion_tokens: number
-    total_tokens: number
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
   }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
 }
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
 
-export interface ElevenLabsVoice {
-  voice_id: string
-  name: string
-  category: string
-  description: string
-}
-
-export interface WordsAPIResponse {
-  word: string
-  results?: Array<{
-    definition: string
-    partOfSpeech: string
-    synonyms?: string[]
-    examples?: string[]
-  }>
-  pronunciation?: {
-    all: string
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
   }
-  etymology?: string
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
 }
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
 
-// Tipos para configuración del sistema
-export interface SpacedRepetitionConfig {
-  intervals: number[]
-  masteryThreshold: number
-  easyInterval: number
-  normalInterval: number
-  hardInterval: number
-  graduatingInterval: number
-  multiplier: number
-}
-
-export interface StoryGenerationConfig {
-  minWords: number
-  maxWords: number
-  supportedGenres: string[]
-  defaultModel: string
-  fallbackModels: string[]
-}
-
-export interface AdminDashboardStats {
-  totalUsers: number
-  activeUsers: number
-  totalStories: number
-  apiUsage: {
-    openrouter: { requests: number; cost: number }
-    elevenlabs: { requests: number; cost: number }
-    wordsapi: { requests: number; cost: number }
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
   }
-  userLimits: {
-    totalWithLimits: number
-    averageLimit: number
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
   }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
 }
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
 
-// Tipos para eventos de analytics
-export type AnalyticsEventType = 
-  | 'story_started'
-  | 'story_completed' 
-  | 'word_clicked'
-  | 'vocabulary_reviewed'
-  | 'banner_impression'
-  | 'banner_click'
-  | 'audio_played'
-  | 'user_login'
-  | 'user_signup'
+export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
+  public: {
+    Enums: {},
+  },
+} as const
 
-export interface AnalyticsEvent {
-  user_id?: string
-  event_type: AnalyticsEventType
-  event_data: Json
-  session_id?: string
-}

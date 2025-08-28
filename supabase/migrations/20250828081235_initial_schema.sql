@@ -212,3 +212,16 @@ COMMENT ON COLUMN api_health_checks.metadata IS 'Datos espec�ficos del servici
 
 COMMENT ON TABLE story_progress IS 'Progreso detallado de lectura por historia';
 COMMENT ON COLUMN story_progress.bookmarks IS 'Marcadores JSON con posiciones espec�ficas';
+
+-- =============================================
+-- 9. TABLA SYSTEM_CONFIG (Configuraciones del Sistema)
+-- =============================================
+CREATE TABLE system_config (
+    key TEXT PRIMARY KEY,
+    value JSONB NOT NULL,
+    description TEXT,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+COMMENT ON TABLE system_config IS 'Configuraciones globales del sistema The Vaughan Storyteller';
+COMMENT ON COLUMN system_config.value IS 'Valor de configuración en formato JSON';
