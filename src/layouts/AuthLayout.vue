@@ -18,12 +18,12 @@
           
           <!-- Brand Content -->
           <div class="brand-content">
-            <!-- Logo Section -->
+            <!-- Centered Logo Section -->
             <div class="brand-logo-section">
               <div class="brand-logo">
                 <q-icon 
                   name="auto_stories" 
-                  size="48px" 
+                  size="72px" 
                   color="white" 
                 />
               </div>
@@ -32,38 +32,6 @@
               </h1>
               <p class="brand-subtitle">
                 AI-powered English learning through immersive stories
-              </p>
-            </div>
-
-            <!-- Features Highlights -->
-            <div class="brand-features">
-              <div class="feature-item">
-                <q-icon name="psychology" size="24px" color="white" />
-                <div class="feature-text">
-                  <div class="feature-title">AI-Generated Stories</div>
-                  <div class="feature-desc">Personalized content for your CEFR level</div>
-                </div>
-              </div>
-              <div class="feature-item">
-                <q-icon name="record_voice_over" size="24px" color="white" />
-                <div class="feature-text">
-                  <div class="feature-title">Audio Narration</div>
-                  <div class="feature-desc">Professional voice synthesis</div>
-                </div>
-              </div>
-              <div class="feature-item">
-                <q-icon name="trending_up" size="24px" color="white" />
-                <div class="feature-text">
-                  <div class="feature-title">Progress Tracking</div>
-                  <div class="feature-desc">Monitor your learning journey</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer -->
-            <div class="brand-footer">
-              <p class="footer-text">
-                Trusted by English learners worldwide
               </p>
             </div>
           </div>
@@ -244,27 +212,29 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   padding: 4rem 3rem;
   color: white;
+  text-align: center;
 }
 
 .brand-logo-section {
   text-align: center;
-  margin-bottom: 4rem;
+  max-width: 400px;
 }
 
 .brand-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
+  border-radius: 30px;
   backdrop-filter: blur(10px);
-  margin-bottom: 2rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  margin-bottom: 3rem;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
 .brand-title {
@@ -284,60 +254,6 @@ onMounted(() => {
   line-height: 1.5;
 }
 
-// ===== FEATURES SECTION =====
-.brand-features {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-}
-
-.feature-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    transform: translateX(10px);
-  }
-}
-
-.feature-text {
-  flex: 1;
-}
-
-.feature-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.feature-desc {
-  font-size: 0.95rem;
-  opacity: 0.8;
-  line-height: 1.4;
-}
-
-// ===== BRAND FOOTER =====
-.brand-footer {
-  text-align: center;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.footer-text {
-  margin: 0;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
 
 // ===== RIGHT PANEL - FORM =====
 .auth-form-panel {
@@ -416,10 +332,6 @@ onMounted(() => {
 }
 
 @media (max-width: 960px) {
-  .brand-features {
-    display: none;
-  }
-  
   .form-container {
     align-items: center; // Mantener centrado vertical en mobile
     padding-top: 2rem;
@@ -442,7 +354,6 @@ onMounted(() => {
 }
 
 // ===== ACCESSIBILITY & FOCUS STATES =====
-.feature-item,
 .brand-logo {
   &:focus-visible {
     outline: 2px solid rgba(255, 255, 255, 0.5);

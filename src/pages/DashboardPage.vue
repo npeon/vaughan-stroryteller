@@ -129,6 +129,7 @@ const goToProfile = () => {
 .prime-dashboard {
   background: var(--prime-grey-50);
   min-height: calc(100vh - 64px);
+  padding-top: $prime-space-lg; // Añadir espacio superior entre menú y contenido
 }
 
 // ===== WELCOME SECTION =====

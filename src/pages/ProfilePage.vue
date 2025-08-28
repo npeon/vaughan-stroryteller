@@ -300,6 +300,8 @@ onMounted(() => {
 .prime-profile-page {
   background: var(--prime-grey-50);
   min-height: calc(100vh - 64px);
+  padding-top: $prime-space-lg; // Añadir espacio superior entre menú y contenido
+  padding-bottom: $prime-space-xl; // Añadir espacio inferior para evitar que signout quede pegado
 }
 
 // ===== PAGE HEADER =====

@@ -562,6 +562,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .banners-page {
   background: #f5f5f5;
+  padding-top: 24px; // Añadir espacio superior entre menú y contenido
 }
 
 .page-header {

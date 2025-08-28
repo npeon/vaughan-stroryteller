@@ -6,17 +6,19 @@ const routes: RouteRecordRaw[] = [
     redirect: '/auth/login',
   },
 
-  // Auth routes
+  // Auth routes - Login without layout wrapper
+  {
+    path: '/auth/login',
+    name: 'login',
+    component: () => import('pages/auth/LoginPage.vue'),
+    meta: { requiresGuest: true },
+  },
+  
+  // Auth callback with layout
   {
     path: '/auth',
     component: () => import('layouts/AuthLayout.vue'),
     children: [
-      {
-        path: 'login',
-        name: 'login',
-        component: () => import('pages/auth/LoginPage.vue'),
-        meta: { requiresGuest: true },
-      },
       {
         path: 'callback',
         name: 'auth-callback',

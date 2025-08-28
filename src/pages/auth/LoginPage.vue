@@ -1,15 +1,57 @@
 <template>
-  <q-page class="prime-auth-page">
+  <q-layout view="lHh Lpr lFf">
+    <q-page-container>
+      <q-page class="prime-auth-page">
     <div class="auth-container">
       <!-- Brand Section -->
       <div class="brand-section">
-        <div class="brand-logo">
-          <div class="logo-icon">
-            <q-icon name="auto_stories" />
+        <!-- Educational Information -->
+        <div class="learning-preview">
+          <div class="brand-logo">
+            <div class="logo-icon">
+              <q-icon name="auto_stories" />
+            </div>
+            <div class="logo-text">
+              <div class="brand-name">The Vaughan Storyteller</div>
+              <div class="brand-tagline">AI-Powered English Learning</div>
+            </div>
           </div>
-          <div class="logo-text">
-            <div class="brand-name">The Vaughan Storyteller</div>
-            <div class="brand-tagline">AI-Powered English Learning</div>
+
+          <!-- Features Highlights -->
+          <div class="feature-highlights">
+            <div class="feature-item">
+              <q-icon name="psychology" class="feature-icon" />
+              <div class="feature-text">
+                <div class="feature-title">Personalized Stories</div>
+                <div class="feature-desc">Adapted to your CEFR level (A1-C2)</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <q-icon name="trending_up" class="feature-icon" />
+              <div class="feature-text">
+                <div class="feature-title">Track Your Progress</div>
+                <div class="feature-desc">Vocabulary growth & reading skills</div>
+              </div>
+            </div>
+            <div class="feature-item">
+              <q-icon name="record_voice_over" class="feature-icon" />
+              <div class="feature-text">
+                <div class="feature-title">Audio Narration</div>
+                <div class="feature-desc">Perfect pronunciation & listening</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Trust Indicators -->
+          <div class="trust-indicators">
+            <div class="trust-item">
+              <q-icon name="verified" class="trust-icon" />
+              <span>CEFR Framework Based</span>
+            </div>
+            <div class="trust-item">
+              <q-icon name="group" class="trust-icon" />
+              <span>Join 10,000+ learners</span>
+            </div>
           </div>
         </div>
       </div>
@@ -368,7 +410,9 @@
         </div>
       </div>
     </div>
-  </q-page>
+      </q-page>
+    </q-page-container>
+  </q-layout>
 </template>
 
 <script setup lang="ts">
@@ -694,27 +738,74 @@ watch(isAuthenticated, async (newValue, oldValue) => {
 // ===== PRIME AUTH PAGE STYLES =====
 @import '../../css/quasar.variables.scss';
 
+// Prevenir scroll horizontal pero permitir vertical
+:global(html, body) {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+:global(.q-layout) {
+  overflow-x: hidden;
+}
+
 .prime-auth-page {
   background: linear-gradient(135deg, var(--prime-grey-50) 0%, var(--prime-grey-100) 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: $prime-space-lg;
+  padding: $prime-space-sm;
+  width: 100%;
+  box-sizing: border-box;
+  
+  // En móviles, permitir scroll vertical
+  @media (max-width: 768px) {
+    min-height: 100vh;
+    align-items: flex-start;
+    padding: $prime-space-md 0;
+    overflow-y: auto;
+  }
 }
 
 // ===== AUTH CONTAINER =====
 .auth-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: $prime-space-2xl;
-  max-width: 1200px;
+  gap: $prime-space-md;
+  max-width: 1000px;
+  height: 85vh;
   width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    max-width: 90vw;
+    gap: $prime-space-sm;
+  }
   
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: $prime-space-xl;
-    max-width: 400px;
+    grid-template-columns: 1fr; // Stack en móviles
+    gap: $prime-space-lg;
+    max-width: 95vw;
+    height: auto; // Permitir altura automática
+    min-height: auto; // Sin restricción de altura mínima
+    padding: $prime-space-md;
+    
+    // Reordenar: brand section primero, luego auth card
+    .brand-section {
+      order: 1;
+    }
+    
+    .auth-card-container {
+      order: 2;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    max-width: 100%;
+    padding: $prime-space-sm;
+    gap: $prime-space-md;
   }
 }
 
@@ -722,42 +813,135 @@ watch(isAuthenticated, async (newValue, oldValue) => {
 .brand-section {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: $prime-space-2xl;
+  justify-content: space-between;
+  align-items: center;
+  padding: $prime-space-lg $prime-space-md;
+  background: linear-gradient(135deg, 
+    rgba(99, 102, 241, 0.03) 0%, 
+    rgba(139, 92, 246, 0.05) 100%);
+  border-radius: var(--radius-md);
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  @media (max-width: 1024px) {
+    padding: $prime-space-sm;
+    max-height: 80vh;
+  }
   
   @media (max-width: 768px) {
     text-align: center;
-    padding: $prime-space-lg;
+    padding: $prime-space-lg $prime-space-md;
+    height: auto;
+    min-height: auto;
+    max-height: none;
+    justify-content: center;
+    gap: $prime-space-md;
   }
+  
+  @media (max-width: 480px) {
+    padding: $prime-space-md;
+    gap: $prime-space-sm;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, 
+      rgba(99, 102, 241, 0.05) 0%, 
+      transparent 70%);
+    animation: rotate 20s linear infinite;
+    z-index: 0;
+    border-radius: var(--radius-md);
+  }
+
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Character showcase removed - now using centered icon approach
+
+@keyframes floating {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+  }
+  50% { 
+    transform: translateY(-15px) rotate(0.5deg); 
+  }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// ===== LEARNING PREVIEW =====
+.learning-preview {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 
 .brand-logo {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: $prime-space-lg;
+  gap: $prime-space-xl;
   margin-bottom: $prime-space-xl;
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: $prime-space-md;
-  }
+  justify-content: center;
 }
 
 .logo-icon {
-  width: 80px;
-  height: 80px;
+  width: 120px;
+  height: 120px;
   border-radius: var(--radius-lg);
   background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 40px;
-  box-shadow: var(--shadow-lg);
+  font-size: 60px;
+  box-shadow: var(--shadow-xl);
+  animation: floating 6s ease-in-out infinite;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+    font-size: 50px;
+  }
+
+  @media (max-width: 480px) {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .brand-name {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
   -webkit-background-clip: text;
@@ -766,12 +950,92 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   color: var(--prime-primary);
   line-height: 1.2;
   margin-bottom: $prime-space-xs;
+  text-align: center;
 }
 
 .brand-tagline {
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: var(--prime-grey-600);
   font-weight: 500;
+  text-align: center;
+}
+
+// ===== FEATURE HIGHLIGHTS =====
+.feature-highlights {
+  margin-bottom: $prime-space-lg;
+  
+  @media (max-width: 768px) {
+    margin-bottom: $prime-space-md;
+    
+    // Mantener las 3 características principales en móvil
+    // (Personalized Stories, Track Progress, Audio Narration)
+  }
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $prime-space-md;
+  margin-bottom: $prime-space-md;
+  
+  .feature-icon {
+    font-size: 24px;
+    color: var(--prime-primary);
+    background: rgba(99, 102, 241, 0.1);
+    padding: 8px;
+    border-radius: var(--radius-md);
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .feature-text {
+    flex: 1;
+    
+    .feature-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--prime-grey-900);
+      margin-bottom: $prime-space-xs;
+      line-height: 1.3;
+    }
+    
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--prime-grey-600);
+      line-height: 1.4;
+    }
+  }
+}
+
+// ===== TRUST INDICATORS =====
+.trust-indicators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $prime-space-lg;
+  justify-content: center;
+  
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: $prime-space-sm;
+    color: var(--prime-grey-700);
+    font-size: 0.875rem;
+    font-weight: 500;
+    
+    .trust-icon {
+      font-size: 18px;
+      color: var(--prime-positive);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: $prime-space-md;
+  }
 }
 
 // ===== AUTH CARD =====
@@ -779,12 +1043,42 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: $prime-space-sm;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: auto;
+    padding: 0;
+    align-items: flex-start;
+  }
 }
 
 .auth-card {
   width: 100%;
-  max-width: 450px;
-  padding: $prime-space-2xl;
+  max-width: 400px; // Más conservador
+  padding: $prime-space-lg;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    var(--shadow-xl),
+    0 0 0 1px rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-sizing: border-box;
+  max-height: 100%;
+  
+  @media (max-width: 1024px) {
+    max-width: 360px;
+    padding: $prime-space-md;
+  }
+  
+  @media (max-width: 768px) {
+    max-width: 100%;
+    padding: $prime-space-sm;
+  }
 }
 
 // ===== FORM HEADER =====
@@ -921,13 +1215,30 @@ watch(isAuthenticated, async (newValue, oldValue) => {
 }
 
 // ===== RESPONSIVE DESIGN =====
+@media (max-width: 1024px) {
+  .feature-highlights {
+    .feature-item {
+      margin-bottom: $prime-space-md;
+    }
+  }
+}
+
 @media (max-width: 768px) {
+  // Brand section mobile adjustments
+  .brand-section {
+    padding: $prime-space-lg $prime-space-md;
+    
+    &::before {
+      display: none; // Remove background animation on mobile
+    }
+  }
+  
   .brand-name {
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
   
   .brand-tagline {
-    font-size: 1.125rem;
+    font-size: 1rem;
   }
   
   .form-title {
@@ -936,24 +1247,121 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   
   .auth-card {
     padding: $prime-space-lg;
+    margin: 0;
+  }
+  
+  // Reduce logo size on mobile  
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    font-size: 40px;
+  }
+  
+  // Feature highlights mobile
+  .feature-highlights {
+    margin-bottom: $prime-space-lg;
+    
+    .feature-item {
+      margin-bottom: $prime-space-md;
+      
+      .feature-icon {
+        font-size: 20px;
+        min-width: 36px;
+        height: 36px;
+      }
+      
+      .feature-text {
+        .feature-title {
+          font-size: 0.875rem;
+        }
+        
+        .feature-desc {
+          font-size: 0.8125rem;
+        }
+      }
+    }
+  }
+  
+  // Trust indicators mobile
+  .trust-indicators {
+    .trust-item {
+      font-size: 0.8125rem;
+    }
   }
 }
 
 @media (max-width: 480px) {
   .prime-auth-page {
-    padding: $prime-space-md;
+    padding: $prime-space-sm;
+    min-height: 100vh;
+  }
+  
+  .auth-container {
+    max-width: 100%;
+    padding: $prime-space-xs;
+  }
+  
+  .brand-section {
+    padding: $prime-space-md $prime-space-sm;
+    margin-bottom: 0;
   }
   
   .brand-name {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+    margin-bottom: $prime-space-xs;
+  }
+  
+  .brand-tagline {
+    font-size: 0.9rem;
+    margin-bottom: $prime-space-md;
   }
   
   .form-title {
-    font-size: 1.375rem;
+    font-size: 1.25rem;
   }
   
   .auth-card {
     padding: $prime-space-md;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .logo-icon {
+    width: 70px;
+    height: 70px;
+    font-size: 35px;
+  }
+  
+  .feature-item {
+    gap: $prime-space-sm;
+    margin-bottom: $prime-space-sm;
+    
+    .feature-icon {
+      min-width: 32px;
+      height: 32px;
+      font-size: 18px;
+    }
+    
+    .feature-text {
+      .feature-title {
+        font-size: 0.875rem;
+      }
+      
+      .feature-desc {
+        font-size: 0.75rem;
+      }
+    }
+  }
+  
+  // Simplify trust indicators on very small screens
+  .trust-indicators {
+    .trust-item {
+      font-size: 0.75rem;
+      
+      .trust-icon {
+        font-size: 16px;
+      }
+    }
   }
 }
 
