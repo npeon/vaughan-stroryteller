@@ -56,6 +56,20 @@
 
 **⏱️ Tiempo**: 30-45 min | **📋 Prerequisitos**: Environment setup, Cypress básico
 
+---
+
+### **🧪 [Base Commands Verification](./base-commands-verification.md)** ✅
+**Verificación de comandos base fundamentales de Cypress para Quasar**
+
+- ✅ **cy.dataCy(id)** - Selector confiable por atributo data-cy
+- ✅ **cy.selectDate(date)** - Interacción con componentes QDate
+- ✅ **cy.testRoute(pattern)** - Verificación de patrones de rutas
+- 🔗 **Integration testing** - Uso combinado en workflows reales
+- ⚡ **Best practices** - Patterns async, cleanup DOM, TypeScript
+- 🐛 **Troubleshooting** - Soluciones a problemas comunes
+
+**⏱️ Tiempo**: 15-20 min | **📋 Prerequisitos**: Cypress custom commands setup
+
 ## 🎯 Cuándo Usar Cada Guía
 
 ### **Si necesitas...**
@@ -79,7 +93,12 @@
 - Mocking de dependencies
 
 #### **E2E testing con Quasar**
-→ **[Cypress Custom Commands](./cypress-custom-commands.md)**  
+→ **[Base Commands Verification](./base-commands-verification.md)** primero  
+- Verificar que comandos base (dataCy, selectDate, testRoute) funcionan
+- Entender patterns de testing confiables
+- Fundamentos antes de comandos avanzados
+
+→ **[Cypress Custom Commands](./cypress-custom-commands.md)** después
 - Comandos específicos para componentes Quasar
 - Testing de flows educativos completos
 - Integración con APIs externas (OpenRouter, ElevenLabs)
@@ -117,7 +136,8 @@
 
 **Para nuevos desarrolladores:**
 1. **[TDD Scripts Configuration](./tdd-scripts-setup.md)** - Configura tu flujo de desarrollo
-2. **[MSW Advanced Mocking](./msw-advanced-mocking.md)** - Aprende a mockear APIs externas  
-3. **[Cypress Custom Commands](./cypress-custom-commands.md)** - Domina los comandos E2E específicos
+2. **[Base Commands Verification](./base-commands-verification.md)** - Verifica comandos base Cypress
+3. **[MSW Advanced Mocking](./msw-advanced-mocking.md)** - Aprende a mockear APIs externas  
+4. **[Cypress Custom Commands](./cypress-custom-commands.md)** - Domina los comandos E2E específicos
 
 **💡 Tip**: Todos los patterns y comandos están implementados y funcionando. Usa las guías para entender cómo aplicar estos patterns en tus propias features y maximizar la eficiencia de testing.
