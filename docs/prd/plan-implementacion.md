@@ -23,8 +23,8 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 ### 🗄️ Setup Supabase Backend
 
-- [ ] **Task 0.7**: Configurar proyecto Supabase y obtener credentials
-- [ ] **Task 0.8**: Instalar Supabase CLI y configurar entorno local
+- [x] **Task 0.7**: Configurar proyecto Supabase y obtener credentials
+- [x] **Task 0.8**: Instalar Supabase CLI y configurar entorno local
 - [ ] **Task 0.9**: Crear esquema de base de datos con tablas principales
 - [ ] **Task 0.10**: Crear tablas de administración (ad_banners, user_limits, api_health_checks)
 - [ ] **Task 0.11**: Configurar Row Level Security (RLS) policies
