@@ -1,1 +1,689 @@
-// app global css in SCSS form
+// ===== VAUGHAN STORYTELLER - GLOBAL STYLES =====
+// Prime Admin inspired design system
+// Professional, modern UI components
+
+// Import variables
+@import './quasar.variables.scss';
+
+// ===== CSS CUSTOM PROPERTIES =====
+:root {
+  // Prime Admin Color System
+  --prime-primary: #{$primary};
+  --prime-secondary: #{$secondary};
+  --prime-accent: #{$accent};
+  --prime-positive: #{$positive};
+  --prime-negative: #{$negative};
+  --prime-info: #{$info};
+  --prime-warning: #{$warning};
+  
+  // Extended Grey Palette
+  --prime-grey-50: #{$grey-50};
+  --prime-grey-100: #{$grey-100};
+  --prime-grey-200: #{$grey-200};
+  --prime-grey-300: #{$grey-300};
+  --prime-grey-400: #{$grey-400};
+  --prime-grey-500: #{$grey-500};
+  --prime-grey-600: #{$grey-600};
+  --prime-grey-700: #{$grey-700};
+  --prime-grey-800: #{$grey-800};
+  --prime-grey-900: #{$grey-900};
+  
+  // Missing color for focus states
+  --prime-indigo: #{$primary};
+  
+  // Shadow System
+  --shadow-sm: #{$shadow-1};
+  --shadow-md: #{$shadow-2};
+  --shadow-lg: #{$shadow-3};
+  --shadow-xl: #{$shadow-4};
+  
+  // Border Radius
+  --radius-sm: #{$border-radius-sm};
+  --radius-md: #{$border-radius-md};
+  --radius-lg: #{$border-radius-lg};
+  --radius-xl: #{$border-radius-xl};
+}
+
+// ===== GLOBAL BASE STYLES =====
+body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--prime-grey-50);
+  color: var(--prime-grey-900);
+  line-height: 1.6;
+}
+
+// ===== PAGE CONTAINER SPACING =====
+.q-page-container {
+  padding-top: $prime-space-md; // Add space below header
+}
+
+// ===== GLOBAL PAGE STYLES =====
+.q-page {
+  background: var(--prime-grey-50);
+  min-height: calc(100vh - 64px - #{$prime-space-md});
+}
+
+// ===== QUASAR COMPONENT OVERRIDES =====
+.q-btn {
+  border-radius: var(--radius-md) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  
+  // Remove all excessive shadows by default
+  box-shadow: none !important;
+  
+  // Only add subtle hover effects
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm) !important;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  
+  // Special handling for flat buttons
+  &.q-btn--flat {
+    &:hover:not(:disabled) {
+      background-color: var(--prime-grey-100) !important;
+      transform: none;
+      box-shadow: none !important;
+    }
+  }
+  
+  // Special handling for outline buttons
+  &.q-btn--outline {
+    border-width: 2px !important;
+    
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm) !important;
+    }
+  }
+}
+
+.q-card {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-sm) !important;
+  border: 1px solid var(--prime-grey-100);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  
+  &:hover {
+    box-shadow: var(--shadow-md) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.q-input {
+  .q-field__control {
+    border-radius: var(--radius-md) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+  
+  &.q-field--outlined .q-field__control:before {
+    border: 1px solid var(--prime-grey-200) !important;
+  }
+  
+  &.q-field--outlined .q-field__control:hover:before {
+    border-color: var(--prime-grey-300) !important;
+  }
+  
+  &.q-field--focused .q-field__control:before,
+  &.q-field--focused .q-field__control:after {
+    border-color: var(--prime-primary) !important;
+  }
+  
+  // Remove any default shadows
+  &.q-field--outlined .q-field__control {
+    box-shadow: none !important;
+  }
+  
+  // Add subtle focus shadow
+  &.q-field--focused .q-field__control {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1) !important;
+  }
+}
+
+.q-dialog .q-card {
+  box-shadow: var(--shadow-lg) !important;
+  border: 1px solid var(--prime-grey-100);
+}
+
+.q-menu {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-md) !important;
+  border: 1px solid var(--prime-grey-100);
+}
+
+.q-select {
+  .q-field__control {
+    border-radius: var(--radius-md) !important;
+  }
+}
+
+.q-textarea {
+  .q-field__control {
+    border-radius: var(--radius-md) !important;
+  }
+}
+
+// ===== PRIME CARD SYSTEM =====
+.prime-card {
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--prime-grey-100);
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  
+  // Card variants
+  &.prime-card--elevated {
+    box-shadow: var(--shadow-md);
+    
+    &:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+  }
+  
+  &.prime-card--interactive {
+    cursor: pointer;
+    
+    &:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+      border-color: var(--prime-primary);
+    }
+    
+    &:active {
+      transform: translateY(0);
+      box-shadow: var(--shadow-sm);
+    }
+  }
+  
+  &.prime-card--gradient {
+    background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+    color: white;
+    border: none;
+    
+    .text-grey-6,
+    .text-grey-7,
+    .text-caption {
+      color: rgba(255, 255, 255, 0.8) !important;
+    }
+  }
+}
+
+// ===== PRIME STATS CARDS =====
+.prime-stats-card {
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--prime-grey-100);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  
+  text-align: center;
+  padding: $prime-space-lg;
+  
+  .stats-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto $prime-space-md;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--prime-grey-50);
+    color: var(--prime-primary);
+    font-size: 24px;
+  }
+  
+  .stats-number {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: $prime-space-xs;
+    background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: var(--prime-primary); /* Fallback for browsers that don't support background-clip */
+  }
+  
+  .stats-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--prime-grey-900);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: $prime-space-xs;
+  }
+  
+  .stats-caption {
+    font-size: 0.75rem;
+    color: var(--prime-grey-500);
+    font-weight: 500;
+  }
+}
+
+// ===== PRIME WELCOME CARD =====
+.prime-welcome-card {
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+  color: white;
+  border: none;
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: $prime-space-xl;
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    border-radius: 50%;
+    transform: translate(50%, -50%);
+  }
+  
+  .welcome-title {
+    font-size: 2rem;
+    font-weight: 300;
+    margin-bottom: $prime-space-sm;
+    line-height: 1.2;
+  }
+  
+  .welcome-subtitle {
+    font-size: 1.125rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 400;
+  }
+}
+
+// ===== PRIME BUTTONS =====
+.prime-btn {
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  text-transform: none;
+  padding: 12px 24px;
+  
+  &.prime-btn--primary {
+    background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+    border: none;
+    color: white;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+  }
+  
+  &.prime-btn--secondary {
+    background: var(--prime-grey-100);
+    color: var(--prime-grey-700);
+    border: 1px solid var(--prime-grey-200);
+    
+    &:hover {
+      background: var(--prime-grey-200);
+      transform: translateY(-1px);
+    }
+  }
+  
+  &.prime-btn--outline {
+    background: transparent;
+    border: 2px solid var(--prime-primary);
+    color: var(--prime-primary);
+    
+    &:hover {
+      background: var(--prime-primary);
+      color: white;
+    }
+  }
+}
+
+// ===== PRIME ACTION CARDS =====
+.prime-action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $prime-space-md;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: $prime-space-sm;
+  }
+}
+
+.prime-action-card {
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--prime-grey-100);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--prime-primary);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  padding: $prime-space-lg;
+  text-align: center;
+  
+  .action-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto $prime-space-md;
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    
+    &.action-icon--primary {
+      background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+      color: white;
+    }
+    
+    &.action-icon--secondary {
+      background: linear-gradient(135deg, var(--prime-info) 0%, var(--prime-accent) 100%);
+      color: white;
+    }
+    
+    &.action-icon--accent {
+      background: linear-gradient(135deg, var(--prime-warning) 0%, #f97316 100%);
+      color: white;
+    }
+  }
+  
+  .action-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--prime-grey-900);
+    margin-bottom: $prime-space-xs;
+  }
+  
+  .action-description {
+    font-size: 0.875rem;
+    color: var(--prime-grey-600);
+    line-height: 1.5;
+  }
+}
+
+// ===== PRIME EMPTY STATE =====
+.prime-empty-state {
+  background: white;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--prime-grey-100);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+  }
+  
+  padding: $prime-space-2xl;
+  text-align: center;
+  
+  .empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto $prime-space-lg;
+    border-radius: 50%;
+    background: var(--prime-grey-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    color: var(--prime-grey-400);
+  }
+  
+  .empty-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--prime-grey-900);
+    margin-bottom: $prime-space-sm;
+  }
+  
+  .empty-description {
+    font-size: 0.875rem;
+    color: var(--prime-grey-600);
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+// ===== UTILITY CLASSES =====
+.prime-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(135deg, var(--prime-info) 0%, var(--prime-accent) 100%);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent; /* Fallback for browsers that don't support background-clip */
+}
+
+.prime-shadow-sm { box-shadow: var(--shadow-sm); }
+.prime-shadow-md { box-shadow: var(--shadow-md); }
+.prime-shadow-lg { box-shadow: var(--shadow-lg); }
+.prime-shadow-xl { box-shadow: var(--shadow-xl); }
+
+.prime-rounded-sm { border-radius: var(--radius-sm); }
+.prime-rounded-md { border-radius: var(--radius-md); }
+.prime-rounded-lg { border-radius: var(--radius-lg); }
+.prime-rounded-xl { border-radius: var(--radius-xl); }
+
+// ===== RESPONSIVE HELPERS =====
+.prime-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $prime-space-md;
+  
+  @media (max-width: 768px) {
+    padding: 0 $prime-space-sm;
+  }
+}
+
+// ===== SPACING UTILITIES =====
+// Padding utilities
+.prime-p-xs { padding: $prime-space-xs; }
+.prime-p-sm { padding: $prime-space-sm; }
+.prime-p-md { padding: $prime-space-md; }
+.prime-p-lg { padding: $prime-space-lg; }
+.prime-p-xl { padding: $prime-space-xl; }
+.prime-p-2xl { padding: $prime-space-2xl; }
+
+// Padding top utilities
+.prime-pt-xs { padding-top: $prime-space-xs; }
+.prime-pt-sm { padding-top: $prime-space-sm; }
+.prime-pt-md { padding-top: $prime-space-md; }
+.prime-pt-lg { padding-top: $prime-space-lg; }
+.prime-pt-xl { padding-top: $prime-space-xl; }
+.prime-pt-2xl { padding-top: $prime-space-2xl; }
+
+// Padding bottom utilities
+.prime-pb-xs { padding-bottom: $prime-space-xs; }
+.prime-pb-sm { padding-bottom: $prime-space-sm; }
+.prime-pb-md { padding-bottom: $prime-space-md; }
+.prime-pb-lg { padding-bottom: $prime-space-lg; }
+.prime-pb-xl { padding-bottom: $prime-space-xl; }
+.prime-pb-2xl { padding-bottom: $prime-space-2xl; }
+
+// Padding left utilities
+.prime-pl-xs { padding-left: $prime-space-xs; }
+.prime-pl-sm { padding-left: $prime-space-sm; }
+.prime-pl-md { padding-left: $prime-space-md; }
+.prime-pl-lg { padding-left: $prime-space-lg; }
+.prime-pl-xl { padding-left: $prime-space-xl; }
+.prime-pl-2xl { padding-left: $prime-space-2xl; }
+
+// Padding right utilities
+.prime-pr-xs { padding-right: $prime-space-xs; }
+.prime-pr-sm { padding-right: $prime-space-sm; }
+.prime-pr-md { padding-right: $prime-space-md; }
+.prime-pr-lg { padding-right: $prime-space-lg; }
+.prime-pr-xl { padding-right: $prime-space-xl; }
+.prime-pr-2xl { padding-right: $prime-space-2xl; }
+
+// Padding horizontal utilities
+.prime-px-xs { padding-left: $prime-space-xs; padding-right: $prime-space-xs; }
+.prime-px-sm { padding-left: $prime-space-sm; padding-right: $prime-space-sm; }
+.prime-px-md { padding-left: $prime-space-md; padding-right: $prime-space-md; }
+.prime-px-lg { padding-left: $prime-space-lg; padding-right: $prime-space-lg; }
+.prime-px-xl { padding-left: $prime-space-xl; padding-right: $prime-space-xl; }
+.prime-px-2xl { padding-left: $prime-space-2xl; padding-right: $prime-space-2xl; }
+
+// Padding vertical utilities
+.prime-py-xs { padding-top: $prime-space-xs; padding-bottom: $prime-space-xs; }
+.prime-py-sm { padding-top: $prime-space-sm; padding-bottom: $prime-space-sm; }
+.prime-py-md { padding-top: $prime-space-md; padding-bottom: $prime-space-md; }
+.prime-py-lg { padding-top: $prime-space-lg; padding-bottom: $prime-space-lg; }
+.prime-py-xl { padding-top: $prime-space-xl; padding-bottom: $prime-space-xl; }
+.prime-py-2xl { padding-top: $prime-space-2xl; padding-bottom: $prime-space-2xl; }
+
+// Margin utilities
+.prime-m-xs { margin: $prime-space-xs; }
+.prime-m-sm { margin: $prime-space-sm; }
+.prime-m-md { margin: $prime-space-md; }
+.prime-m-lg { margin: $prime-space-lg; }
+.prime-m-xl { margin: $prime-space-xl; }
+.prime-m-2xl { margin: $prime-space-2xl; }
+
+// Margin top utilities
+.prime-mt-xs { margin-top: $prime-space-xs; }
+.prime-mt-sm { margin-top: $prime-space-sm; }
+.prime-mt-md { margin-top: $prime-space-md; }
+.prime-mt-lg { margin-top: $prime-space-lg; }
+.prime-mt-xl { margin-top: $prime-space-xl; }
+.prime-mt-2xl { margin-top: $prime-space-2xl; }
+
+// Margin bottom utilities
+.prime-mb-xs { margin-bottom: $prime-space-xs; }
+.prime-mb-sm { margin-bottom: $prime-space-sm; }
+.prime-mb-md { margin-bottom: $prime-space-md; }
+.prime-mb-lg { margin-bottom: $prime-space-lg; }
+.prime-mb-xl { margin-bottom: $prime-space-xl; }
+.prime-mb-2xl { margin-bottom: $prime-space-2xl; }
+
+// Margin left utilities
+.prime-ml-xs { margin-left: $prime-space-xs; }
+.prime-ml-sm { margin-left: $prime-space-sm; }
+.prime-ml-md { margin-left: $prime-space-md; }
+.prime-ml-lg { margin-left: $prime-space-lg; }
+.prime-ml-xl { margin-left: $prime-space-xl; }
+.prime-ml-2xl { margin-left: $prime-space-2xl; }
+
+// Margin right utilities
+.prime-mr-xs { margin-right: $prime-space-xs; }
+.prime-mr-sm { margin-right: $prime-space-sm; }
+.prime-mr-md { margin-right: $prime-space-md; }
+.prime-mr-lg { margin-right: $prime-space-lg; }
+.prime-mr-xl { margin-right: $prime-space-xl; }
+.prime-mr-2xl { margin-right: $prime-space-2xl; }
+
+// Margin horizontal utilities
+.prime-mx-xs { margin-left: $prime-space-xs; margin-right: $prime-space-xs; }
+.prime-mx-sm { margin-left: $prime-space-sm; margin-right: $prime-space-sm; }
+.prime-mx-md { margin-left: $prime-space-md; margin-right: $prime-space-md; }
+.prime-mx-lg { margin-left: $prime-space-lg; margin-right: $prime-space-lg; }
+.prime-mx-xl { margin-left: $prime-space-xl; margin-right: $prime-space-xl; }
+.prime-mx-2xl { margin-left: $prime-space-2xl; margin-right: $prime-space-2xl; }
+
+// Margin vertical utilities
+.prime-my-xs { margin-top: $prime-space-xs; margin-bottom: $prime-space-xs; }
+.prime-my-sm { margin-top: $prime-space-sm; margin-bottom: $prime-space-sm; }
+.prime-my-md { margin-top: $prime-space-md; margin-bottom: $prime-space-md; }
+.prime-my-lg { margin-top: $prime-space-lg; margin-bottom: $prime-space-lg; }
+.prime-my-xl { margin-top: $prime-space-xl; margin-bottom: $prime-space-xl; }
+.prime-my-2xl { margin-top: $prime-space-2xl; margin-bottom: $prime-space-2xl; }
+
+// Auto margin utilities
+.prime-mx-auto { margin-left: auto; margin-right: auto; }
+.prime-ml-auto { margin-left: auto; }
+.prime-mr-auto { margin-right: auto; }
+
+// Zero utilities
+.prime-p-0 { padding: 0; }
+.prime-m-0 { margin: 0; }
+
+.prime-grid {
+  display: grid;
+  gap: $prime-space-md;
+  
+  &.prime-grid--2 {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+  
+  &.prime-grid--3 {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  
+  &.prime-grid--4 {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+// ===== DARK MODE SUPPORT =====
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--prime-grey-900);
+    color: var(--prime-grey-100);
+  }
+  
+  .prime-card {
+    background: var(--prime-grey-800);
+    border-color: var(--prime-grey-700);
+  }
+  
+  .prime-stats-card {
+    .stats-icon {
+      background: var(--prime-grey-700);
+    }
+    
+    .stats-label {
+      color: var(--prime-grey-100);
+    }
+  }
+  
+  .prime-empty-state {
+    .empty-icon {
+      background: var(--prime-grey-700);
+      color: var(--prime-grey-500);
+    }
+    
+    .empty-title {
+      color: var(--prime-grey-100);
+    }
+  }
+}

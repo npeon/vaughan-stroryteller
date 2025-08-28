@@ -1,14 +1,31 @@
 <template>
-  <q-page class="login-page">
-    <!-- Form Header -->
-    <div class="form-header">
-      <h2 class="form-title">
-        Welcome back
-      </h2>
-      <p class="form-subtitle">
-        Please sign in to your account
-      </p>
-    </div>
+  <q-page class="prime-auth-page">
+    <div class="auth-container">
+      <!-- Brand Section -->
+      <div class="brand-section">
+        <div class="brand-logo">
+          <div class="logo-icon">
+            <q-icon name="auto_stories" />
+          </div>
+          <div class="logo-text">
+            <div class="brand-name">The Vaughan Storyteller</div>
+            <div class="brand-tagline">AI-Powered English Learning</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auth Card -->
+      <div class="auth-card-container">
+        <div class="prime-card auth-card">
+          <!-- Form Header -->
+          <div class="form-header">
+            <h2 class="form-title">
+              Welcome back
+            </h2>
+            <p class="form-subtitle">
+              Please sign in to your account
+            </p>
+          </div>
 
     <!-- Auth Mode Tabs -->
     <div class="auth-tabs">
@@ -38,6 +55,7 @@
             type="email"
             label="Email address"
             outlined
+            class="prime-input"
             :rules="[validateEmailRule]"
             lazy-rules
             :error="!!fieldErrors.email"
@@ -58,6 +76,7 @@
             :type="showPassword ? 'text' : 'password'"
             label="Password"
             outlined
+            class="prime-input"
             :rules="[validatePasswordRule]"
             lazy-rules
             :error="!!fieldErrors.password"
@@ -98,10 +117,10 @@
             type="submit"
             color="primary"
             size="lg"
-            class="full-width"
+            class="full-width prime-btn prime-btn--primary"
             :loading="loading"
             :disable="loading || !isLoginFormValid"
-            no-caps
+            unelevated
             data-testid="email-signin-btn"
           >
             <span v-if="!loading">Sign In</span>
@@ -119,6 +138,7 @@
             type="text"
             label="Full name"
             outlined
+            class="prime-input"
             :rules="[validateNameRule]"
             lazy-rules
             :error="!!fieldErrors.fullName"
@@ -137,6 +157,7 @@
             type="email"
             label="Email address"
             outlined
+            class="prime-input"
             :rules="[validateEmailRule]"
             lazy-rules
             :error="!!fieldErrors.email"
@@ -155,6 +176,7 @@
             :type="showPassword ? 'text' : 'password'"
             label="Password"
             outlined
+            class="prime-input"
             :rules="[validatePasswordRule]"
             lazy-rules
             :error="!!fieldErrors.password"
@@ -194,10 +216,10 @@
             type="submit"
             color="primary"
             size="lg"
-            class="full-width"
+            class="full-width prime-btn prime-btn--primary"
             :loading="loading"
             :disable="loading || !isRegisterFormValid"
-            no-caps
+            unelevated
             data-testid="email-signup-btn"
           >
             <span v-if="!loading">Create Account</span>
@@ -234,6 +256,7 @@
             type="email"
             label="Email address"
             outlined
+            class="prime-input"
             :rules="[validateEmailRule]"
             lazy-rules
             :error="!!fieldErrors.email"
@@ -251,10 +274,10 @@
             type="submit"
             color="primary"
             size="lg"
-            class="full-width"
+            class="full-width prime-btn prime-btn--primary"
             :loading="loading"
             :disable="loading || !isResetFormValid"
-            no-caps
+            unelevated
             data-testid="reset-password-btn"
           >
             <span v-if="!loading">Send Reset Link</span>
@@ -277,12 +300,9 @@
         @click="handleGoogleSignIn"
         :loading="loading"
         :disable="loading"
-        outline
-        color="grey-7"
-        text-color="grey-8"
         size="md"
-        class="full-width"
-        no-caps
+        class="full-width prime-btn prime-btn--secondary"
+        unelevated
         data-testid="google-signin-btn"
       >
         <q-icon name="img:https://developers.google.com/identity/images/g-logo.png" size="18px" class="q-mr-sm" />
@@ -304,47 +324,50 @@
       </q-btn>
     </div>
 
-    <!-- Terms and Privacy -->
-    <div class="text-center q-mt-lg">
-      <p class="text-caption text-grey-6">
-        By continuing, you agree to our <a href="#" class="text-primary">terms of service</a> 
-        and <a href="#" class="text-primary">privacy policy</a>
-      </p>
+        <!-- Terms and Privacy -->
+        <div class="terms-section">
+          <p class="terms-text">
+            By continuing, you agree to our <a href="#" class="text-primary">terms of service</a> 
+            and <a href="#" class="text-primary">privacy policy</a>
+          </p>
+        </div>
+
+        <!-- Estado de carga -->
+        <q-inner-loading :showing="loading" color="primary" data-testid="inner-loading">
+          <q-spinner-dots size="40px" data-testid="loading-spinner" />
+          <div class="q-mt-md text-center">
+            <p class="text-body2">Redirecting to Google...</p>
+            <p class="text-caption text-grey-6">This may take a few seconds</p>
+          </div>
+        </q-inner-loading>
+
+        <!-- Mensaje de error -->
+        <q-banner
+          v-if="error"
+          class="error-banner"
+          rounded
+        >
+          <template #avatar>
+            <q-icon name="error" />
+          </template>
+          <div>
+            <div class="text-subtitle2">Authentication Error</div>
+            <div class="text-body2">{{ error }}</div>
+          </div>
+          <template #action>
+            <q-btn
+              @click="() => {}"
+              flat
+              color="white"
+              label="Dismiss"
+              size="sm"
+              data-testid="error-dismiss-btn"
+            />
+          </template>
+        </q-banner>
+        </div>
+      </div>
     </div>
-
-    <!-- Estado de carga -->
-    <q-inner-loading :showing="loading" color="primary" data-testid="inner-loading">
-      <q-spinner-dots size="40px" data-testid="loading-spinner" />
-      <div class="q-mt-md text-center">
-        <p class="text-body2">Redirecting to Google...</p>
-        <p class="text-caption text-grey-6">This may take a few seconds</p>
-      </div>
-    </q-inner-loading>
-
-    <!-- Mensaje de error -->
-    <q-banner
-      v-if="error"
-      class="text-white bg-red q-mt-md"
-      rounded
-    >
-      <template #avatar>
-        <q-icon name="error" />
-      </template>
-      <div>
-        <div class="text-subtitle2">Authentication Error</div>
-        <div class="text-body2">{{ error }}</div>
-      </div>
-      <template #action>
-        <q-btn
-          @click="() => {}"
-          flat
-          color="white"
-          label="Dismiss"
-          size="sm"
-          data-testid="error-dismiss-btn"
-        />
-      </template>
-    </q-banner>
   </q-page>
 </template>
 
@@ -668,79 +691,151 @@ watch(isAuthenticated, async (newValue, oldValue) => {
 </script>
 
 <style lang="scss" scoped>
-// ===== PRIME ADMIN LOGIN PAGE STYLES =====
+// ===== PRIME AUTH PAGE STYLES =====
+@import '../../css/quasar.variables.scss';
 
-:root {
-  --prime-indigo: #6366f1;
-  --prime-purple: #8b5cf6;
-  --prime-cyan: #06b6d4;
-  --prime-grey-50: #f8fafc;
-  --prime-grey-100: #f1f5f9;
-  --prime-grey-400: #94a3b8;
-  --prime-grey-500: #64748b;
-  --prime-grey-600: #475569;
-  --prime-grey-900: #0f172a;
+.prime-auth-page {
+  background: linear-gradient(135deg, var(--prime-grey-50) 0%, var(--prime-grey-100) 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $prime-space-lg;
 }
 
-.login-page {
+// ===== AUTH CONTAINER =====
+.auth-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: $prime-space-2xl;
+  max-width: 1200px;
   width: 100%;
-  max-width: 100%;
-  padding: 0;
-  min-height: 100%;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: $prime-space-xl;
+    max-width: 400px;
+  }
+}
+
+// ===== BRAND SECTION =====
+.brand-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: $prime-space-2xl;
+  
+  @media (max-width: 768px) {
+    text-align: center;
+    padding: $prime-space-lg;
+  }
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: $prime-space-lg;
+  margin-bottom: $prime-space-xl;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: $prime-space-md;
+  }
+}
+
+.logo-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+  box-shadow: var(--shadow-lg);
+}
+
+.brand-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: var(--prime-primary);
+  line-height: 1.2;
+  margin-bottom: $prime-space-xs;
+}
+
+.brand-tagline {
+  font-size: 1.25rem;
+  color: var(--prime-grey-600);
+  font-weight: 500;
+}
+
+// ===== AUTH CARD =====
+.auth-card-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 450px;
+  padding: $prime-space-2xl;
 }
 
 // ===== FORM HEADER =====
 .form-header {
-  margin-bottom: 2rem;
   text-align: center;
+  margin-bottom: $prime-space-xl;
 }
 
 .form-title {
   font-size: 1.875rem;
   font-weight: 600;
   color: var(--prime-grey-900);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 $prime-space-sm 0;
   line-height: 1.2;
   letter-spacing: -0.025em;
 }
 
 .form-subtitle {
   font-size: 1rem;
-  color: var(--prime-grey-500);
+  color: var(--prime-grey-600);
   margin: 0;
   line-height: 1.5;
 }
 
 // ===== AUTH TABS =====
 .auth-tabs {
-  margin-bottom: 2rem;
+  margin-bottom: $prime-space-xl;
   
   .prime-tabs {
     :deep(.q-tabs__content) {
-      border-bottom: 1px solid var(--prime-grey-100);
+      border-bottom: 1px solid var(--prime-grey-200);
     }
     
     :deep(.q-tab) {
       font-weight: 500;
       color: var(--prime-grey-500);
-      padding: 1rem 0;
-      margin-right: 2rem;
+      padding: $prime-space-md 0;
+      margin-right: $prime-space-xl;
       text-transform: none;
       font-size: 0.875rem;
       
       &.q-tab--active {
-        color: var(--prime-indigo);
+        color: var(--prime-primary);
         font-weight: 600;
-      }
-      
-      .q-tab__content {
-        min-width: auto;
       }
     }
     
     :deep(.q-tabs__indicator) {
       height: 2px;
       border-radius: 2px 2px 0 0;
+      background: var(--prime-primary);
     }
   }
 }
@@ -752,117 +847,9 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   }
 }
 
-// ===== PRIME FORMS =====
-.prime-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-// ===== PRIME INPUTS =====
-.prime-input {
-  :deep(.q-field__control) {
-    border-radius: 8px;
-    min-height: 48px;
-    border: 1px solid var(--prime-grey-100);
-    background-color: white;
-    
-    &:before {
-      border: none !important;
-    }
-    
-    &:after {
-      border: none !important;
-    }
-    
-    &:hover {
-      border-color: var(--prime-grey-400);
-    }
-  }
-  
-  :deep(.q-field--outlined.q-field--focused .q-field__control) {
-    border-color: var(--prime-indigo);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-  }
-  
-  :deep(.q-field--error .q-field__control) {
-    border-color: #ef4444;
-  }
-  
-  :deep(.q-field__label) {
-    color: var(--prime-grey-600);
-    font-weight: 500;
-    font-size: 0.875rem;
-    left: 16px;
-    
-    &.q-field__label--floating {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--prime-indigo);
-    }
-  }
-  
-  :deep(.q-field__native) {
-    padding: 0 16px;
-    font-size: 0.875rem;
-    color: var(--prime-grey-900);
-  }
-  
-  :deep(.q-field__append) {
-    padding-right: 12px;
-  }
-}
-
-// ===== FORM ACTIONS =====
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0.5rem;
-}
-
-.forgot-link {
-  font-size: 0.875rem;
-  font-weight: 500;
-  padding: 0.25rem 0;
-  text-decoration: none;
-  
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-// ===== PRIME BUTTONS =====
-.prime-btn {
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.875rem;
-  min-height: 48px;
-  text-transform: none;
-  letter-spacing: 0.025em;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 10px 25px -5px rgba(99, 102, 241, 0.25), 0 4px 6px -2px rgba(99, 102, 241, 0.05);
-  }
-  
-  &:active:not(:disabled) {
-    transform: translateY(0);
-  }
-  
-  &:disabled {
-    opacity: 0.6;
-  }
-}
-
 // ===== PASSWORD STRENGTH =====
 .password-strength {
-  margin-top: 0.5rem;
+  margin-top: $prime-space-sm;
   
   .q-linear-progress {
     border-radius: 2px;
@@ -877,127 +864,34 @@ watch(isAuthenticated, async (newValue, oldValue) => {
 
 // ===== ALTERNATIVE AUTH OPTIONS =====
 .auth-alternatives {
-  margin-top: 1.5rem;
+  margin-top: $prime-space-lg;
   
   .q-separator {
-    margin: 1.5rem 0;
+    margin: $prime-space-lg 0;
     
     :deep(.q-separator__content) {
       font-size: 0.75rem;
       font-weight: 500;
       color: var(--prime-grey-400);
-      padding: 0 1rem;
+      padding: 0 $prime-space-md;
       background-color: white;
     }
   }
+}
+
+// ===== TERMS SECTION =====
+.terms-section {
+  text-align: center;
+  margin-top: $prime-space-lg;
   
-  .q-btn {
-    border: 1px solid var(--prime-grey-100);
-    border-radius: 8px;
-    min-height: 48px;
-    color: var(--prime-grey-600);
-    font-weight: 500;
-    transition: all 0.2s ease;
-    
-    &:hover {
-      border-color: var(--prime-grey-400);
-      background-color: var(--prime-grey-50);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    }
-    
-    :deep(.q-icon img) {
-      width: 20px;
-      height: 20px;
-    }
-  }
-}
-
-// ===== RESPONSIVE DESIGN =====
-@media (max-width: 640px) {
-  .form-title {
-    font-size: 1.5rem;
-  }
-  
-  .auth-tabs {
-    margin-bottom: 1.5rem;
-    
-    .prime-tabs :deep(.q-tab) {
-      margin-right: 1rem;
-      font-size: 0.8rem;
-    }
-  }
-  
-  .prime-form {
-    gap: 1.25rem;
-  }
-  
-  .prime-input {
-    :deep(.q-field__control) {
-      min-height: 44px;
-    }
-  }
-  
-  .prime-btn {
-    min-height: 44px;
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .form-header {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-title {
-    font-size: 1.375rem;
-  }
-  
-  .auth-tabs .prime-tabs :deep(.q-tab) {
-    margin-right: 0.5rem;
-    padding: 0.75rem 0;
-  }
-}
-
-// ===== LOADING & STATES =====
-.q-inner-loading {
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(4px);
-  border-radius: 8px;
-}
-
-// ===== ERROR ANIMATIONS =====
-.prime-input:deep(.q-field--error .q-field__control) {
-  animation: shake 0.3s ease-in-out;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-2px); }
-  75% { transform: translateX(2px); }
-}
-
-// ===== ACCESSIBILITY =====
-.prime-btn:focus-visible {
-  outline: 2px solid var(--prime-indigo);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-}
-
-.prime-input:deep(.q-field__control:focus-within) {
-  border-color: var(--prime-indigo);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-// ===== TERMS AND PRIVACY SECTION =====
-.text-center {
-  .text-caption {
+  .terms-text {
     font-size: 0.75rem;
     line-height: 1.5;
-    color: var(--prime-grey-400);
+    color: var(--prime-grey-500);
+    margin: 0;
     
     a {
-      color: var(--prime-indigo);
+      color: var(--prime-primary);
       text-decoration: none;
       font-weight: 500;
       
@@ -1005,6 +899,92 @@ watch(isAuthenticated, async (newValue, oldValue) => {
         text-decoration: underline;
       }
     }
+  }
+}
+
+// ===== ERROR BANNER =====
+.error-banner {
+  background: var(--prime-negative);
+  color: white;
+  margin-top: $prime-space-md;
+  
+  .q-banner__avatar {
+    color: white;
+  }
+}
+
+// ===== LOADING STATE =====
+.q-inner-loading {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md);
+}
+
+// ===== RESPONSIVE DESIGN =====
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 2rem;
+  }
+  
+  .brand-tagline {
+    font-size: 1.125rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+  
+  .auth-card {
+    padding: $prime-space-lg;
+  }
+}
+
+@media (max-width: 480px) {
+  .prime-auth-page {
+    padding: $prime-space-md;
+  }
+  
+  .brand-name {
+    font-size: 1.75rem;
+  }
+  
+  .form-title {
+    font-size: 1.375rem;
+  }
+  
+  .auth-card {
+    padding: $prime-space-md;
+  }
+}
+
+// ===== ANIMATIONS =====
+.auth-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.brand-section {
+  animation: fadeInLeft 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 </style>

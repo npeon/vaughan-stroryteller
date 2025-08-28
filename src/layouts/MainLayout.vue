@@ -244,27 +244,13 @@ const handleLogout = async () => {
 <style lang="scss" scoped>
 // ===== PRIME ADMIN MAIN LAYOUT STYLES =====
 
-:root {
-  --prime-indigo: #6366f1;
-  --prime-purple: #8b5cf6;
-  --prime-cyan: #06b6d4;
-  --prime-grey-50: #f8fafc;
-  --prime-grey-100: #f1f5f9;
-  --prime-grey-200: #e2e8f0;
-  --prime-grey-300: #cbd5e1;
-  --prime-grey-400: #94a3b8;
-  --prime-grey-500: #64748b;
-  --prime-grey-600: #475569;
-  --prime-grey-700: #334155;
-  --prime-grey-800: #1e293b;
-  --prime-grey-900: #0f172a;
-}
+// Using CSS custom properties from app.scss - no need to redeclare
 
 // ===== HEADER STYLES =====
 .prime-header {
-  background: linear-gradient(135deg, var(--prime-indigo) 0%, var(--prime-purple) 100%);
+  background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-sm);
 }
 
 .prime-toolbar {
@@ -367,8 +353,8 @@ const handleLogout = async () => {
 // ===== USER MENU DROPDOWN =====
 .user-menu {
   min-width: 200px;
-  border-radius: 8px;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   border: 1px solid var(--prime-grey-200);
   
   .q-item {
@@ -425,7 +411,18 @@ const handleLogout = async () => {
 .drawer-header {
   padding: 24px 20px;
   border-bottom: 1px solid var(--prime-grey-200);
-  background: linear-gradient(135deg, var(--prime-grey-50) 0%, white 100%);
+  background: white;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
+  }
 }
 
 .drawer-brand {
@@ -455,13 +452,13 @@ const handleLogout = async () => {
 
 .nav-item {
   margin: 2px 12px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   padding: 12px 16px;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   
   &:hover {
     background-color: var(--prime-grey-50);
-    transform: translateX(4px);
+    transform: translateX(2px);
   }
   
   .q-item-section--avatar {
@@ -483,9 +480,9 @@ const handleLogout = async () => {
   
   // Active state
   &.nav-item--active {
-    background: linear-gradient(135deg, var(--prime-indigo) 0%, var(--prime-purple) 100%);
+    background: linear-gradient(135deg, var(--prime-primary) 0%, var(--prime-secondary) 100%);
     color: white;
-    box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.2);
+    box-shadow: var(--shadow-sm);
     
     .q-icon {
       color: white;
@@ -497,8 +494,8 @@ const handleLogout = async () => {
     }
     
     &:hover {
-      transform: translateX(8px);
-      box-shadow: 0 6px 12px -2px rgba(99, 102, 241, 0.25);
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
     }
   }
 }

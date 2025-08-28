@@ -1,281 +1,321 @@
 <template>
-  <q-page class="vocabulary-page">
-    <div class="q-pa-md">
-      <div class="row q-col-gutter-md">
-        <!-- Header -->
-        <div class="col-12">
-          <div class="page-header">
-            <div>
-              <h4 class="text-h4 q-my-none">
-                <q-icon name="book" class="q-mr-sm" />
-                Vocabulary
-              </h4>
-              <p class="text-subtitle1 text-grey-7 q-mb-none">
-                Your personal English vocabulary collection
-              </p>
+  <q-page class="prime-vocabulary-page">
+    <div class="prime-container q-pa-lg">
+      <!-- Page Header -->
+      <div class="prime-page-header q-mb-xl">
+        <div class="header-content">
+          <div class="header-icon">
+            <q-icon name="translate" />
+          </div>
+          <div>
+            <h1 class="page-title">Vocabulary</h1>
+            <p class="page-subtitle">
+              Your personal English vocabulary collection
+            </p>
+          </div>
+        </div>
+        <q-btn
+          class="prime-btn prime-btn--primary"
+          icon="add"
+          label="Add Word"
+          unelevated
+          size="lg"
+          @click="showAddDialog = true"
+        />
+      </div>
+
+      <!-- Statistics Cards -->
+      <div class="prime-grid prime-grid--4 q-mb-xl">
+        <div class="prime-stats-card">
+          <div class="stats-icon">
+            <q-icon name="library_books" />
+          </div>
+          <div class="stats-number">{{ stats.total }}</div>
+          <div class="stats-label">Total Words</div>
+          <div class="stats-caption">In your collection</div>
+        </div>
+
+        <div class="prime-stats-card">
+          <div class="stats-icon">
+            <q-icon name="verified" />
+          </div>
+          <div class="stats-number">{{ stats.mastered }}</div>
+          <div class="stats-label">Mastered</div>
+          <div class="stats-caption">Well learned</div>
+        </div>
+
+        <div class="prime-stats-card">
+          <div class="stats-icon">
+            <q-icon name="school" />
+          </div>
+          <div class="stats-number">{{ stats.learning }}</div>
+          <div class="stats-label">Learning</div>
+          <div class="stats-caption">In progress</div>
+        </div>
+
+        <div class="prime-stats-card">
+          <div class="stats-icon">
+            <q-icon name="schedule" />
+          </div>
+          <div class="stats-number">{{ stats.due }}</div>
+          <div class="stats-label">Due Review</div>
+          <div class="stats-caption">Ready to practice</div>
+        </div>
+      </div>
+
+      <!-- Practice Actions -->
+      <div class="q-mb-xl">
+        <h2 class="section-title q-mb-lg">Practice</h2>
+        <div class="prime-action-grid">
+          <div 
+            class="prime-action-card"
+            :class="{ 'disabled': stats.due === 0 }"
+            @click="stats.due > 0 && startReview()"
+          >
+            <div class="action-icon action-icon--primary">
+              <q-icon name="quiz" />
             </div>
-            <q-btn
-              color="primary"
-              icon="add"
-              label="Add Word"
-              unelevated
-              size="lg"
-              @click="showAddDialog = true"
-            />
+            <div class="action-title">Review Due Words</div>
+            <div class="action-description">
+              Practice words that are ready for review using spaced repetition
+            </div>
+          </div>
+
+          <div 
+            class="prime-action-card"
+            :class="{ 'disabled': stats.total === 0 }"
+            @click="stats.total > 0 && startRandomPractice()"
+          >
+            <div class="action-icon action-icon--secondary">
+              <q-icon name="shuffle" />
+            </div>
+            <div class="action-title">Random Practice</div>
+            <div class="action-description">
+              Test yourself with a random selection from your vocabulary
+            </div>
+          </div>
+
+          <div 
+            class="prime-action-card"
+            :class="{ 'disabled': stats.total === 0 }"
+            @click="stats.total > 0 && practiceDifficult()"
+          >
+            <div class="action-icon action-icon--accent">
+              <q-icon name="trending_up" />
+            </div>
+            <div class="action-title">Difficult Words</div>
+            <div class="action-description">
+              Focus on words you find most challenging to master
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Vocabulary List -->
+      <div class="q-mb-xl">
+        <div class="vocab-list-header q-mb-lg">
+          <h2 class="section-title">Your Vocabulary</h2>
+          <q-input
+            v-model="searchQuery"
+            placeholder="Search words..."
+            outlined
+            dense
+            clearable
+            class="search-input"
+          >
+            <template #prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+
+        <div v-if="filteredWords.length === 0 && searchQuery === ''" class="prime-empty-state">
+          <div class="empty-icon">
+            <q-icon name="library_books" />
+          </div>
+          <div class="empty-title">No vocabulary yet</div>
+          <div class="empty-description">
+            Start building your English vocabulary by adding words you encounter in stories, 
+            conversations, or daily life. Each word will help expand your language skills.
+          </div>
+          <q-btn
+            class="prime-btn prime-btn--primary q-mt-lg"
+            icon="add"
+            label="Add Your First Word"
+            unelevated
+            @click="showAddDialog = true"
+          />
+        </div>
+
+        <div v-else-if="filteredWords.length === 0" class="prime-empty-state">
+          <div class="empty-icon">
+            <q-icon name="search_off" />
+          </div>
+          <div class="empty-title">No words found</div>
+          <div class="empty-description">
+            No words match your search "{{ searchQuery }}". Try a different search term.
           </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card class="stats-card">
-            <q-card-section class="text-center">
-              <div class="text-h4 text-primary">{{ stats.total }}</div>
-              <div class="text-body2 text-grey-6">Total Words</div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card class="stats-card">
-            <q-card-section class="text-center">
-              <div class="text-h4 text-positive">{{ stats.mastered }}</div>
-              <div class="text-body2 text-grey-6">Mastered</div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card class="stats-card">
-            <q-card-section class="text-center">
-              <div class="text-h4 text-orange">{{ stats.learning }}</div>
-              <div class="text-body2 text-grey-6">Learning</div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <div class="col-12 col-sm-6 col-md-3">
-          <q-card class="stats-card">
-            <q-card-section class="text-center">
-              <div class="text-h4 text-info">{{ stats.due }}</div>
-              <div class="text-body2 text-grey-6">Due for Review</div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="col-12">
-          <q-card>
-            <q-card-section>
-              <div class="text-h6 q-mb-md">Practice</div>
-              <div class="row q-gutter-md">
-                <q-btn
-                  color="primary"
-                  icon="quiz"
-                  label="Review Due Words"
-                  unelevated
-                  :disable="stats.due === 0"
-                  @click="startReview"
-                />
-                <q-btn
-                  color="secondary"
-                  icon="shuffle"
-                  label="Random Practice"
-                  unelevated
-                  :disable="stats.total === 0"
-                  @click="startRandomPractice"
-                />
-                <q-btn
-                  color="accent"
-                  icon="trending_up"
-                  label="Difficult Words"
-                  unelevated
-                  :disable="stats.total === 0"
-                  @click="practiceDifficult"
-                />
-              </div>
-            </q-card-section>
-          </q-card>
-        </div>
-
-        <!-- Vocabulary List -->
-        <div class="col-12">
-          <q-card>
-            <q-card-section>
-              <div class="row items-center q-mb-md">
-                <div class="text-h6">Your Vocabulary</div>
-                <q-space />
-                <q-input
-                  v-model="searchQuery"
-                  placeholder="Search words..."
-                  outlined
-                  dense
-                  clearable
-                  style="min-width: 200px"
+        <div v-else class="prime-card">
+          <div class="vocab-list">
+            <div
+              v-for="word in paginatedWords"
+              :key="word.id"
+              class="vocab-word-item"
+            >
+              <div class="word-mastery">
+                <div 
+                  class="mastery-badge"
+                  :class="`mastery-${getMasteryLevel(word.mastery_level)}`"
                 >
-                  <template #prepend>
-                    <q-icon name="search" />
-                  </template>
-                </q-input>
+                  {{ word.mastery_level }}
+                </div>
               </div>
 
-              <div v-if="filteredWords.length === 0 && searchQuery === ''" class="text-center q-pa-xl">
-                <q-icon name="library_books" size="120px" color="grey-4" />
-                <div class="text-h6 text-grey-6 q-mt-md">
-                  No vocabulary yet
+              <div class="word-content">
+                <div class="word-header">
+                  <h4 class="word-title">{{ word.word }}</h4>
+                  <div 
+                    class="difficulty-badge"
+                    :class="`difficulty-${word.difficulty_level}`"
+                  >
+                    {{ word.difficulty_level }}
+                  </div>
                 </div>
-                <div class="text-body2 text-grey-5 q-mb-lg">
-                  Start adding words to build your vocabulary
+                
+                <p class="word-definition">
+                  {{ word.definition || 'No definition available' }}
+                </p>
+                
+                <div class="word-meta">
+                  <span class="word-date">Added {{ formatDate(word.created_at) }}</span>
                 </div>
+              </div>
+
+              <div class="word-actions">
                 <q-btn
-                  color="primary"
-                  icon="add"
-                  label="Add Your First Word"
-                  unelevated
-                  @click="showAddDialog = true"
+                  flat
+                  round
+                  icon="volume_up"
+                  size="sm"
+                  class="action-btn"
+                  @click="playPronunciation(word)"
+                  :loading="playingAudio === word.id"
+                />
+                <q-btn
+                  flat
+                  round
+                  icon="edit"
+                  size="sm"
+                  class="action-btn"
+                  @click="editWord(word)"
+                />
+                <q-btn
+                  flat
+                  round
+                  icon="delete"
+                  size="sm"
+                  class="action-btn action-btn--danger"
+                  @click="deleteWord(word)"
                 />
               </div>
+            </div>
+          </div>
 
-              <div v-else-if="filteredWords.length === 0" class="text-center q-pa-lg">
-                <q-icon name="search_off" size="64px" color="grey-4" />
-                <div class="text-subtitle1 text-grey-6 q-mt-md">
-                  No words found for "{{ searchQuery }}"
-                </div>
-              </div>
-
-              <div v-else>
-                <q-list separator>
-                  <q-item
-                    v-for="word in paginatedWords"
-                    :key="word.id"
-                    class="vocabulary-item"
-                  >
-                    <q-item-section avatar>
-                      <q-avatar :color="getMasteryColor(word.mastery_level)" text-color="white">
-                        {{ word.mastery_level }}
-                      </q-avatar>
-                    </q-item-section>
-
-                    <q-item-section>
-                      <q-item-label class="text-weight-medium">
-                        {{ word.word }}
-                        <q-badge 
-                          v-if="word.difficulty_level"
-                          :color="getDifficultyColor(word.difficulty_level)"
-                          :label="word.difficulty_level"
-                          class="q-ml-sm"
-                        />
-                      </q-item-label>
-                      <q-item-label caption>
-                        {{ word.definition || 'No definition available' }}
-                      </q-item-label>
-                      <q-item-label caption class="text-grey-5">
-                        Added {{ formatDate(word.created_at) }}
-                      </q-item-label>
-                    </q-item-section>
-
-                    <q-item-section side>
-                      <div class="row q-gutter-xs">
-                        <q-btn
-                          flat
-                          round
-                          icon="volume_up"
-                          size="sm"
-                          @click="playPronunciation(word)"
-                          :loading="playingAudio === word.id"
-                        />
-                        <q-btn
-                          flat
-                          round
-                          icon="edit"
-                          size="sm"
-                          @click="editWord(word)"
-                        />
-                        <q-btn
-                          flat
-                          round
-                          icon="delete"
-                          size="sm"
-                          color="negative"
-                          @click="deleteWord(word)"
-                        />
-                      </div>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-
-                <!-- Pagination -->
-                <div class="row justify-center q-mt-md" v-if="totalPages > 1">
-                  <q-pagination
-                    v-model="currentPage"
-                    :max="totalPages"
-                    :max-pages="5"
-                    boundary-numbers
-                    direction-links
-                  />
-                </div>
-              </div>
-            </q-card-section>
-          </q-card>
+          <!-- Pagination -->
+          <div class="pagination-container" v-if="totalPages > 1">
+            <q-pagination
+              v-model="currentPage"
+              :max="totalPages"
+              :max-pages="5"
+              boundary-numbers
+              direction-links
+            />
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Add Word Dialog -->
-    <q-dialog v-model="showAddDialog" persistent>
-      <q-card style="min-width: 400px">
-        <q-card-section>
-          <div class="text-h6">Add New Word</div>
-        </q-card-section>
+    <q-dialog v-model="showAddDialog" class="prime-dialog">
+      <div class="prime-card prime-dialog-card">
+        <div class="dialog-header">
+          <div class="dialog-icon">
+            <q-icon name="add" />
+          </div>
+          <div>
+            <h3 class="dialog-title">Add New Word</h3>
+            <p class="dialog-subtitle">
+              Expand your vocabulary collection
+            </p>
+          </div>
+        </div>
 
-        <q-card-section class="q-gutter-md">
-          <q-input
-            v-model="addForm.word"
-            label="Word"
-            outlined
-            :rules="[val => !!val || 'Word is required']"
-            @blur="lookupWord"
-          />
+        <div class="dialog-content">
+          <div class="form-group">
+            <label class="form-label">Word *</label>
+            <q-input
+              v-model="addForm.word"
+              outlined
+              placeholder="Enter the word"
+              class="prime-input"
+              @blur="lookupWord"
+            />
+          </div>
           
-          <q-input
-            v-model="addForm.definition"
-            label="Definition"
-            outlined
-            type="textarea"
-            rows="2"
-          />
+          <div class="form-group">
+            <label class="form-label">Definition</label>
+            <q-input
+              v-model="addForm.definition"
+              outlined
+              type="textarea"
+              rows="3"
+              placeholder="What does this word mean?"
+              class="prime-textarea"
+            />
+          </div>
           
-          <q-input
-            v-model="addForm.example_sentence"
-            label="Example Sentence"
-            outlined
-            type="textarea"
-            rows="2"
-          />
+          <div class="form-group">
+            <label class="form-label">Example Sentence</label>
+            <q-input
+              v-model="addForm.example_sentence"
+              outlined
+              type="textarea"
+              rows="2"
+              placeholder="Use the word in a sentence"
+              class="prime-textarea"
+            />
+          </div>
           
-          <q-select
-            v-model="addForm.difficulty_level"
-            :options="difficultyOptions"
-            label="Difficulty Level"
-            outlined
-            emit-value
-            map-options
-          />
-        </q-card-section>
+          <div class="form-group">
+            <label class="form-label">Difficulty Level</label>
+            <q-select
+              v-model="addForm.difficulty_level"
+              :options="difficultyOptions"
+              outlined
+              emit-value
+              map-options
+              class="prime-select"
+            />
+          </div>
+        </div>
 
-        <q-card-actions align="right">
+        <div class="dialog-actions">
           <q-btn 
-            flat 
-            label="Cancel" 
+            flat
+            label="Cancel"
+            class="prime-btn prime-btn--secondary"
             @click="showAddDialog = false"
           />
           <q-btn 
-            color="primary" 
             label="Add Word"
+            class="prime-btn prime-btn--primary"
             :loading="addingWord"
             @click="addWord"
           />
-        </q-card-actions>
-      </q-card>
+        </div>
+      </div>
     </q-dialog>
   </q-page>
 </template>
@@ -353,19 +393,10 @@ const paginatedWords = computed(() => {
 })
 
 // Methods
-const getMasteryColor = (level: number) => {
-  if (level >= 5) return 'positive'
-  if (level >= 3) return 'warning'
-  return 'negative'
-}
-
-const getDifficultyColor = (difficulty: string) => {
-  switch (difficulty) {
-    case 'beginner': return 'positive'
-    case 'intermediate': return 'warning'  
-    case 'advanced': return 'negative'
-    default: return 'grey'
-  }
+const getMasteryLevel = (level: number) => {
+  if (level >= 5) return 'high'
+  if (level >= 3) return 'medium'
+  return 'low'
 }
 
 const formatDate = (dateString: string) => {
@@ -452,13 +483,14 @@ const loadVocabulary = () => {
     console.log('Loading vocabulary for user:', profile.value?.id)
     
     // Mock data with proper types
+    // Mock data with expanded vocabulary
     words.value = [
       {
         id: '1',
         word: 'adventure',
         definition: 'An exciting or unusual experience',
         difficulty_level: 'intermediate',
-        mastery_level: 3,
+        mastery_level: 4,
         created_at: new Date().toISOString()
       },
       {
@@ -468,13 +500,38 @@ const loadVocabulary = () => {
         difficulty_level: 'advanced',
         mastery_level: 2,
         created_at: new Date().toISOString()
+      },
+      {
+        id: '3',
+        word: 'curious',
+        definition: 'Eager to know or learn something',
+        difficulty_level: 'beginner',
+        mastery_level: 5,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: '4',
+        word: 'magnificent',
+        definition: 'Extremely beautiful, elaborate, or impressive',
+        difficulty_level: 'advanced',
+        mastery_level: 1,
+        created_at: new Date().toISOString()
+      },
+      {
+        id: '5',
+        word: 'perseverance',
+        definition: 'Persistence in doing something despite difficulty',
+        difficulty_level: 'advanced',
+        mastery_level: 3,
+        created_at: new Date().toISOString()
       }
     ]
+    
     stats.value = {
       total: words.value.length,
-      mastered: 0,
-      learning: 0,
-      due: 0
+      mastered: words.value.filter(w => w.mastery_level >= 5).length,
+      learning: words.value.filter(w => w.mastery_level >= 2 && w.mastery_level < 5).length,
+      due: words.value.filter(w => w.mastery_level < 3).length
     }
   } catch (error) {
     console.error('Error loading vocabulary:', error)
@@ -487,32 +544,381 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.vocabulary-page {
-  background: #f5f5f5;
+// ===== PRIME VOCABULARY PAGE STYLES =====
+@import '../css/quasar.variables.scss';
+
+.prime-vocabulary-page {
+  background: var(--prime-grey-50);
+  min-height: calc(100vh - 64px);
 }
 
-.page-header {
+// ===== PAGE HEADER =====
+.prime-page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
   
-  @media (max-width: 600px) {
+  @media (max-width: 768px) {
     flex-direction: column;
     align-items: stretch;
-    gap: 1rem;
+    gap: $prime-space-lg;
   }
 }
 
-.stats-card {
-  .text-h4 {
-    font-weight: 600;
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: $prime-space-md;
+}
+
+.header-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--prime-info) 0%, var(--prime-accent) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 28px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--prime-grey-900);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: var(--prime-grey-600);
+  margin: $prime-space-xs 0 0 0;
+  font-weight: 400;
+}
+
+// ===== SECTION TITLES =====
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--prime-grey-900);
+  margin: 0;
+  
+  &::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(135deg, var(--prime-info) 0%, var(--prime-accent) 100%);
+    margin-top: $prime-space-sm;
+    border-radius: 2px;
   }
 }
 
-.vocabulary-item {
+// ===== DISABLED ACTIONS =====
+.prime-action-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  
   &:hover {
-    background: rgba(0,0,0,0.02);
+    transform: none;
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+// ===== VOCABULARY LIST =====
+.vocab-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: $prime-space-lg;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $prime-space-md;
+  }
+}
+
+.search-input {
+  min-width: 300px;
+  
+  @media (max-width: 768px) {
+    min-width: auto;
+  }
+}
+
+.vocab-list {
+  padding: $prime-space-lg;
+}
+
+.vocab-word-item {
+  display: flex;
+  align-items: flex-start;
+  gap: $prime-space-md;
+  padding: $prime-space-lg 0;
+  border-bottom: 1px solid var(--prime-grey-100);
+  transition: background-color 0.2s ease;
+  
+  &:hover {
+    background-color: var(--prime-grey-50);
+    margin: 0 (-$prime-space-lg);
+    padding-left: $prime-space-lg;
+    padding-right: $prime-space-lg;
+  }
+  
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.word-mastery {
+  flex-shrink: 0;
+}
+
+.mastery-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: white;
+  
+  &.mastery-high {
+    background: linear-gradient(135deg, var(--prime-positive) 0%, #059669 100%);
+  }
+  
+  &.mastery-medium {
+    background: linear-gradient(135deg, var(--prime-warning) 0%, #d97706 100%);
+  }
+  
+  &.mastery-low {
+    background: linear-gradient(135deg, var(--prime-negative) 0%, #dc2626 100%);
+  }
+}
+
+.word-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.word-header {
+  display: flex;
+  align-items: center;
+  gap: $prime-space-sm;
+  margin-bottom: $prime-space-xs;
+}
+
+.word-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--prime-grey-900);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.difficulty-badge {
+  padding: $prime-space-xs $prime-space-sm;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  
+  &.difficulty-beginner {
+    background: var(--prime-positive);
+    color: white;
+  }
+  
+  &.difficulty-intermediate {
+    background: var(--prime-warning);
+    color: white;
+  }
+  
+  &.difficulty-advanced {
+    background: var(--prime-negative);
+    color: white;
+  }
+}
+
+.word-definition {
+  font-size: 0.875rem;
+  color: var(--prime-grey-700);
+  line-height: 1.5;
+  margin: 0 0 $prime-space-sm 0;
+}
+
+.word-meta {
+  display: flex;
+  align-items: center;
+  gap: $prime-space-md;
+}
+
+.word-date {
+  font-size: 0.75rem;
+  color: var(--prime-grey-500);
+  font-weight: 500;
+}
+
+.word-actions {
+  display: flex;
+  gap: $prime-space-xs;
+  align-items: flex-start;
+}
+
+.action-btn {
+  color: var(--prime-grey-400);
+  transition: color 0.2s ease;
+  
+  &:hover {
+    color: var(--prime-grey-600);
+  }
+  
+  &.action-btn--danger:hover {
+    color: var(--prime-negative);
+  }
+}
+
+.pagination-container {
+  padding: $prime-space-lg;
+  border-top: 1px solid var(--prime-grey-100);
+  display: flex;
+  justify-content: center;
+}
+
+// ===== DIALOG STYLES =====
+.prime-dialog {
+  .q-dialog__inner {
+    padding: $prime-space-md;
+  }
+}
+
+.prime-dialog-card {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: $prime-space-md;
+  padding: $prime-space-xl $prime-space-xl $prime-space-lg;
+}
+
+.dialog-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  background: var(--prime-grey-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--prime-info);
+  font-size: 24px;
+}
+
+.dialog-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--prime-grey-900);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.dialog-subtitle {
+  font-size: 0.875rem;
+  color: var(--prime-grey-600);
+  margin: $prime-space-xs 0 0 0;
+}
+
+.dialog-content {
+  padding: 0 $prime-space-xl $prime-space-lg;
+}
+
+.form-group {
+  margin-bottom: $prime-space-lg;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--prime-grey-700);
+  margin-bottom: $prime-space-sm;
+}
+
+.dialog-actions {
+  padding: $prime-space-lg $prime-space-xl $prime-space-xl;
+  display: flex;
+  gap: $prime-space-md;
+  justify-content: flex-end;
+}
+
+// ===== RESPONSIVE DESIGN =====
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.75rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+  
+  .vocab-word-item {
+    flex-direction: column;
+    align-items: flex-start;
+    
+    .word-actions {
+      align-self: flex-end;
+    }
+  }
+  
+  .dialog-header,
+  .dialog-content,
+  .dialog-actions {
+    padding-left: $prime-space-lg;
+    padding-right: $prime-space-lg;
+  }
+  
+  .dialog-actions {
+    flex-direction: column;
+    
+    .prime-btn {
+      width: 100%;
+    }
+  }
+}
+
+// ===== ANIMATIONS =====
+.prime-stats-card,
+.prime-action-card,
+.vocab-word-item {
+  animation: fadeInUp 0.6s ease-out;
+  
+  &:nth-child(1) { animation-delay: 0.1s; }
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.3s; }
+  &:nth-child(4) { animation-delay: 0.4s; }
+  &:nth-child(5) { animation-delay: 0.5s; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 </style>
