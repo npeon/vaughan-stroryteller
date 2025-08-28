@@ -73,7 +73,21 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[02. Fundamentos de TDD](./02-tdd-fundamentals.md)**
+### **[02. Configuración de Supabase Backend](./02-supabase-setup.md)**
+**Estado**: ✅ **Tasks 0.7-0.8 Completadas**
+- Instalación y configuración Supabase CLI
+- Enlace con proyecto remoto
+- Integración con Quasar Framework
+- Tipos TypeScript autogenerados
+- Verificación de conectividad
+
+**Prerequisitos**: Environment TDD configurado, cuenta Supabase activa
+**Duración**: 1-2 horas
+**Resultado**: Backend Supabase completamente funcional
+
+---
+
+### **[03. Fundamentos de TDD](./03-tdd-fundamentals.md)**
 **Estado**: 📝 **En desarrollo**
 - Metodología Red-Green-Refactor explicada
 - Diferentes tipos de tests y cuándo usarlos
@@ -86,7 +100,7 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[03. Tu Primer Test](./03-first-test.md)**
+### **[04. Tu Primer Test](./04-first-test.md)**
 **Estado**: 📝 **Planeado**
 - Primer test unitario paso a paso
 - Implementación siguiendo TDD estricto
@@ -99,7 +113,7 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[04. API Mocking Básico](./04-api-mocking.md)**
+### **[05. API Mocking Básico](./05-api-mocking.md)**
 **Estado**: 📝 **Planeado**
 - MSW configuration detallada
 - Mock de OpenRouter API básico
@@ -112,7 +126,7 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[05. Testing de Componentes](./05-component-testing.md)**
+### **[06. Testing de Componentes](./06-component-testing.md)**
 **Estado**: 📝 **Planeado**
 - Vue Test Utils + Quasar integration
 - Testing de props, emits, slots
@@ -125,7 +139,7 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[06. Testing de Integración](./06-integration-testing.md)**
+### **[07. Testing de Integración](./07-integration-testing.md)**
 **Estado**: 📝 **Planeado**
 - Composables testing patterns
 - Pinia store testing
@@ -138,7 +152,7 @@ Aprender Test-Driven Development (TDD) de manera práctica implementando feature
 
 ---
 
-### **[07. End-to-End Testing](./07-e2e-testing.md)**
+### **[08. End-to-End Testing](./08-e2e-testing.md)**
 **Estado**: 📝 **Planeado**
 - Cypress advanced configuration
 - User flows completos
