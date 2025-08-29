@@ -23,12 +23,19 @@ Esta documentación está diseñada específicamente para **programadores junior
   - 🧪 **TDD Completo**: 30 test cases con MSW mocking y validation completa
   - 📊 **JSON Schema**: Respuestas estructuradas con historias + vocabulario español
   - ⚡ **Production Ready**: Rate limiting, error handling, timeout management
+  - 🖼️ **NEW: Image Generation**: Google Gemini models para imágenes educativas adaptadas a CEFR
 - 🎙️ ⭐ **ElevenLabs TTS Integration COMPLETO** (Task 0.16) - **NUEVO ENERO 2025**:
   - 🎤 **Environment Configuration**: Voice ID, model, API key dinámicos desde ENV
   - 🎯 **Theo Hartwell Voice**: Custom voice implementada para The Vaughan Storyteller
   - ⚡ **eleven_flash_v2**: Modelo optimizado para velocidad y calidad
   - 📦 **Cache Inteligente**: Audio almacenado 1 año en Supabase, cero calls redundantes
   - 🧪 **TDD Complete**: 7/8 tests covering config dinámico + fallback system
+- 🖼️ ⭐ **Image Persistence System COMPLETO** - **NUEVO AGOSTO 2025**:
+  - 🏗️ **Production Architecture**: Sistema completo de persistencia de imágenes para stories
+  - 🛡️ **Error Isolation**: Historias funcionan siempre, incluso si persistencia falla
+  - 📁 **Supabase Storage**: Bucket configurado con RLS policies y cleanup automático
+  - ⚡ **Fallback Strategy**: Supabase Storage → Base64 → Placeholder graceful degradation
+  - 🧪 **TDD Complete**: 85+ test cases covering persistence, storage management, error scenarios
 - 🔥 **CRITICAL FIX**: RLS Infinite Recursion Issue - **RESUELTO EN PRODUCCIÓN**:
   - 🚨 Issue: "infinite recursion detected in policy for relation 'profiles'"
   - ✅ Eliminadas políticas RLS recursivas causando loops infinitos
@@ -149,9 +156,13 @@ Todo el proyecto sigue metodología TDD estricta:
 - [🔧 Auth Troubleshooting](./how-to-guides/authentication/authentication-troubleshooting.md) - General auth issues
 
 ### **APIs Externas**
-- [OpenRouter Integration](./how-to-guides/apis/openrouter-integration.md)
+- [OpenRouter Integration](./how-to-guides/apis/openrouter-integration.md) ⭐ **UPDATED: Image Generation**
 - [ElevenLabs Integration](./how-to-guides/apis/elevenlabs-integration.md) ⭐ **NUEVO**
 - [WordsAPI Vocabulary](./how-to-guides/apis/wordsapi-vocabulary.md)
+
+### **Development Patterns**
+- [Storage Services Usage](./how-to-guides/development/storage-services-usage.md) - Patterns generales de storage
+- [Image Persistence Integration](./how-to-guides/development/image-persistence-integration.md) ⭐ **NUEVO: Persistencia de IA**
 
 ### **Testing Patterns**
 - [Unit Testing Patterns](./how-to-guides/testing/unit-testing-patterns.md)

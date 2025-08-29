@@ -99,6 +99,11 @@ export class StoryGenerator {
       
       // Validate the response structure
       this.validateResponse(parsedResponse, request);
+
+      // Add unique ID for persistence if not already present
+      if (!parsedResponse.story.id) {
+        parsedResponse.story.id = `story-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      }
       
       return parsedResponse;
     } catch (parseError) {

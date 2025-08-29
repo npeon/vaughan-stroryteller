@@ -56,12 +56,11 @@ Herramientas y procesos de desarrollo del proyecto
 
 ```
 development/
-├── 🐛 debugging-tests.md               # Debug de tests que fallan
-├── ⚡ performance-testing.md           # Testing de performance
-└── 🚀 ci-cd-integration.md            # GitHub Actions con testing
+├── 🛠️ storage-services-usage.md       # Patrones de storage (avatares, TTS, banners)
+└── 🖼️ image-persistence-integration.md # Sistema de persistencia de imágenes IA
 ```
 
-**Cuándo usar**: Cuando necesitas optimizar tu workflow de desarrollo o resolver problemas técnicos
+**Cuándo usar**: Cuando implementas storage, uploads de archivos, o persistencia de contenido generado por IA
 
 ## 🎯 Cómo Usar los How-to Guides
 
@@ -99,9 +98,8 @@ Las guías están basadas en el proyecto real, pero incluyen variaciones para di
 3. **[WordsAPI Vocabulary](./apis/wordsapi-vocabulary.md)** - Gestión de vocabulario
 
 ### **Para Development**
-1. **[Debugging Tests](./development/debugging-tests.md)** - Debug tests que fallan
-2. **[Performance Testing](./development/performance-testing.md)** - Optimización de APIs
-3. **[CI/CD Integration](./development/ci-cd-integration.md)** - GitHub Actions
+1. **[Storage Services Usage](./development/storage-services-usage.md)** - Patrones de storage (avatares, TTS, banners)
+2. **[Image Persistence Integration](./development/image-persistence-integration.md)** - Sistema de persistencia para IA
 
 ## 🎨 Templates de How-to Guide
 

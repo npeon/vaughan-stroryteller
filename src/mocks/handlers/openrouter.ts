@@ -5,7 +5,8 @@ import type {
   OpenRouterError,
   CEFRLevel,
   StoryGenre,
-  StoryGenerationResponse
+  StoryGenerationResponse,
+  OpenRouterImageModelId
 } from '../../types/openrouter';
 
 // Sample stories data by CEFR level
@@ -220,6 +221,15 @@ export const openRouterHandlers = [
 async function handleChatCompletion(request: Request): Promise<Response> {
   try {
     const body = await request.json() as OpenRouterRequest;
+    
+    // Check if this is an image generation request
+    const isImageRequest = body.modalities?.includes('image') || 
+                          body.model?.includes('image') ||
+                          body.model?.includes('gemini-2.5-flash-image-preview');
+    
+    if (isImageRequest) {
+      return handleImageGeneration(body);
+    }
     
     // Only simulate random errors in non-test environment
     const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST;
@@ -494,4 +504,124 @@ function generateTitle(genre: StoryGenre): string {
 
 function generateId(): string {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+}
+
+// Image generation handling
+async function handleImageGeneration(body: OpenRouterRequest): Promise<Response> {
+  const isTest = process.env.NODE_ENV === 'test' || process.env.VITEST;
+  
+  // Extract image generation parameters
+  const lastMessage = body.messages[body.messages.length - 1];
+  const prompt = lastMessage?.content ?? '';
+  
+  // Simulate different error scenarios in non-test environment
+  if (!isTest) {
+    // Simulate model-specific failures
+    if (body.model?.includes('gemini-2.5-flash-image-preview:free') && Math.random() < 0.10) {
+      return HttpResponse.json<OpenRouterError>(
+        {
+          error: {
+            code: 429,
+            message: 'Rate limit exceeded for free tier. Please try the paid model.',
+            type: 'rate_limit_exceeded',
+          },
+        },
+        { status: 429 }
+      );
+    }
+    
+    if (body.model?.includes('gemini-2.5-flash-image-preview') && Math.random() < 0.05) {
+      return HttpResponse.json<OpenRouterError>(
+        {
+          error: {
+            code: 503,
+            message: 'Image generation model temporarily unavailable',
+            type: 'model_unavailable',
+          },
+        },
+        { status: 503 }
+      );
+    }
+
+    // Simulate invalid prompt errors
+    if (prompt.length < 10) {
+      return HttpResponse.json<OpenRouterError>(
+        {
+          error: {
+            code: 400,
+            message: 'Image generation prompt too short. Please provide more detail.',
+            type: 'invalid_prompt',
+          },
+        },
+        { status: 400 }
+      );
+    }
+  }
+  
+  // Generate mock base64 image data (1x1 pixel PNG)
+  const mockImageData = generateMockImageData(prompt, body.model as OpenRouterImageModelId);
+  
+  // Simulate image generation delay
+  await new Promise(resolve => setTimeout(resolve, Math.random() * 3000 + 2000));
+  
+  // Calculate token usage for image generation
+  const promptTokens = Math.round(prompt.length / 4);
+  
+  const response: OpenRouterResponse = {
+    id: `img-${generateId()}`,
+    object: 'chat.completion',
+    created: Math.floor(Date.now() / 1000),
+    model: body.model,
+    choices: [
+      {
+        index: 0,
+        message: {
+          role: 'assistant',
+          content: `Generated an educational illustration based on your prompt: "${prompt.substring(0, 50)}..."`,
+          images: [mockImageData]
+        },
+        finish_reason: 'stop',
+      },
+    ],
+    usage: {
+      prompt_tokens: promptTokens,
+      completion_tokens: 0, // Images don't have completion tokens
+      total_tokens: promptTokens,
+    },
+  };
+
+  return HttpResponse.json(response);
+}
+
+function generateMockImageData(prompt: string, model: OpenRouterImageModelId): string {
+  // Generate different mock images based on prompt content and model
+  const isEducational = prompt.toLowerCase().includes('educational') || 
+                       prompt.toLowerCase().includes('learning') ||
+                       prompt.toLowerCase().includes('student');
+  
+  const isChildren = prompt.toLowerCase().includes('children') || 
+                    prompt.toLowerCase().includes('child') ||
+                    prompt.toLowerCase().includes('kid');
+  
+  // Different base64 encoded 1x1 pixel PNGs for different scenarios
+  const mockImages = {
+    educational: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77zgAAAABJRU5ErkJggg==', // Blue pixel
+    children: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==', // Green pixel
+    gemini_free: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPj/HwADBgIAXVm/1QAAAABJRU5ErkJggg==', // Red pixel
+    gemini_pro: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==', // Yellow pixel
+    default: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChAI9jU77zgAAAABJRU5ErkJggg==' // Default blue
+  };
+  
+  // Select appropriate mock image based on prompt and model
+  if (model?.includes('free') && isEducational) {
+    return mockImages.educational;
+  } else if (isChildren) {
+    return mockImages.children;
+  } else if (model?.includes('free')) {
+    return mockImages.gemini_free;
+  } else if (model?.includes('gemini')) {
+    return mockImages.gemini_pro;
+  }
+  
+  return mockImages.default;
 }

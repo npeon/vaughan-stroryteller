@@ -36,6 +36,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 - [x] **Task 0.15**: Configurar cuenta OpenRouter y obtener API key
 - [x] **Task 0.16**: ✅ COMPLETADA - ElevenLabs API configurada con environment variables dinámicos, cache inteligente en Supabase, 7/8 tests TDD
+- [x] **Task 0.17**: ✅ COMPLETADA - Persistencia de imágenes en base de datos y supabase storage
 - [ ] **Task 0.18**: Configurar cuenta Upstash Redis para rate limiting
 - [ ] **Task 0.19**: Configurar variables de entorno para todas las APIs
 - [ ] **Task 0.20**: Crear servicios base para cada API externa

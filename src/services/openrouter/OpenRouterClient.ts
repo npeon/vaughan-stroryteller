@@ -2,7 +2,9 @@ import type {
   OpenRouterRequest,
   OpenRouterResponse,
   OpenRouterError as OpenRouterErrorType,
-  OpenRouterModelId
+  OpenRouterModelId,
+  OpenRouterImageModelId,
+  ImageGenerationResult
 } from '../../types/openrouter';
 import { OPENROUTER_MODELS } from '../../types/openrouter';
 
@@ -117,6 +119,67 @@ export class OpenRouterClient {
       console.error('Error fetching OpenRouter models:', error);
       // Return fallback models if API call fails
       return Object.values(OPENROUTER_MODELS);
+    }
+  }
+
+  /**
+   * Generate an image using OpenRouter API
+   */
+  async generateImage(
+    prompt: string,
+    model: OpenRouterImageModelId,
+    options?: {
+      maxTokens?: number;
+      temperature?: number;
+    }
+  ): Promise<ImageGenerationResult> {
+    const request: OpenRouterRequest = {
+      model,
+      messages: [
+        {
+          role: 'user',
+          content: prompt
+        }
+      ],
+      modalities: ['text', 'image'],
+      max_tokens: options?.maxTokens || 1000,
+      temperature: options?.temperature || 0.7
+    };
+
+    try {
+      const response = await this.chatCompletion(request);
+      const choice = response.choices[0];
+      
+      if (!choice?.message?.images?.[0]) {
+        return {
+          success: false,
+          error: 'No image data received from API'
+        };
+      }
+
+      const imageUrl = choice.message.images[0];
+      
+      // Validate image URL format
+      if (!imageUrl.startsWith('data:image/') || !imageUrl.includes('base64,')) {
+        return {
+          success: false,
+          error: 'Invalid image URL format received'
+        };
+      }
+
+      return {
+        success: true,
+        imageUrl,
+        prompt,
+        model,
+        generatedAt: new Date().toISOString(),
+        isPlaceholder: false
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error during image generation'
+      };
     }
   }
 

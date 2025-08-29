@@ -24,11 +24,14 @@ export interface OpenRouterRequest {
       schema: Record<string, unknown>;
     };
   };
+  modalities?: ('text' | 'image')[]; // For image generation support
 }
 
 export interface OpenRouterChoice {
   index: number;
-  message: OpenRouterMessage;
+  message: OpenRouterMessage & {
+    images?: string[]; // Base64 encoded image data URLs for image generation
+  };
   finish_reason: 'stop' | 'length' | 'content_filter' | 'tool_calls' | null;
 }
 
@@ -87,7 +90,14 @@ export const OPENROUTER_MODELS = {
   LLAMA_31_70B: 'meta-llama/llama-3.1-70b-instruct',
 } as const;
 
+// Image generation models
+export const OPENROUTER_IMAGE_MODELS = {
+  GEMINI_FLASH_FREE: 'google/gemini-2.5-flash-image-preview:free',
+  GEMINI_FLASH: 'google/gemini-2.5-flash-image-preview',
+} as const;
+
 export type OpenRouterModelId = typeof OPENROUTER_MODELS[keyof typeof OPENROUTER_MODELS];
+export type OpenRouterImageModelId = typeof OPENROUTER_IMAGE_MODELS[keyof typeof OPENROUTER_IMAGE_MODELS];
 
 // CEFR levels for story generation
 export type CEFRLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
@@ -143,6 +153,7 @@ export interface VocabularyWord {
 // Structured response from OpenRouter for story generation
 export interface StoryGenerationResponse {
   story: {
+    id?: string; // Added optional id field for persistence
     title: string;
     content: string;
     level: CEFRLevel;
@@ -166,6 +177,7 @@ export const STORY_GENERATION_SCHEMA = {
     story: {
       type: 'object',
       properties: {
+        id: { type: 'string', description: 'Optional story identifier for persistence' },
         title: { type: 'string', description: 'Engaging story title' },
         content: { type: 'string', description: 'The main story content (~300 words)' },
         level: { type: 'string', enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] },
@@ -174,7 +186,7 @@ export const STORY_GENERATION_SCHEMA = {
         reading_time_minutes: { type: 'number' }
       },
       required: ['title', 'content', 'level', 'genre', 'word_count', 'reading_time_minutes'],
-      additionalProperties: false
+      additionalProperties: true // Allow additional properties like 'id' for persistence
     },
     vocabulary: {
       type: 'array',
@@ -210,3 +222,93 @@ export const STORY_GENERATION_SCHEMA = {
   required: ['story', 'vocabulary', 'metadata'],
   additionalProperties: false
 } as const;
+
+// Image Generation Types
+
+export interface ImageGenerationRequest {
+  storyContent: string;
+  level: CEFRLevel;
+  genre: StoryGenre;
+  style?: 'educational' | 'children' | 'realistic' | 'illustration';
+  aspectRatio?: '16:9' | '4:3' | '1:1';
+  model?: OpenRouterImageModelId;
+}
+
+export interface ImageGenerationResponse {
+  imageUrl: string;
+  prompt: string;
+  model: OpenRouterImageModelId;
+  generatedAt: string;
+  isPlaceholder?: boolean;
+}
+
+export interface ImageGenerationResult {
+  success: boolean;
+  imageUrl?: string; // Can be base64 data URL or Supabase Storage public URL
+  prompt?: string;
+  model?: OpenRouterImageModelId;
+  generatedAt?: string;
+  isPlaceholder?: boolean;
+  error?: string;
+  // Storage metadata (populated after persistence)
+  storage?: {
+    storagePath?: string; // Path in Supabase Storage bucket
+    publicUrl?: string;   // Public URL for cached access
+    persistedAt?: string; // When image was persisted to storage
+    sizeBytes?: number;   // File size in bytes
+  };
+}
+
+// Story with Image combined types
+export interface StoryWithImageRequest extends StoryGenerationRequest {
+  includeImage?: boolean;
+  imageStyle?: 'educational' | 'children' | 'realistic' | 'illustration';
+  imageAspectRatio?: '16:9' | '4:3' | '1:1';
+}
+
+export interface StoryWithImageResponse {
+  story: StoryGenerationResponse;
+  image?: ImageGenerationResult;
+  metadata: {
+    storyGeneratedAt: string;
+    imageGeneratedAt?: string;
+    totalProcessingTime: number;
+    // Storage metadata
+    imagePersisted?: boolean;
+    storageProvider?: 'supabase' | 'memory';
+  };
+}
+
+// Enhanced interfaces for persistent storage
+export interface PersistedStoryImage {
+  id: string; // Story ID
+  imageUrl: string; // Supabase Storage public URL
+  storagePath: string; // Path in storage bucket
+  generatedAt: string;
+  persistedAt: string;
+  modelUsed: string;
+  style: 'educational' | 'children' | 'realistic' | 'illustration';
+  prompt: string; // Generation prompt for analytics
+  level: CEFRLevel;
+  genre: StoryGenre;
+  sizeBytes?: number;
+  mimeType?: string;
+}
+
+// Storage service response types
+export interface ImageStorageResult {
+  success: boolean;
+  persistedImage?: PersistedStoryImage;
+  error?: string;
+}
+
+// Analytics and management types
+export interface ImageStorageStats {
+  totalImages: number;
+  totalSizeBytes: number;
+  imagesWithStories: number;
+  orphanedImages: number;
+  byLevel: Record<CEFRLevel, number>;
+  byGenre: Record<StoryGenre, number>;
+  byModel: Record<string, number>;
+}
