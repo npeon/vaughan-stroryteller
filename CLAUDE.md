@@ -305,6 +305,14 @@ The implemented email/password authentication system should be enhanced to match
 - Support user and admin roles
 - Profile management with CEFR level selection
 
+### Rate Limiting Strategy
+
+- **Story Creation Limits**: Implemented via Supabase `user_limits` table, not external Redis
+- **Configurable by Admin**: Limits per user managed through admin panel (Phase 3)
+- **Default Limit**: 15 stories per user (must delete to create new)
+- **Implementation**: Direct database constraints + RLS policies
+- **Redis Usage**: Reserved for future features requiring time-based rate limiting
+
 ### PWA Implementation
 
 - Service Worker with Workbox for caching strategies
