@@ -17,6 +17,11 @@ Esta documentación está diseñada específicamente para **programadores junior
   - ✨ 33 Test Cases TDD comprehensivos con >95% coverage
   - ✨ Type Safety 100% con type guards sin `any` types
   - ✨ Validación tiempo real e indicador de fortaleza de contraseña
+- 🔥 **CRITICAL FIX**: RLS Infinite Recursion Issue - **RESUELTO EN PRODUCCIÓN**:
+  - 🚨 Issue: "infinite recursion detected in policy for relation 'profiles'"
+  - ✅ Eliminadas políticas RLS recursivas causando loops infinitos
+  - ✅ Login completamente funcional en local y producción
+  - ✅ Migración aplicada exitosamente: `20250829093855_fix_recursive_policies_clean.sql`
 
 ## 🗺️ Navegación por Nivel de Experiencia
 
@@ -126,6 +131,10 @@ Todo el proyecto sigue metodología TDD estricta:
 - [Configuración Vitest](./reference/configurations/vitest-config.md)
 - [Configuración Cypress](./reference/configurations/cypress-config.md)
 - [Setup MSW](./reference/configurations/msw-setup.md)
+
+### **🚨 Issues Críticos**
+- [🔥 RLS Recursion Fix](./how-to-guides/authentication/rls-recursion-fix.md) - CRITICAL: Infinite recursion fix
+- [🔧 Auth Troubleshooting](./how-to-guides/authentication/authentication-troubleshooting.md) - General auth issues
 
 ### **APIs Externas**
 - [OpenRouter Integration](./how-to-guides/apis/openrouter-integration.md)

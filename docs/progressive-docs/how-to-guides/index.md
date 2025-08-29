@@ -10,6 +10,19 @@ Los How-to Guides te ayudan a resolver problemas específicos que aparecen duran
 
 ## 📂 Organización por Categorías
 
+### **🔐 [Authentication](./authentication/)**
+Solución a problemas críticos de autenticación y seguridad
+
+```
+authentication/
+├── 🔥 rls-recursion-fix.md              # CRITICAL: RLS infinite recursion fix
+└── 🛠️ authentication-troubleshooting.md # General auth troubleshooting
+```
+
+**Cuándo usar**: Cuando el login falla, hay errores de RLS, o problemas de redirección
+
+---
+
 ### **🧪 [Testing](./testing/)**
 Patrones y técnicas específicas de testing en el proyecto
 
@@ -53,6 +66,7 @@ development/
 ## 🎯 Cómo Usar los How-to Guides
 
 ### **1. Identifica tu Problema**
+- 🚨 ¿Login falla o errores de RLS? → **Authentication**
 - ¿Necesitas implementar algo específico? → **APIs**
 - ¿Tu test falla o se comporta raro? → **Testing** 
 - ¿Problema de performance o CI/CD? → **Development**
@@ -69,6 +83,10 @@ Cada guía incluye:
 Las guías están basadas en el proyecto real, pero incluyen variaciones para diferentes casos de uso.
 
 ## 🔥 Guías Más Populares
+
+### **🚨 Para Authentication (CRÍTICO)**
+1. **[RLS Recursion Fix](./authentication/rls-recursion-fix.md)** - ⚠️ CRITICAL: "infinite recursion detected in policy"
+2. **[Authentication Troubleshooting](./authentication/authentication-troubleshooting.md)** - Login issues, redirect loops
 
 ### **Para Testing**
 1. **[MSW Advanced Mocking](./testing/msw-advanced-mocking.md)** - Rate limiting, errores, timeouts

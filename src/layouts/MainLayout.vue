@@ -12,6 +12,7 @@
           color="white"
           @click="toggleLeftDrawer"
           class="menu-btn"
+          no-caps
         />
 
         <!-- Logo and Brand -->
@@ -266,9 +267,25 @@ const handleLogout = async () => {
 .menu-btn {
   margin-right: 16px;
   transition: all 0.2s ease;
+  background-color: transparent !important;
   
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+  // Force transparent background on ALL states
+  &,
+  &:hover,
+  &:focus,
+  &:active,
+  &.q-btn--active,
+  &.q-hoverable:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  // Remove pseudo-element backgrounds
+  &:before,
+  &:hover:before,
+  &:focus:before,
+  &:active:before {
+    background-color: transparent !important;
+    display: none !important;
   }
 }
 
@@ -306,7 +323,7 @@ const handleLogout = async () => {
 .user-section {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
 }
 
 .user-info {
@@ -344,9 +361,19 @@ const handleLogout = async () => {
 .user-avatar {
   border: 2px solid rgba(255, 255, 255, 0.2);
   transition: all 0.2s ease;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   
   &:hover {
     border-color: rgba(255, 255, 255, 0.4);
+  }
+  
+  // Keep the icon properly centered but with original size
+  .q-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 }
 
@@ -612,6 +639,76 @@ const handleLogout = async () => {
         color: var(--prime-grey-300);
       }
     }
+  }
+}
+
+// ===== BUTTON OVERRIDES =====
+// Nuclear approach to eliminate all backgrounds
+.prime-header .q-toolbar .q-btn.menu-btn {
+  // Menu button gets subtle hover effect
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  &::before,
+  &::after,
+  &:focus::before,
+  &:active::before {
+    display: none !important;
+  }
+}
+
+// EXACT targeting based on browser inspector
+button.q-btn.q-btn-dropdown.user-dropdown {
+  // Force no backgrounds at all
+  background: none !important;
+  background-color: transparent !important;
+  
+  // Target the exact focus helper that's causing the problem
+  .q-focus-helper {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    background: none !important;
+    background-color: transparent !important;
+  }
+  
+  // Target dropdown arrow
+  .q-btn-dropdown__arrow,
+  .q-btn-dropdown__arrow-container {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  
+  // All hover states
+  &:hover,
+  &.q-hoverable:hover {
+    background: none !important;
+    background-color: transparent !important;
+    
+    .q-focus-helper {
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      background: none !important;
+      background-color: transparent !important;
+    }
+  }
+}
+
+// Ultra-specific targeting with data attribute
+button[data-v-22686b16].q-btn-dropdown.user-dropdown {
+  background: transparent !important;
+  
+  .q-focus-helper {
+    display: none !important;
+  }
+  
+  &:hover .q-focus-helper {
+    display: none !important;
+    background: transparent !important;
   }
 }
 

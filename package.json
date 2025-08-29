@@ -40,7 +40,7 @@
     "supabase:reset:remote": "supabase db reset --linked",
     "supabase:push": "supabase db push",
     "supabase:pull": "supabase db pull",
-    "supabase:dump:remote": "supabase db dump > backup_remoto_$(date +%Y%m%d_%H%M%S).sql",
+    "supabase:dump:remote": "supabase db dump > supabase/backups/backup_remoto_$(date +%Y%m%d_%H%M%S).sql",
     "supabase:dump:local": "supabase db dump --local > supabase/backups/backup_local_$(date +%Y%m%d_%H%M%S).sql",
     "supabase:migration:new": "supabase migration new",
     "supabase:migration:list": "supabase migration list --linked",
