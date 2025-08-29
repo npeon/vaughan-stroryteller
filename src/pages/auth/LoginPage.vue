@@ -416,7 +416,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, reactive, watch, nextTick } from 'vue'
+import { ref, computed, reactive, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
@@ -425,7 +425,7 @@ import { useAuthGuard } from '../../composables/useAuthGuard'
 const $q = useQuasar()
 const router = useRouter()
 
-const { signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword, loading, error, isAuthenticated } = useAuth()
+const { signInWithGoogle, signInWithEmail, signUpWithEmail, resetPassword, loading, error } = useAuth()
 const { requireGuest } = useAuthGuard()
 
 // Solo permitir acceso a invitados (no autenticados)

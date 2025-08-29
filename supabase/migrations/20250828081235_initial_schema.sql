@@ -48,7 +48,7 @@ CREATE TABLE stories (
     reading_progress FLOAT DEFAULT 0.0 
         CHECK (reading_progress >= 0.0 AND reading_progress <= 100.0),
     completed_at TIMESTAMP WITH TIME ZONE,
-    model_used TEXT DEFAULT 'claude-3.5-sonnet',
+    model_used TEXT DEFAULT 'openai/gpt-4o-mini',
     generation_cost DECIMAL(10,6) DEFAULT 0.0,
     audio_generated BOOLEAN DEFAULT false,
     is_favorite BOOLEAN DEFAULT false,

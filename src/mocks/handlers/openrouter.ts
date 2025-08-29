@@ -4,7 +4,8 @@ import type {
   OpenRouterResponse, 
   OpenRouterError,
   CEFRLevel,
-  StoryGenre 
+  StoryGenre,
+  StoryGenerationResponse
 } from '../../types/openrouter';
 
 // Sample stories data by CEFR level
@@ -257,12 +258,21 @@ async function handleChatCompletion(request: Request): Promise<Response> {
     const lastMessage = body.messages[body.messages.length - 1];
     const storyParams = extractStoryParameters(lastMessage?.content ?? '');
     
-    // Generate appropriate story content
-    const storyContent = generateStoryContent(storyParams);
+    // Check if this is a structured response request
+    let responseContent: string;
+    
+    if (body.response_format?.type === 'json_schema') {
+      // Generate structured response
+      const structuredResponse = generateStructuredResponse(storyParams);
+      responseContent = JSON.stringify(structuredResponse);
+    } else {
+      // Generate plain text story (backward compatibility)
+      responseContent = generateStoryContent(storyParams);
+    }
     
     // Calculate token usage (approximate)
     const promptTokens = body.messages.reduce((sum, msg) => sum + msg.content.length / 4, 0);
-    const completionTokens = storyContent.length / 4;
+    const completionTokens = responseContent.length / 4;
     
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, Math.random() * 2000 + 500));
@@ -277,7 +287,7 @@ async function handleChatCompletion(request: Request): Promise<Response> {
           index: 0,
           message: {
             role: 'assistant',
-            content: storyContent,
+            content: responseContent,
           },
           finish_reason: 'stop',
         },
@@ -375,6 +385,111 @@ function generateStoryContent({ level, genre, wordCount }: { level: CEFRLevel; g
   }
   
   return adjustedStory;
+}
+
+function generateStructuredResponse({ level, genre, wordCount }: { level: CEFRLevel; genre: StoryGenre; wordCount: number }): StoryGenerationResponse {
+  const storyContent = generateStoryContent({ level, genre, wordCount });
+  const words = storyContent.split(/\s+/);
+  const actualWordCount = words.length;
+  
+  // Generate vocabulary (10% most difficult words)
+  const vocabularyCount = Math.max(1, Math.floor(actualWordCount * 0.1));
+  const vocabulary = generateVocabulary(storyContent, level, vocabularyCount);
+  
+  // Generate title based on genre and content
+  const title = generateTitle(genre);
+  
+  return {
+    story: {
+      title,
+      content: storyContent,
+      level,
+      genre,
+      word_count: actualWordCount,
+      reading_time_minutes: Math.max(1, Math.round(actualWordCount / 200)) // 200 WPM average
+    },
+    vocabulary,
+    metadata: {
+      generated_at: new Date().toISOString(),
+      model_used: 'mock-openrouter-model',
+      total_words: actualWordCount,
+      vocabulary_percentage: Math.round((vocabulary.length / actualWordCount) * 100)
+    }
+  };
+}
+
+function generateVocabulary(text: string, level: CEFRLevel, count: number) {
+  // Sample vocabulary based on common difficult words
+  const vocabularyPool = {
+    A1: [
+      { word: 'beautiful', spanish: 'hermoso/hermosa', pronunciation: 'BIÚTI-ful', pos: 'adjective', difficulty: 3 },
+      { word: 'wonderful', spanish: 'maravilloso', pronunciation: 'WÁNDER-ful', pos: 'adjective', difficulty: 4 },
+      { word: 'important', spanish: 'importante', pronunciation: 'im-PÓR-tant', pos: 'adjective', difficulty: 3 },
+      { word: 'different', spanish: 'diferente', pronunciation: 'DÍ-fe-rent', pos: 'adjective', difficulty: 4 }
+    ],
+    A2: [
+      { word: 'mysterious', spanish: 'misterioso', pronunciation: 'mis-TÍ-ri-us', pos: 'adjective', difficulty: 5 },
+      { word: 'experience', spanish: 'experiencia', pronunciation: 'iks-PÍ-ri-ens', pos: 'noun', difficulty: 5 },
+      { word: 'discover', spanish: 'descubrir', pronunciation: 'dis-KÁ-ver', pos: 'verb', difficulty: 4 },
+      { word: 'adventure', spanish: 'aventura', pronunciation: 'ad-VÉN-cher', pos: 'noun', difficulty: 4 }
+    ],
+    B1: [
+      { word: 'extraordinary', spanish: 'extraordinario', pronunciation: 'iks-TRÓL-di-ne-ri', pos: 'adjective', difficulty: 6 },
+      { word: 'investigate', spanish: 'investigar', pronunciation: 'in-VÉS-ti-geit', pos: 'verb', difficulty: 6 },
+      { word: 'circumstances', spanish: 'circunstancias', pronunciation: 'SÉR-kums-tan-ses', pos: 'noun', difficulty: 7 },
+      { word: 'reputation', spanish: 'reputación', pronunciation: 'rep-yu-TEI-shon', pos: 'noun', difficulty: 6 }
+    ],
+    B2: [
+      { word: 'implications', spanish: 'implicaciones', pronunciation: 'im-pli-KEI-shons', pos: 'noun', difficulty: 7 },
+      { word: 'sophisticated', spanish: 'sofisticado', pronunciation: 'so-FÍS-ti-kei-ted', pos: 'adjective', difficulty: 8 },
+      { word: 'phenomenon', spanish: 'fenómeno', pronunciation: 'fi-NÓ-me-non', pos: 'noun', difficulty: 7 },
+      { word: 'unprecedented', spanish: 'sin precedentes', pronunciation: 'an-PRÉ-si-den-ted', pos: 'adjective', difficulty: 8 }
+    ],
+    C1: [
+      { word: 'paradigm', spanish: 'paradigma', pronunciation: 'PÁ-ra-daim', pos: 'noun', difficulty: 9 },
+      { word: 'scrutiny', spanish: 'escrutinio', pronunciation: 'SKRÚ-ti-ni', pos: 'noun', difficulty: 8 },
+      { word: 'intricate', spanish: 'intrincado', pronunciation: 'ÍN-tri-ket', pos: 'adjective', difficulty: 8 },
+      { word: 'culmination', spanish: 'culminación', pronunciation: 'kal-mi-NEI-shon', pos: 'noun', difficulty: 9 }
+    ],
+    C2: [
+      { word: 'quintessential', spanish: 'quintaesencial', pronunciation: 'kwin-te-SÉN-shal', pos: 'adjective', difficulty: 10 },
+      { word: 'ubiquitous', spanish: 'ubicuo', pronunciation: 'yu-BÍ-kwi-tas', pos: 'adjective', difficulty: 9 },
+      { word: 'ephemeral', spanish: 'efímero', pronunciation: 'i-FÉ-me-ral', pos: 'adjective', difficulty: 9 },
+      { word: 'inexorable', spanish: 'inexorable', pronunciation: 'i-NÉK-so-ra-bel', pos: 'adjective', difficulty: 10 }
+    ]
+  };
+
+  const pool = vocabularyPool[level] || vocabularyPool.B1;
+  const selectedWords = pool.slice(0, Math.min(count, pool.length));
+  
+  return selectedWords.map(word => ({
+    word: word.word,
+    partOfSpeech: word.pos,
+    definition: `A ${word.pos} meaning...`,
+    definition_spanish: word.spanish,
+    pronunciation_english: word.pronunciation,
+    example: `Here is an example sentence with ${word.word}.`,
+    difficulty: level,
+    difficulty_score: word.difficulty
+  }));
+}
+
+function generateTitle(genre: StoryGenre): string {
+  const titles = {
+    adventure: ['The Hidden Key', 'Journey to Discovery', 'The Secret Path', 'Adventure Awaits'],
+    mystery: ['The Missing Clue', 'Midnight Mystery', 'The Secret Room', 'Who Did It?'],
+    romance: ['First Love', 'The Perfect Match', 'Love Letters', 'Meeting by Chance'],
+    science_fiction: ['Future Calling', 'The Time Message', 'Beyond Tomorrow', 'Space Dreams'],
+    fantasy: ['The Magic Tree', 'Fairy Tales', 'Magical World', 'The Enchanted Forest'],
+    thriller: ['Night Calls', 'The Chase', 'Danger Zone', 'Final Warning'],
+    comedy: ['Kitchen Disaster', 'Funny Business', 'Laugh Out Loud', 'Comedy of Errors'],
+    drama: ['Life Changes', 'Real Stories', 'Human Hearts', 'True Life'],
+    historical: ['Yesterday\'s Hero', 'Times Past', 'History Lesson', 'The Old Days'],
+    biography: ['Life Story', 'Famous Lives', 'Real People', 'True Stories']
+  };
+  
+  const genreTitles = titles[genre] || titles.adventure;
+  return genreTitles[Math.floor(Math.random() * genreTitles.length)] ?? 'An Interesting Story';
 }
 
 function generateId(): string {

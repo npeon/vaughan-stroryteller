@@ -16,6 +16,7 @@ Decisiones técnicas fundamentales y sus justificaciones
 ```
 architecture-decisions/
 ├── 🧪 why-tdd-methodology.md          # Por qué TDD completo vs testing tradicional
+├── 💰 openrouter-model-change-decision.md # Claude 3.5 → GPT-4o Mini (Jan 2025)
 ├── 🌐 api-selection-rationale.md      # Por qué OpenRouter/ElevenLabs/WordsAPI
 ├── 🛠️ testing-tools-choice.md        # Vitest vs Jest, Cypress vs Playwright
 └── 🎭 msw-over-alternatives.md        # MSW vs otras soluciones de mocking
@@ -93,6 +94,13 @@ Cada explanation incluye:
 - **Alternatives**: Testing después, partial TDD, no testing
 - **Rationale**: Mejor code quality, mejor pedagogía, industry standard
 - **Trade-offs**: Más tiempo inicial, mejor maintainability
+
+### **💰 [OpenRouter Model Change Decision](./architecture-decisions/openrouter-model-change-decision.md)** ⭐ **NUEVA**
+**Decision**: Cambiar modelo primario de Claude 3.5 Sonnet a GPT-4o Mini
+- **Context**: Costos de Claude 3.5 prohibitivos para escalabilidad (~$75/1M tokens)
+- **Alternatives**: Mantener Claude, usar solo open-source, sistema dinámico
+- **Rationale**: 95% reducción de costos, calidad mantenida, sostenibilidad
+- **Trade-offs**: Ligera dependencia de OpenAI vs sostenibilidad económica
 
 ### **🌐 [API Selection Rationale](./architecture-decisions/api-selection-rationale.md)**
 **Decision**: OpenRouter + ElevenLabs + WordsAPI vs alternativas

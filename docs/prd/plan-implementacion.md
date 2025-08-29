@@ -34,9 +34,8 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 ### 🔗 Setup APIs Externas
 
-- [ ] **Task 0.15**: Configurar cuenta OpenRouter y obtener API key
+- [x] **Task 0.15**: Configurar cuenta OpenRouter y obtener API key
 - [ ] **Task 0.16**: Configurar cuenta ElevenLabs y obtener API key
-- [ ] **Task 0.17**: Configurar cuenta WordsAPI y obtener API key
 - [ ] **Task 0.18**: Configurar cuenta Upstash Redis para rate limiting
 - [ ] **Task 0.19**: Configurar variables de entorno para todas las APIs
 - [ ] **Task 0.20**: Crear servicios base para cada API externa

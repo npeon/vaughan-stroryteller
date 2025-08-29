@@ -8,7 +8,7 @@ Esta documentación está diseñada específicamente para **programadores junior
 
 ### ✅ Estado Actual del Proyecto
 
-**Tasks Completadas (0.1-0.13)**:
+**Tasks Completadas (0.1-0.15)**:
 - ✅ **Testing Foundation**: Vitest + Vue Test Utils + Cypress + MSW (Tasks 0.1-0.3)
 - ✅ **Supabase Backend**: Database schema, RLS policies, triggers (Tasks 0.7-0.12)
 - ✅ ⭐ **Sistema de Autenticación COMPLETO** (Task 0.13) - **ACTUALIZADO**:
@@ -17,6 +17,12 @@ Esta documentación está diseñada específicamente para **programadores junior
   - ✨ 33 Test Cases TDD comprehensivos con >95% coverage
   - ✨ Type Safety 100% con type guards sin `any` types
   - ✨ Validación tiempo real e indicador de fortaleza de contraseña
+- 💰 ⭐ **OpenRouter API Integration COMPLETO** (Task 0.15) - **NUEVO ENERO 2025**:
+  - 🎯 **Modelo Optimizado**: Cambiado de Claude 3.5 a GPT-4o Mini (95% reducción costos)
+  - 🚀 **Fallback Strategy**: GPT-4o Mini → GPT-4 Turbo → Llama 3.1-70B robusto
+  - 🧪 **TDD Completo**: 30 test cases con MSW mocking y validation completa
+  - 📊 **JSON Schema**: Respuestas estructuradas con historias + vocabulario español
+  - ⚡ **Production Ready**: Rate limiting, error handling, timeout management
 - 🔥 **CRITICAL FIX**: RLS Infinite Recursion Issue - **RESUELTO EN PRODUCCIÓN**:
   - 🚨 Issue: "infinite recursion detected in policy for relation 'profiles'"
   - ✅ Eliminadas políticas RLS recursivas causando loops infinitos

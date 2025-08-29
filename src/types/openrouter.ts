@@ -16,6 +16,14 @@ export interface OpenRouterRequest {
   presence_penalty?: number;
   stop?: string[];
   stream?: boolean;
+  response_format?: {
+    type: 'json_schema';
+    json_schema: {
+      name: string;
+      strict?: boolean;
+      schema: Record<string, unknown>;
+    };
+  };
 }
 
 export interface OpenRouterChoice {
@@ -74,7 +82,7 @@ export interface OpenRouterModel {
 
 // Available models for fallback strategy
 export const OPENROUTER_MODELS = {
-  CLAUDE_35_SONNET: 'anthropic/claude-3.5-sonnet',
+  GPT4O_MINI: 'openai/gpt-4o-mini',
   GPT4_TURBO: 'openai/gpt-4-turbo',
   LLAMA_31_70B: 'meta-llama/llama-3.1-70b-instruct',
 } as const;
@@ -120,11 +128,85 @@ export interface GeneratedStory {
   model: string;
 }
 
-// Vocabulary word extracted from story
+// Vocabulary word extracted from story with Spanish translations
 export interface VocabularyWord {
   word: string;
   partOfSpeech: string;
   definition: string;
+  definition_spanish: string;
+  pronunciation_english: string;
   example: string;
   difficulty: CEFRLevel;
+  difficulty_score: number; // 1-10 scale for sorting
 }
+
+// Structured response from OpenRouter for story generation
+export interface StoryGenerationResponse {
+  story: {
+    title: string;
+    content: string;
+    level: CEFRLevel;
+    genre: StoryGenre;
+    word_count: number;
+    reading_time_minutes: number;
+  };
+  vocabulary: VocabularyWord[];
+  metadata: {
+    generated_at: string;
+    model_used: string;
+    total_words: number;
+    vocabulary_percentage: number;
+  };
+}
+
+// JSON Schema for OpenRouter structured response
+export const STORY_GENERATION_SCHEMA = {
+  type: 'object',
+  properties: {
+    story: {
+      type: 'object',
+      properties: {
+        title: { type: 'string', description: 'Engaging story title' },
+        content: { type: 'string', description: 'The main story content (~300 words)' },
+        level: { type: 'string', enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] },
+        genre: { type: 'string' },
+        word_count: { type: 'number' },
+        reading_time_minutes: { type: 'number' }
+      },
+      required: ['title', 'content', 'level', 'genre', 'word_count', 'reading_time_minutes'],
+      additionalProperties: false
+    },
+    vocabulary: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          word: { type: 'string', description: 'The vocabulary word from the story' },
+          partOfSpeech: { type: 'string', description: 'Part of speech (noun, verb, adjective, etc.)' },
+          definition: { type: 'string', description: 'English definition' },
+          definition_spanish: { type: 'string', description: 'Spanish translation/meaning' },
+          pronunciation_english: { type: 'string', description: 'How to pronounce in English using Spanish-friendly phonetic notation' },
+          example: { type: 'string', description: 'Example sentence using the word' },
+          difficulty: { type: 'string', enum: ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'] },
+          difficulty_score: { type: 'number', minimum: 1, maximum: 10 }
+        },
+        required: ['word', 'partOfSpeech', 'definition', 'definition_spanish', 'pronunciation_english', 'example', 'difficulty', 'difficulty_score'],
+        additionalProperties: false
+      },
+      description: 'Top 10% most difficult words from the story with Spanish translations'
+    },
+    metadata: {
+      type: 'object',
+      properties: {
+        generated_at: { type: 'string' },
+        model_used: { type: 'string' },
+        total_words: { type: 'number' },
+        vocabulary_percentage: { type: 'number' }
+      },
+      required: ['generated_at', 'model_used', 'total_words', 'vocabulary_percentage'],
+      additionalProperties: false
+    }
+  },
+  required: ['story', 'vocabulary', 'metadata'],
+  additionalProperties: false
+} as const;

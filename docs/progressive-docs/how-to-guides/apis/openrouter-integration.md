@@ -4,7 +4,7 @@
 
 ## 🎯 Objetivo
 
-Aprender a integrar OpenRouter API para generar historias personalizadas usando modelos de IA como Claude 3.5, GPT-4, y Llama 3.1, con testing completo y error handling.
+Aprender a integrar OpenRouter API para generar historias personalizadas usando modelos de IA como GPT-4o Mini, GPT-4, y Llama 3.1, con testing completo y error handling.
 
 **⏱️ Tiempo estimado**: 60-75 minutos  
 **📋 Prerequisitos**: 
@@ -25,8 +25,8 @@ Aprender a integrar OpenRouter API para generar historias personalizadas usando 
 **OpenRouter** es un agregador de APIs de IA que te permite acceder a múltiples modelos (Claude, GPT-4, Llama) a través de una sola API, con pricing competitivo y fallbacks automáticos.
 
 **Beneficios para el proyecto**:
-- **Multiple models**: Claude 3.5, GPT-4, Llama 3.1 en una sola API
-- **Cost optimization**: Precios más bajos que APIs directas
+- **Multiple models**: GPT-4o Mini, GPT-4, Llama 3.1 en una sola API
+- **Cost optimization**: GPT-4o Mini ofrece excelente calidad a precio económico
 - **Fallback system**: Si un modelo falla, automáticamente usa otro
 - **Unified interface**: Misma API para todos los modelos
 
@@ -108,9 +108,9 @@ export class OpenRouterService {
   
   // Fallback models in order of preference
   private readonly models = [
-    'anthropic/claude-3.5-sonnet',     // Best quality
-    'openai/gpt-4-turbo',              // Good balance
-    'meta-llama/llama-3.1-8b-instruct' // Cost effective
+    'openai/gpt-4o-mini',              // Best cost/quality ratio
+    'openai/gpt-4-turbo',              // High quality option
+    'meta-llama/llama-3.1-70b-instruct' // Open source alternative
   ]
 
   constructor(apiKey: string) {
@@ -280,11 +280,11 @@ export const openRouterConfig = {
   apiKey: import.meta.env.VITE_OPENROUTER_API_KEY || '',
   baseUrl: 'https://openrouter.ai/api/v1',
   
-  // Default models in preference order
+  // Default models in preference order (updated 2025)
   defaultModels: [
-    'anthropic/claude-3.5-sonnet',
+    'openai/gpt-4o-mini',
     'openai/gpt-4-turbo', 
-    'meta-llama/llama-3.1-8b-instruct'
+    'meta-llama/llama-3.1-70b-instruct'
   ],
 
   // Default request parameters
@@ -1049,5 +1049,72 @@ Una vez domines OpenRouter integration:
 - [OpenRouter API Reference](../../reference/apis/openrouter-reference.md) - Documentación técnica completa
 - [MSW Advanced Mocking](../testing/msw-advanced-mocking.md) - Testing de APIs
 - [OpenRouter Official Docs](https://openrouter.ai/docs) - Documentación oficial
+
+---
+
+## 🎯 6. Actualización del Modelo Primario (2025)
+
+### **Cambio de Claude 3.5 a GPT-4o Mini**
+
+**Decisión tomada**: Cambiar el modelo primario de `anthropic/claude-3.5-sonnet` a `openai/gpt-4o-mini`
+
+**Razones del cambio**:
+- **💰 Costo**: GPT-4o Mini es significativamente más económico que Claude 3.5
+- **📈 Sostenibilidad**: Mejor relación costo/calidad para uso en producción
+- **🚀 Longevidad**: GPT-4o Mini tiene mejor soporte a largo plazo
+- **⚡ Performance**: Mantiene calidad excelente para generación de historias
+
+### **Implementación del Cambio**
+
+**Archivos actualizados**:
+```typescript
+// src/types/openrouter.ts
+export const OPENROUTER_MODELS = {
+  GPT4O_MINI: 'openai/gpt-4o-mini',    // ← Nuevo modelo primario
+  GPT4_TURBO: 'openai/gpt-4-turbo',
+  LLAMA_31_70B: 'meta-llama/llama-3.1-70b-instruct'
+}
+
+// src/services/openrouter/StoryGenerator.ts
+this.models = [
+  import.meta.env.OPENROUTER_PRIMARY_MODEL || 'openai/gpt-4o-mini',     // ← Actualizado
+  import.meta.env.OPENROUTER_FALLBACK_MODEL || 'openai/gpt-4-turbo',
+  import.meta.env.OPENROUTER_TERTIARY_MODEL || 'meta-llama/llama-3.1-70b-instruct'
+]
+```
+
+**Variables de entorno actualizadas**:
+```env
+# .env
+OPENROUTER_PRIMARY_MODEL=openai/gpt-4o-mini
+OPENROUTER_FALLBACK_MODEL=openai/gpt-4-turbo
+OPENROUTER_TERTIARY_MODEL=meta-llama/llama-3.1-70b-instruct
+```
+
+**Tests actualizados**:
+- Todos los tests ahora usan GPT-4o Mini como modelo esperado
+- MSW mocks actualizados para el nuevo modelo
+- Validaciones de respuesta adaptadas
+
+### **Verificación del Cambio**
+
+```bash
+# Verificar que no quedan referencias al modelo anterior
+rg "claude-3\.5" src/
+rg "anthropic/claude" src/
+
+# Ejecutar tests para validar
+npm run test:unit -- test/vitest/__tests__/services/openrouter/
+npm run typecheck
+```
+
+### **Beneficios Esperados**
+
+- **🔻 Reducción de costos**: ~70% menos costo por token
+- **📊 Mantenimiento de calidad**: GPT-4o Mini mantiene excelente calidad para historias B1-B2
+- **⏱️ Velocidad similar**: Tiempo de respuesta comparable
+- **🔄 Fallback robusto**: Mismo sistema de fallback a GPT-4 Turbo y Llama 3.1
+
+---
 
 **💡 Tip**: OpenRouter es especialmente útil porque permite cambiar modelos de IA sin cambiar código, lo que te da flexibilidad para optimizar cost/quality según tus necesidades.

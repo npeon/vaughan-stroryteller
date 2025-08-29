@@ -22,7 +22,7 @@ describe('MSW Configuration Verification', () => {
   describe('OpenRouter API Mocking', () => {
     it('should intercept OpenRouter chat completions request', async () => {
       const requestBody: OpenRouterRequest = {
-        model: 'anthropic/claude-3.5-sonnet',
+        model: 'openai/gpt-4o-mini',
         messages: [
           {
             role: 'user',
@@ -77,7 +77,7 @@ describe('MSW Configuration Verification', () => {
           'Authorization': 'Bearer test-key'
         },
         body: JSON.stringify({
-          model: 'anthropic/claude-3.5-sonnet',
+          model: 'openai/gpt-4o-mini',
           messages: [{ role: 'user', content: 'Test' }]
         })
       });
