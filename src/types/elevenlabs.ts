@@ -83,6 +83,7 @@ export const ELEVENLABS_VOICES = {
   ALICE: 'Xb7hH8MSUJpSbSDYk0k2', // Confident, young adult female
   LILY: 'pFZP5JQG7iQjIQuC4Bku', // Warm, middle-aged female
   SARAH: 'EXAVITQu4vr4xnSDxMaL', // British, soft female
+  THEO_HARTWELL: 'yZggGmu2XJkoy1aHe3fg', // Custom voice from environment
 } as const;
 
 export type ElevenLabsVoiceId = typeof ELEVENLABS_VOICES[keyof typeof ELEVENLABS_VOICES];
@@ -122,6 +123,7 @@ export const ELEVENLABS_MODELS = {
   ELEVEN_MULTILINGUAL_V1: 'eleven_multilingual_v1',
   ELEVEN_MULTILINGUAL_V2: 'eleven_multilingual_v2',
   ELEVEN_TURBO_V2: 'eleven_turbo_v2',
+  ELEVEN_FLASH_V2: 'eleven_flash_v2',
 } as const;
 
 export type ElevenLabsModelId = typeof ELEVENLABS_MODELS[keyof typeof ELEVENLABS_MODELS];

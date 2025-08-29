@@ -17,15 +17,16 @@
 
 ---
 
-### **🎙️ ElevenLabs TTS** 🚧
-**Text-to-speech para narración de historias**
+### **🎙️ [ElevenLabs Integration](./elevenlabs-integration.md)** ⭐
+**Text-to-speech con cache inteligente y configuración dinámica**
 
-- 🎤 **Multiple voices**: Rachel, Domi, Bella, y más
-- ⚙️ **Voice customization**: Stability, similarity boost, style
-- 📊 **Usage tracking**: Character count, duration, quota monitoring
-- 🔊 **Audio management**: Download, stream, cache strategies
+- 🎤 **Environment-based config**: Voice ID, model, y API key desde ENV
+- 🎯 **Theo Hartwell voice**: Custom voice para The Vaughan Storyteller
+- ⚡ **eleven_flash_v2 model**: Modelo optimizado para velocidad
+- 📦 **Supabase Storage cache**: Audio TTS cacheado 1 año, zero redundant calls
+- 🧪 **TDD Complete**: 7/8 tests covering environment config y fallbacks
 
-**Estado**: Planeado | **⏱️ Tiempo**: 50 min
+**⏱️ Tiempo**: 45-60 min | **📋 Prerequisitos**: Environment setup, Supabase Storage
 
 ---
 
@@ -49,11 +50,11 @@
 - Testear diferentes modelos de IA
 
 ### **Para Audio y Narración**
-→ **ElevenLabs TTS** (próximamente)
-- Convertir texto a speech natural
-- Gestionar diferentes voces y estilos
-- Optimizar para streaming y caching
-- Manejar quotas y rate limiting
+→ **[ElevenLabs Integration](./elevenlabs-integration.md)**
+- Convertir texto a speech con Theo Hartwell voice
+- Configuración dinámica via environment variables
+- Cache inteligente en Supabase Storage (1 año)
+- Health checking y fallback system robusto
 
 ### **Para Vocabulario y Diccionario**
 → **WordsAPI Vocabulary** (próximamente)

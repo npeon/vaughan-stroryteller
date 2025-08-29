@@ -60,6 +60,7 @@ export class ElevenLabsService {
     high: 'eleven_multilingual_v2',
     medium: 'eleven_multilingual_v1',
     low: 'eleven_turbo_v2',
+    flash: 'eleven_flash_v2',
   };
 
   constructor() {
@@ -68,6 +69,106 @@ export class ElevenLabsService {
     if (!this.apiKey) {
       console.warn('ElevenLabs API key not configured. TTS functionality will be limited.');
     }
+  }
+  // ============================================================================
+  // ENVIRONMENT CONFIGURATION METHODS
+  // ============================================================================
+
+  /**
+   * Resuelve voice ID desde variables de entorno
+   */
+  resolveVoiceId(): string {
+    return process.env.ELEVENLABS_VOICE_ID || this.getDefaultVoiceId();
+  }
+
+  /**
+   * Mapea nombre de voz a voice ID
+   */
+  resolveVoiceIdFromName(voiceName: string): string {
+    const voiceMapping: Record<string, string> = {
+      'Theo Hartwell': process.env.ELEVENLABS_VOICE_ID || 'yZggGmu2XJkoy1aHe3fg',
+      'Rachel': '21m00Tcm4TlvDq8ikWAM',
+      'Bella': 'EXAVITQu4vr4xnSDxMaL',
+      'Lily': 'pFZP5JQG7iQjIQuC4Bku'
+    };
+
+    return voiceMapping[voiceName] || this.getDefaultVoiceId();
+  }
+
+  /**
+   * Obtiene voice ID válido con fallback
+   */
+  async getValidVoiceId(): Promise<string> {
+    const envVoiceId = this.resolveVoiceId();
+    
+    // En desarrollo, usar el voice ID de ENV sin validación
+    if (process.env.NODE_ENV === 'development') {
+      return envVoiceId;
+    }
+
+    // En producción, validar que el voice ID existe
+    try {
+      const voices = await this.getVoices();
+      const voiceExists = voices.some(voice => voice.voice_id === envVoiceId);
+      
+      if (voiceExists) {
+        return envVoiceId;
+      }
+    } catch (error) {
+      console.warn('Failed to validate voice ID:', error);
+    }
+
+    // Fallback a Rachel
+    return '21m00Tcm4TlvDq8ikWAM';
+  }
+
+  /**
+   * Obtiene modelo desde variables de entorno
+   */
+  getModelFromEnv(): string {
+    return process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
+  }
+
+  /**
+   * Verifica compatibilidad de modelo con calidad
+   */
+  isModelCompatible(model: string, quality: string): boolean {
+    const compatibilityMatrix: Record<string, string[]> = {
+      'eleven_flash_v2': ['high', 'medium', 'low'],
+      'eleven_multilingual_v2': ['high', 'medium', 'low'],
+      'eleven_multilingual_v1': ['medium', 'low'],
+      'eleven_turbo_v2': ['low']
+    };
+
+    return compatibilityMatrix[model]?.includes(quality) || false;
+  }
+
+  /**
+   * Obtiene configuración efectiva del servicio
+   */
+  getEffectiveConfig(): {
+    voiceId: string;
+    voiceName: string;
+    model: string;
+    apiKey: string;
+  } {
+    const voiceId = this.resolveVoiceId();
+    const voiceName = process.env.DEFAULT_TTS_VOICE || 'Default Voice';
+    const model = this.getModelFromEnv();
+
+    return {
+      voiceId,
+      voiceName,
+      model,
+      apiKey: this.apiKey
+    };
+  }
+
+  /**
+   * Obtiene voice ID por defecto
+   */
+  private getDefaultVoiceId(): string {
+    return '21m00Tcm4TlvDq8ikWAM'; // Rachel como fallback
   }
 
   // ============================================================================
@@ -85,16 +186,29 @@ export class ElevenLabsService {
   ): Promise<AudioProcessingResult> {
     try {
       const preset = this.voicePresets[voicePreset];
-      const model = this.modelPresets[options.quality || 'medium'];
+      
+      // Usar configuración dinámica si está disponible
+      const effectiveConfig = this.getEffectiveConfig();
+      const voiceToUse = effectiveConfig.voiceId !== this.getDefaultVoiceId() 
+        ? effectiveConfig.voiceId 
+        : preset.voice_id;
+      
+      const modelToUse = this.getModelFromEnv();
+      
+      // Verificar compatibilidad del modelo con la calidad
+      const quality = options.quality || 'medium';
+      const finalModel = this.isModelCompatible(modelToUse, quality) 
+        ? modelToUse 
+        : this.modelPresets[quality];
 
       // Preparar opciones TTS
       const ttsOptions: TTSAudioOptions = {
         storyId: options.storyId,
         ...(options.chapterId && { chapterId: options.chapterId }),
         text: text,
-        voice: preset.voice_id,
+        voice: voiceToUse,
         language: 'en-GB',
-        model: model,
+        model: finalModel,
         stability: preset.settings.stability,
         similarity_boost: preset.settings.similarity_boost,
         style: preset.settings.style,
@@ -123,8 +237,8 @@ export class ElevenLabsService {
       // Generar audio con ElevenLabs
       const audioBlob = await this.generateTTSAudio({
         text: text,
-        voice_id: preset.voice_id as ElevenLabsVoiceId,
-        model_id: model as ElevenLabsModelId,
+        voice_id: voiceToUse as ElevenLabsVoiceId,
+        model_id: finalModel as ElevenLabsModelId,
         voice_settings: preset.settings,
         story_id: options.storyId,
         ...(options.chapterId && { chunk_id: options.chapterId }),

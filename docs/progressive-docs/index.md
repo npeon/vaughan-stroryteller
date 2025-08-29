@@ -8,7 +8,7 @@ Esta documentación está diseñada específicamente para **programadores junior
 
 ### ✅ Estado Actual del Proyecto
 
-**Tasks Completadas (0.1-0.15)**:
+**Tasks Completadas (0.1-0.16)**:
 - ✅ **Testing Foundation**: Vitest + Vue Test Utils + Cypress + MSW (Tasks 0.1-0.3)
 - ✅ **Supabase Backend**: Database schema, RLS policies, triggers (Tasks 0.7-0.12)
 - ✅ ⭐ **Sistema de Autenticación COMPLETO** (Task 0.13) - **ACTUALIZADO**:
@@ -23,6 +23,12 @@ Esta documentación está diseñada específicamente para **programadores junior
   - 🧪 **TDD Completo**: 30 test cases con MSW mocking y validation completa
   - 📊 **JSON Schema**: Respuestas estructuradas con historias + vocabulario español
   - ⚡ **Production Ready**: Rate limiting, error handling, timeout management
+- 🎙️ ⭐ **ElevenLabs TTS Integration COMPLETO** (Task 0.16) - **NUEVO ENERO 2025**:
+  - 🎤 **Environment Configuration**: Voice ID, model, API key dinámicos desde ENV
+  - 🎯 **Theo Hartwell Voice**: Custom voice implementada para The Vaughan Storyteller
+  - ⚡ **eleven_flash_v2**: Modelo optimizado para velocidad y calidad
+  - 📦 **Cache Inteligente**: Audio almacenado 1 año en Supabase, cero calls redundantes
+  - 🧪 **TDD Complete**: 7/8 tests covering config dinámico + fallback system
 - 🔥 **CRITICAL FIX**: RLS Infinite Recursion Issue - **RESUELTO EN PRODUCCIÓN**:
   - 🚨 Issue: "infinite recursion detected in policy for relation 'profiles'"
   - ✅ Eliminadas políticas RLS recursivas causando loops infinitos
@@ -144,7 +150,7 @@ Todo el proyecto sigue metodología TDD estricta:
 
 ### **APIs Externas**
 - [OpenRouter Integration](./how-to-guides/apis/openrouter-integration.md)
-- [ElevenLabs TTS](./how-to-guides/apis/elevenlabs-tts.md)
+- [ElevenLabs Integration](./how-to-guides/apis/elevenlabs-integration.md) ⭐ **NUEVO**
 - [WordsAPI Vocabulary](./how-to-guides/apis/wordsapi-vocabulary.md)
 
 ### **Testing Patterns**
