@@ -1,3 +1,4 @@
+
 export type Json =
   | string
   | number
@@ -7,6 +8,11 @@ export type Json =
   | Json[]
 
 export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "13.0.4"
+  }
   graphql_public: {
     Tables: {
       [_ in never]: never
@@ -207,6 +213,69 @@ export type Database = {
           vocabulary_mastered?: number | null
         }
         Relationships: []
+      }
+      storage_metadata: {
+        Row: {
+          access_count: number | null
+          bucket_id: string
+          content_type: string
+          created_at: string | null
+          educational_context: string | null
+          file_size: number | null
+          id: string
+          last_accessed: string | null
+          metadata: Json | null
+          original_name: string | null
+          storage_path: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          access_count?: number | null
+          bucket_id: string
+          content_type: string
+          created_at?: string | null
+          educational_context?: string | null
+          file_size?: number | null
+          id?: string
+          last_accessed?: string | null
+          metadata?: Json | null
+          original_name?: string | null
+          storage_path: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          access_count?: number | null
+          bucket_id?: string
+          content_type?: string
+          created_at?: string | null
+          educational_context?: string | null
+          file_size?: number | null
+          id?: string
+          last_accessed?: string | null
+          metadata?: Json | null
+          original_name?: string | null
+          storage_path?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "storage_metadata_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "storage_metadata_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_stats"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stories: {
         Row: {
@@ -697,6 +766,10 @@ export type Database = {
       }
     }
     Functions: {
+      cleanup_orphaned_files: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       create_default_user_limits: {
         Args: { user_id: string }
         Returns: undefined
@@ -704,6 +777,10 @@ export type Database = {
       get_user_role: {
         Args: { user_id?: string }
         Returns: string
+      }
+      get_user_storage_stats: {
+        Args: { user_uuid: string }
+        Returns: Json
       }
       gtrgm_compress: {
         Args: { "": unknown }
@@ -884,4 +961,3 @@ export const Constants = {
     Enums: {},
   },
 } as const
-

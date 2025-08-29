@@ -147,3 +147,12 @@ export interface AudioGenerationResponse {
   chunk_id?: string;
   generated_at: string;
 }
+
+// Subscription/Usage Stats Response
+export interface ElevenLabsUsageStats {
+  character_count: number;
+  character_limit: number;
+  can_extend_character_limit: boolean;
+  allowed_to_extend_character_limit: boolean;
+  next_character_count_reset_unix: number;
+}
