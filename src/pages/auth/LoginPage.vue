@@ -776,7 +776,7 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   height: 85vh;
   width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible; // Changed from hidden to visible
   
   @media (max-width: 1024px) {
     grid-template-columns: 1fr 1fr;
@@ -789,8 +789,10 @@ watch(isAuthenticated, async (newValue, oldValue) => {
     gap: $prime-space-lg;
     max-width: 95vw;
     height: auto; // Permitir altura automática
-    min-height: auto; // Sin restricción de altura mínima
+    min-height: calc(100vh - 2rem); // Ensure minimum height with padding
     padding: $prime-space-md;
+    padding-bottom: $prime-space-xl; // Extra bottom padding for error messages
+    overflow: visible;
     
     // Reordenar: brand section primero, luego auth card
     .brand-section {
@@ -805,7 +807,9 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   @media (max-width: 480px) {
     max-width: 100%;
     padding: $prime-space-sm;
+    padding-bottom: $prime-space-xl; // Maintain extra bottom padding
     gap: $prime-space-md;
+    min-height: calc(100vh - 1rem); // Adjust for smaller padding
   }
 }
 
@@ -1046,19 +1050,20 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   padding: $prime-space-sm;
   height: 100%;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible; // Changed from hidden to visible
   
   @media (max-width: 768px) {
     height: auto;
     min-height: auto;
     padding: 0;
     align-items: flex-start;
+    overflow: visible;
   }
 }
 
 .auth-card {
   width: 100%;
-  max-width: 400px; // Más conservador
+  max-width: 400px;
   padding: $prime-space-lg;
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.95);
@@ -1068,7 +1073,9 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   border-radius: var(--radius-lg);
   border: 1px solid rgba(255, 255, 255, 0.2);
   box-sizing: border-box;
-  max-height: 100%;
+  max-height: none; // Remove height restriction
+  min-height: auto; // Allow natural height expansion
+  overflow: visible; // Ensure content overflow is visible
   
   @media (max-width: 1024px) {
     max-width: 360px;
@@ -1077,7 +1084,13 @@ watch(isAuthenticated, async (newValue, oldValue) => {
   
   @media (max-width: 768px) {
     max-width: 100%;
-    padding: $prime-space-sm;
+    padding: $prime-space-lg;
+    margin-bottom: $prime-space-md; // Add bottom margin for error messages
+  }
+  
+  @media (max-width: 480px) {
+    padding: $prime-space-md;
+    margin-bottom: $prime-space-lg; // More space on smaller screens
   }
 }
 
@@ -1362,6 +1375,41 @@ watch(isAuthenticated, async (newValue, oldValue) => {
         font-size: 16px;
       }
     }
+  }
+}
+
+// ===== INPUT FIELD STYLES =====
+.prime-input {
+  // Override any autocomplete styling to remove blue background
+  :deep(input:-webkit-autofill) {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+    -webkit-text-fill-color: var(--prime-grey-900) !important;
+  }
+  
+  :deep(input:-webkit-autofill:hover) {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  }
+  
+  :deep(input:-webkit-autofill:focus) {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
+  }
+}
+
+// ===== BUTTON STYLES =====
+.prime-btn {
+  border-radius: 8px !important;
+  
+  &.prime-btn--primary {
+    border-radius: 8px !important;
+  }
+  
+  &.prime-btn--secondary {
+    border-radius: 8px !important;
+  }
+  
+  // Ensure all button states have rounded corners
+  &:hover, &:focus, &:active {
+    border-radius: 8px !important;
   }
 }
 
