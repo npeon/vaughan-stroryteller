@@ -263,6 +263,7 @@
             :disable="loading || !isRegisterFormValid"
             unelevated
             data-testid="email-signup-btn"
+            v-show="false"
           >
             <span v-if="!loading">Create Account</span>
             <span v-else>Creating account...</span>
