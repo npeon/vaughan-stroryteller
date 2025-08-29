@@ -584,16 +584,8 @@ const handleEmailSignIn = async () => {
         position: 'top'
       })
       
-      // Esperar a que el estado de auth se actualice reactivamente
-      await nextTick()
-      
-      // Verificar que la autenticación esté completa antes de redirigir
-      if (isAuthenticated.value) {
-        console.log('✅ Authentication confirmed, redirecting to dashboard')
-        await router.push('/dashboard')
-      } else {
-        console.log('⏳ Authentication still processing, router guard will handle redirect')
-      }
+      // El router guard manejará automáticamente la redirección
+      console.log('✅ Authentication successful, router guard will handle redirect')
     }
     
   } catch (err: unknown) {
@@ -723,15 +715,8 @@ watch(authMode, () => {
   })
 })
 
-// Redirección automática cuando el usuario se autentica
-watch(isAuthenticated, async (newValue, oldValue) => {
-  // Solo redirigir si cambió de false a true (evitar loops)
-  if (newValue && !oldValue) {
-    console.log('🔄 Authentication state changed, redirecting...')
-    await nextTick()
-    await router.push('/dashboard')
-  }
-}, { immediate: false })
+// El router guard ya maneja la redirección automática
+// No necesitamos watch manual aquí para evitar loops infinitos
 </script>
 
 <style lang="scss" scoped>
