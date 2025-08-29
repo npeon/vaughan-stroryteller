@@ -111,3 +111,6 @@ Desktop.ini
 
 # base datos contexto claude
 /.serena/
+
+# supabase
+/supabase/backups

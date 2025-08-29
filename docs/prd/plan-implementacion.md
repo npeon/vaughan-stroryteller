@@ -30,7 +30,7 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 - [x] **Task 0.11**: Configurar Row Level Security (RLS) policies
 - [x] **Task 0.12**: Configurar políticas RLS para tablas de administración
 - [x] **Task 0.13**: ✅ COMPLETADA - Sistema completo con Email/Password + Google OAuth, UI por tabs, validación tiempo real, 33 tests TDD, type safety 100%
-- [ ] **Task 0.14**: Configurar Supabase Storage para assets
+- [x] **Task 0.14**: Configurar Supabase Storage para assets
 
 ### 🔗 Setup APIs Externas
 

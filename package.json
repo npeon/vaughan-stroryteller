@@ -32,7 +32,19 @@
     "test:e2e": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress open --e2e\"",
     "test:e2e:ci": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json start-test \"quasar dev\" http-get://127.0.0.1:8080 \"cypress run --e2e\"",
     "test:component": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress open --component",
-    "test:component:ci": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress run --component"
+    "test:component:ci": "cross-env NODE_ENV=test TS_NODE_PROJECT=test/cypress/tsconfig.json cypress run --component",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "supabase:reset": "supabase db reset",
+    "supabase:reset:remote": "supabase db reset --linked",
+    "supabase:push": "supabase db push",
+    "supabase:pull": "supabase db pull",
+    "supabase:dump:remote": "supabase db dump > backup_remoto_$(date +%Y%m%d_%H%M%S).sql",
+    "supabase:dump:local": "supabase db dump --local > supabase/backups/backup_local_$(date +%Y%m%d_%H%M%S).sql",
+    "supabase:migration:new": "supabase migration new",
+    "supabase:migration:list": "supabase migration list --linked",
+    "supabase:types": "supabase gen types typescript --linked > src/types/supabase.ts"
   },
   "dependencies": {
     "@quasar/cli": "^2.5.0",
