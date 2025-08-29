@@ -297,13 +297,6 @@ const apiHealth = ref([
     lastCheck: new Date()
   },
   {
-    name: 'WordsAPI',
-    endpoint: 'https://wordsapiv1.p.rapidapi.com',
-    status: 'healthy',
-    responseTime: 320,
-    lastCheck: new Date()
-  },
-  {
     name: 'Supabase',
     endpoint: 'https://supabase.co',
     status: 'healthy',

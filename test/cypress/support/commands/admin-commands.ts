@@ -134,7 +134,7 @@ Cypress.Commands.add('setUserStoryLimit', (userId: string, limit: number) => {
   });
 });
 
-Cypress.Commands.add('verifyAPIHealth', (service: 'openrouter' | 'elevenlabs' | 'wordsapi') => {
+Cypress.Commands.add('verifyAPIHealth', (service: 'openrouter' | 'elevenlabs') => {
   // Navigate to API health monitoring
   cy.navigateToAdminPanel();
   cy.dataCy('api-health-nav').click();
@@ -173,7 +173,6 @@ Cypress.Commands.add('checkSystemStatus', () => {
   // Check external API statuses
   cy.verifyAPIHealth('openrouter');
   cy.verifyAPIHealth('elevenlabs');
-  cy.verifyAPIHealth('wordsapi');
   
   // Verify system metrics
   cy.dataCy('active-users-count').should('not.be.empty');

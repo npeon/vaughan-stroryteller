@@ -407,8 +407,8 @@ const lookupWord = () => {
   if (!addForm.value.word) return
   
   try {
-    // TODO: Implement WordsAPI lookup
-    console.log('Looking up word:', addForm.value.word)
+    // Note: Vocabulary is now integrated with story generation from OpenRouter
+    console.log('Adding word:', addForm.value.word)
   } catch (error) {
     console.error('Error looking up word:', error)
   }

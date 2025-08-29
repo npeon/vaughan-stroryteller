@@ -393,19 +393,6 @@ const loadAPIStatus = () => {
       },
       {
         id: 3,
-        name: 'WordsAPI',
-        endpoint: 'https://wordsapiv1.p.rapidapi.com',
-        status: 'degraded',
-        response_time: 850,
-        uptime_percentage: 98.5,
-        last_check: new Date(),
-        requests_today: 89,
-        error_message: 'High response times detected',
-        checking: false,
-        recent_checks: generateMockRecentChecks(true)
-      },
-      {
-        id: 4,
         name: 'Supabase',
         endpoint: 'https://supabase.co',
         status: 'healthy',

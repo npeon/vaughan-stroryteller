@@ -3,7 +3,6 @@
 
 import { http, HttpResponse } from 'msw';
 import { server } from '../mocks/node';
-import type { WordsApiError } from '../types/wordsapi';
 import type { OpenRouterError } from "../types/openrouter";
 import type { ElevenLabsError } from "../types/elevenlabs";
 
@@ -96,11 +95,10 @@ export const mswTestUtils = {
   /**
    * Check if a specific API was called
    */
-  wasApiCalled(service: 'openrouter' | 'elevenlabs' | 'wordsapi'): boolean {
+  wasApiCalled(service: 'openrouter' | 'elevenlabs'): boolean {
     const patterns: Record<string, RegExp> = {
       openrouter: /openrouter\.ai/,
-      elevenlabs: /elevenlabs\.io/,
-      wordsapi: /wordsapiv1\.p\.rapidapi\.com/
+      elevenlabs: /elevenlabs\.io/
     };
     
     const pattern = patterns[service];
@@ -110,11 +108,10 @@ export const mswTestUtils = {
   /**
    * Get request count for a specific service
    */
-  getApiCallCount(service: 'openrouter' | 'elevenlabs' | 'wordsapi'): number {
+  getApiCallCount(service: 'openrouter' | 'elevenlabs'): number {
     const patterns: Record<string, RegExp> = {
       openrouter: /openrouter\.ai/,
-      elevenlabs: /elevenlabs\.io/,
-      wordsapi: /wordsapiv1\.p\.rapidapi\.com/
+      elevenlabs: /elevenlabs\.io/
     };
     
     const pattern = patterns[service];
@@ -223,31 +220,14 @@ export const mockOverrides = {
     );
   },
 
-  /**
-   * Mock WordsAPI to return word not found error
-   */
-  mockWordsApiNotFound(word: string = 'nonexistentword') {
-    server.use(
-      http.get(`https://wordsapiv1.p.rapidapi.com/words/${word}`, () => {
-        return HttpResponse.json<WordsApiError>(
-          {
-            success: false,
-            message: `No word found with the word '${word}'`,
-          },
-          { status: 404 }
-        );
-      })
-    );
-  },
 
   /**
    * Mock slow response for testing timeout scenarios
    */
-  mockSlowResponse(service: 'openrouter' | 'elevenlabs' | 'wordsapi', delay: number = 5000) {
+  mockSlowResponse(service: 'openrouter' | 'elevenlabs', delay: number = 5000) {
     const urls: Record<string, string> = {
       openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId',
-      wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
+      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId'
     };
 
     const url = urls[service]!;
@@ -266,11 +246,10 @@ export const mockOverrides = {
   /**
    * Mock network failure
    */
-  mockNetworkFailure(service: 'openrouter' | 'elevenlabs' | 'wordsapi') {
+  mockNetworkFailure(service: 'openrouter' | 'elevenlabs') {
     const urls: Record<string, string> = {
       openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId',
-      wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
+      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId'
     };
 
     const url = urls[service]!;
@@ -287,11 +266,10 @@ export const mockOverrides = {
   /**
    * Mock successful responses with custom data
    */
-  mockSuccessResponse(service: 'openrouter' | 'elevenlabs' | 'wordsapi', responseData: Record<string, unknown>) {
+  mockSuccessResponse(service: 'openrouter' | 'elevenlabs', responseData: Record<string, unknown>) {
     const urls: Record<string, string> = {
       openrouter: 'https://openrouter.ai/api/v1/chat/completions',
-      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId',
-      wordsapi: 'https://wordsapiv1.p.rapidapi.com/words/:word'
+      elevenlabs: 'https://api.elevenlabs.io/v1/text-to-speech/:voiceId'
     };
 
     const url = urls[service]!;
@@ -318,7 +296,7 @@ export const mswAssertions = {
   /**
    * Assert that a specific API was called
    */
-  expectApiWasCalled(service: 'openrouter' | 'elevenlabs' | 'wordsapi') {
+  expectApiWasCalled(service: 'openrouter' | 'elevenlabs') {
     const wasCalled = mswTestUtils.wasApiCalled(service);
     if (!wasCalled) {
       throw new Error(`Expected ${service} API to be called, but it wasn't`);
@@ -328,7 +306,7 @@ export const mswAssertions = {
   /**
    * Assert that a specific API was NOT called
    */
-  expectApiWasNotCalled(service: 'openrouter' | 'elevenlabs' | 'wordsapi') {
+  expectApiWasNotCalled(service: 'openrouter' | 'elevenlabs') {
     const wasCalled = mswTestUtils.wasApiCalled(service);
     if (wasCalled) {
       throw new Error(`Expected ${service} API to NOT be called, but it was`);
@@ -338,7 +316,7 @@ export const mswAssertions = {
   /**
    * Assert specific number of API calls
    */
-  expectApiCallCount(service: 'openrouter' | 'elevenlabs' | 'wordsapi', expectedCount: number) {
+  expectApiCallCount(service: 'openrouter' | 'elevenlabs', expectedCount: number) {
     const actualCount = mswTestUtils.getApiCallCount(service);
     if (actualCount !== expectedCount) {
       throw new Error(`Expected ${expectedCount} calls to ${service} API, but got ${actualCount}`);

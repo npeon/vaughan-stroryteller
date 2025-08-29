@@ -249,7 +249,7 @@ declare namespace Cypress {
        * Verify API health status
        * @param service - API service to check
        */
-      verifyAPIHealth(service: 'openrouter' | 'elevenlabs' | 'wordsapi'): Chainable<void>;
+      verifyAPIHealth(service: 'openrouter' | 'elevenlabs'): Chainable<void>;
       
       /**
        * Check overall system status

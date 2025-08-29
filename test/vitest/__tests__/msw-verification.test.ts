@@ -5,7 +5,6 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { setupMSWTest, mswTestUtils, mockOverrides, mswAssertions } from '../../../src/test-utils/msw';
 import type { OpenRouterRequest, OpenRouterResponse } from '../../../src/types/openrouter';
 import type { ElevenLabsTTSRequest, ElevenLabsTTSResponse } from '../../../src/types/elevenlabs';
-import type { WordsApiWord } from '../../../src/types/wordsapi';
 
 describe('MSW Configuration Verification', () => {
   let cleanup: () => void;
@@ -202,111 +201,6 @@ describe('MSW Configuration Verification', () => {
     });
   });
 
-  describe('WordsAPI Mocking', () => {
-    it('should intercept WordsAPI word lookup request', async () => {
-      const response = await fetch('https://wordsapiv1.p.rapidapi.com/words/adventure', {
-        headers: {
-          'X-RapidAPI-Key': 'test-key',
-          'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-      });
-
-      // Log response details for debugging
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.log('WordsAPI response error:', response.status, errorText);
-      }
-
-      expect(response.ok).toBe(true);
-      
-      const data = await response.json() as WordsApiWord;
-      expect(data).toHaveProperty('word', 'adventure');
-      expect(data).toHaveProperty('results');
-      expect(Array.isArray(data.results)).toBe(true);
-      expect(data.results!.length).toBeGreaterThan(0);
-      
-      const firstResult = data.results![0];
-      expect(firstResult).toHaveProperty('definition');
-      expect(firstResult).toHaveProperty('partOfSpeech');
-      expect(firstResult?.definition).toBeTypeOf('string');
-      expect(firstResult?.partOfSpeech).toBeTypeOf('string');
-
-      // Verify the request was intercepted
-      mswAssertions.expectApiWasCalled('wordsapi');
-    });
-
-    it('should handle word not found', async () => {
-      const response = await fetch('https://wordsapiv1.p.rapidapi.com/words/nonexistentword', {
-        headers: {
-          'X-RapidAPI-Key': 'test-key',
-          'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-      });
-
-      expect(response.status).toBe(404);
-      
-      const errorData = await response.json();
-      expect(errorData).toHaveProperty('success', false);
-      expect(errorData).toHaveProperty('message');
-      expect(errorData.message).toContain('nonexistentword');
-    });
-
-    it('should fetch word definitions', async () => {
-      const response = await fetch('https://wordsapiv1.p.rapidapi.com/words/beautiful/definitions', {
-        headers: {
-          'X-RapidAPI-Key': 'test-key',
-          'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-      });
-
-      expect(response.ok).toBe(true);
-      
-      const data = await response.json();
-      expect(data).toHaveProperty('word', 'beautiful');
-      expect(data).toHaveProperty('definitions');
-      expect(Array.isArray(data.definitions)).toBe(true);
-      expect(data.definitions.length).toBeGreaterThan(0);
-      
-      const firstDefinition = data.definitions[0];
-      expect(firstDefinition).toHaveProperty('definition');
-      expect(firstDefinition).toHaveProperty('partOfSpeech');
-    });
-
-    it('should fetch word synonyms', async () => {
-      const response = await fetch('https://wordsapiv1.p.rapidapi.com/words/beautiful/synonyms', {
-        headers: {
-          'X-RapidAPI-Key': 'test-key',
-          'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-      });
-
-      expect(response.ok).toBe(true);
-      
-      const data = await response.json();
-      expect(data).toHaveProperty('word', 'beautiful');
-      expect(data).toHaveProperty('synonyms');
-      expect(Array.isArray(data.synonyms)).toBe(true);
-      expect(data.synonyms.length).toBeGreaterThan(0);
-      expect(data.synonyms).toContain('lovely');
-    });
-
-    it('should handle pronunciation request', async () => {
-      const response = await fetch('https://wordsapiv1.p.rapidapi.com/words/understand/pronunciation', {
-        headers: {
-          'X-RapidAPI-Key': 'test-key',
-          'X-RapidAPI-Host': 'wordsapiv1.p.rapidapi.com'
-        }
-      });
-
-      expect(response.ok).toBe(true);
-      
-      const data = await response.json();
-      expect(data).toHaveProperty('word', 'understand');
-      expect(data).toHaveProperty('pronunciation');
-      expect(data.pronunciation).toHaveProperty('all');
-      expect(data.pronunciation.all).toBeTypeOf('string');
-    });
-  });
 
   describe('MSW Utilities', () => {
     it('should track API calls correctly', async () => {
@@ -323,20 +217,17 @@ describe('MSW Configuration Verification', () => {
       });
 
       await fetch('https://api.elevenlabs.io/v1/voices');
-      await fetch('https://wordsapiv1.p.rapidapi.com/words/test');
 
       // Check tracking
       expect(mswTestUtils.wasApiCalled('openrouter')).toBe(true);
       expect(mswTestUtils.wasApiCalled('elevenlabs')).toBe(true);
-      expect(mswTestUtils.wasApiCalled('wordsapi')).toBe(true);
 
       expect(mswTestUtils.getApiCallCount('openrouter')).toBe(1);
       expect(mswTestUtils.getApiCallCount('elevenlabs')).toBe(1);
-      expect(mswTestUtils.getApiCallCount('wordsapi')).toBe(1);
 
       // Check request logs
       const requests = mswTestUtils.getRequests();
-      expect(requests).toHaveLength(3);
+      expect(requests).toHaveLength(2);
     });
 
     it('should wait for specific requests', async () => {
@@ -360,14 +251,17 @@ describe('MSW Configuration Verification', () => {
     });
 
     it('should handle request patterns', async () => {
-      await fetch('https://wordsapiv1.p.rapidapi.com/words/adventure/definitions');
-      await fetch('https://wordsapiv1.p.rapidapi.com/words/mystery/synonyms');
+      await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        body: JSON.stringify({ model: 'test', messages: [] })
+      });
+      await fetch('https://api.elevenlabs.io/v1/voices');
 
-      const wordsApiRequests = mswTestUtils.getRequestsByPattern(/wordsapiv1/);
-      expect(wordsApiRequests).toHaveLength(2);
+      const openrouterRequests = mswTestUtils.getRequestsByPattern(/openrouter/);
+      expect(openrouterRequests).toHaveLength(1);
 
-      const definitionRequests = mswTestUtils.getRequestsByPattern(/definitions/);
-      expect(definitionRequests).toHaveLength(1);
+      const elevenLabsRequests = mswTestUtils.getRequestsByPattern(/elevenlabs/);
+      expect(elevenLabsRequests).toHaveLength(1);
     });
   });
 
