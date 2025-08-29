@@ -62,6 +62,18 @@ development/
 
 **Cuándo usar**: Cuando implementas storage, uploads de archivos, o persistencia de contenido generado por IA
 
+---
+
+### **🚀 [Deployment](./deployment/)**
+Guías completas de deployment y configuración de producción
+
+```
+deployment/
+└── ✅ vercel-setup.md                  # Setup completo Vercel con GitHub integration
+```
+
+**Cuándo usar**: Para deployar a producción, configurar CI/CD, o resolver problemas de deployment
+
 ## 🎯 Cómo Usar los How-to Guides
 
 ### **1. Identifica tu Problema**
@@ -69,6 +81,7 @@ development/
 - ¿Necesitas implementar algo específico? → **APIs**
 - ¿Tu test falla o se comporta raro? → **Testing** 
 - ¿Problema de performance o CI/CD? → **Development**
+- 🚀 ¿Deployment a producción? → **Deployment**
 
 ### **2. Sigue la Guía Paso a Paso**
 Cada guía incluye:
@@ -100,6 +113,9 @@ Las guías están basadas en el proyecto real, pero incluyen variaciones para di
 ### **Para Development**
 1. **[Storage Services Usage](./development/storage-services-usage.md)** - Patrones de storage (avatares, TTS, banners)
 2. **[Image Persistence Integration](./development/image-persistence-integration.md)** - Sistema de persistencia para IA
+
+### **Para Deployment**
+1. **[Vercel Setup](./deployment/vercel-setup.md)** - Deployment completo con GitHub integration y environment variables
 
 ## 🎨 Templates de How-to Guide
 

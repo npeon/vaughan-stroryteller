@@ -43,10 +43,10 @@ Este documento es un checklist ejecutable para realizar el seguimiento del desar
 
 ### 🚀 Setup Vercel Deployment
 
-- [ ] **Task 0.21**: Conectar repositorio GitHub con Vercel
-- [ ] **Task 0.22**: Configurar variables de entorno en Vercel
-- [ ] **Task 0.23**: Configurar preview deployments automáticos
-- [ ] **Task 0.24**: Configurar dominio customizado y SSL
+- [x] **Task 0.21**: ✅ COMPLETADA - Conectar repositorio GitHub con Vercel
+- [x] **Task 0.22**: ✅ COMPLETADA - Configurar variables de entorno en Vercel  
+- [x] **Task 0.23**: ✅ COMPLETADA - Configurar preview deployments automáticos
+- [x] **Task 0.24**: ✅ COMPLETADA - Configurar dominio customizado y SSL (preparado para cuando se defina dominio final)
 
 ---
 

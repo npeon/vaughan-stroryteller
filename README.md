@@ -76,6 +76,30 @@ npm run test:component:ci
 quasar build
 ```
 
+### Vercel Deployment
+
+The project is configured for automatic deployment to Vercel:
+
+```bash
+# Quick deploy to production
+vercel --prod
+
+# List current deployments
+vercel list
+
+# Pull environment variables locally
+vercel env pull .env.vercel
+```
+
+**Production URL**: https://quasar-vaughan-storyteller-6l301kgbq-nachos-projects-14dbc22f.vercel.app
+
+**Required Environment Variables**:
+- `SUPABASE_URL` - Supabase project URL
+- `SUPABASE_ANON_KEY` - Supabase anonymous key
+- `OPENROUTER_API_KEY` - OpenRouter API key for AI story generation
+
+For detailed deployment setup, see [Deployment Guide](./docs/progressive-docs/how-to-guides/deployment/vercel-setup.md).
+
 ### Customize the configuration
 
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).

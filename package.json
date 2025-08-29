@@ -17,6 +17,7 @@
     "typecheck:watch": "vue-tsc --noEmit --skipLibCheck --watch",
     "dev": "quasar dev",
     "build": "quasar build",
+    "build:vercel": "quasar build",
     "postinstall": "quasar prepare",
     "test:unit:ui": "vitest --ui",
     "test:unit": "vitest",
