@@ -13,31 +13,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       ad_banners: {
@@ -289,6 +264,12 @@ export type Database = {
           generation_cost: number | null
           genre: string
           id: string
+          image_generated_at: string | null
+          image_generation_prompt: string | null
+          image_model_used: string | null
+          image_storage_path: string | null
+          image_style: string | null
+          image_url: string | null
           is_favorite: boolean | null
           model_used: string | null
           reading_progress: number | null
@@ -309,6 +290,12 @@ export type Database = {
           generation_cost?: number | null
           genre: string
           id?: string
+          image_generated_at?: string | null
+          image_generation_prompt?: string | null
+          image_model_used?: string | null
+          image_storage_path?: string | null
+          image_style?: string | null
+          image_url?: string | null
           is_favorite?: boolean | null
           model_used?: string | null
           reading_progress?: number | null
@@ -329,6 +316,12 @@ export type Database = {
           generation_cost?: number | null
           genre?: string
           id?: string
+          image_generated_at?: string | null
+          image_generation_prompt?: string | null
+          image_model_used?: string | null
+          image_storage_path?: string | null
+          image_style?: string | null
+          image_url?: string | null
           is_favorite?: boolean | null
           model_used?: string | null
           reading_progress?: number | null
@@ -770,6 +763,10 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      cleanup_orphaned_story_images: {
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       create_default_user_limits: {
         Args: { user_id: string }
         Returns: undefined
@@ -946,9 +943,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {},
   },
